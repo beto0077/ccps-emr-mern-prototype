@@ -4,10 +4,10 @@ import Footer from '../Footer';
 import 'mdbreact';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useEquipmentLoanContext } from '../../context/EquipmentLoanContext';
+import { useOxygenTankLoanContext } from '../../context/OxygenTankLoanContext';
 
-function EquipmentLoanView() {
-    const { getEquipmentLoan } = useEquipmentLoanContext();
+function OxygenTankLoanDashboard() {
+    const { getOxygenTankLoan } = useOxygenTankLoanContext();
     const [loanInfo, setLoanInfo] = useState({
         loan_id: '',
         patient_id: '',
@@ -32,27 +32,27 @@ function EquipmentLoanView() {
 
     const params = useParams();
     useEffect(() => {
-        const loadEquipmentLoan = async () => {
+        const loadOxygenTankLoan = async () => {
             if (params.id) {
-                const details = await getEquipmentLoan(params.id);
+                const details = await getOxygenTankLoan(params.id);
                 setLoanInfo(details);
             }
         };
-        loadEquipmentLoan();
+        loadOxygenTankLoan();
     }, []);
 
     return (
         <div className="bg-dark">
             <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Equipment Loan Details
+                Oxygen Tank Loan Details
             </h2>
             <Container>
                 <Row>
                     <Col>
                         <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                             <Card.Body>
-                                <h2 className="text-primary">Equipment Loan Information</h2>
+                                <h2 className="text-primary">Oxygen Tank Loan Information</h2>
                                 <Table striped bordered responsive>
                                     <tbody>
                                         <tr>
@@ -143,4 +143,4 @@ function EquipmentLoanView() {
     );
 }
 
-export default EquipmentLoanView;
+export default OxygenTankLoanDashboard;
