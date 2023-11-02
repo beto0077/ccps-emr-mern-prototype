@@ -6,20 +6,20 @@ import {
     createControlNoteRequest, 
     updateControlNoteRequest, 
     deleteControlNoteRequest 
-} from '../api/controlNotes.api';
+} from '../api/controlNote.api.js';
 
-const ControlNotesContext = createContext();
+const ControlNoteContext = createContext();
 
-export const useControlNotesContext = () => {
-    const context = useContext(ControlNotesContext);
+export const useControlNoteContext = () => {
+    const context = useContext(ControlNoteContext);
     if (context === undefined) {
-        throw new Error("useControlNotesContext must be used within a ControlNotesProvider");
+        throw new Error("useControlNoteContext must be used within a ControlNoteProvider");
     }
 
     return context;
 }
 
-export const ControlNotesProvider = ({ children }) => {
+export const ControlNoteProvider = ({ children }) => {
     const [controlNotes, setControlNotes] = useState([]);
 
     async function loadControlNotes() {
@@ -62,7 +62,7 @@ export const ControlNotesProvider = ({ children }) => {
     }
 
     return (
-        <ControlNotesContext.Provider 
+        <ControlNoteContext.Provider 
             value={{
                 controlNotes, 
                 loadControlNotes, 
@@ -73,6 +73,6 @@ export const ControlNotesProvider = ({ children }) => {
             }}
         >
             {children}
-        </ControlNotesContext.Provider>
+        </ControlNoteContext.Provider>
     );
 }

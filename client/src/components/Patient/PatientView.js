@@ -6,7 +6,7 @@ import { Container, Row, Col, Table, Card, Image } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { usePatientContext } from "../../context/PatientContext";
 
-function PatientDashboard() {
+function PatientView() {
   const { getPatient } = usePatientContext();
   const [patientInfo, setPatientInfo] = useState({
     name: "",
@@ -170,4 +170,4 @@ function PatientDashboard() {
   );
 }
 
-export default PatientDashboard;
+export default PatientView;

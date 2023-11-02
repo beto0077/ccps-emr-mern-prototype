@@ -6,7 +6,7 @@ import {
     deleteSocialWorkInfoRequest, 
     getSocialWorkInfoRequest, 
     updateSocialWorkInfoRequest 
-} from '../api/socialWorkInfo3.api';
+} from '../api/socialWorkInfo3.api.js';
 
 const SocialWorkInfo3Context = createContext();
 

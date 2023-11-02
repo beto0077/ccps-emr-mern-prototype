@@ -1,25 +1,29 @@
 import React from "react";
 
-/*import { SuperAdminProvider } from "./SuperAdminContext";
-import { DoctorProvider } from "./DoctorContext";
-
-import { AdminProvider } from "./AdminContext";*/
 import { PatientProvider } from "./PatientContext";
 import { EquipmentLoanProvider } from "./EquipmentLoanContext";
-//Oxygen...
-//PhysicalTherapy...
-//ControlNote
-//User
-//SocialWork3
-//InternalReference
-//Attachment
-//PsychologyInfo2
-//PsychologyInfo3
+import { OxygenTankLoanProvider } from "./OxygenTankLoanContext";
+import { PhysicalTherapyInfoProvider } from "./PhysicalTherapyInfoContext";
+import { ControlNoteProvider } from "./ControlNoteContext";
+import { SocialWorkInfo3Provider } from "./SocialWorkInfo3Context";
+import { PsychologyInfo2Provider } from "./PsychologyInfo2Context";
+import { PsychologyInfo3Provider } from "./PsychologyInfo3Context";
+import { InternalReferenceProvider } from "./InternalReferenceContext";
+import { AttachmentProvider } from "./AttachmentContext";
+import { UserProvider } from "./UserContext";
 
 export const GlobalContextProvider = ({ children }) => {
   return (
-    <EquipmentLoanProvider>
-      <PatientProvider>{children}</PatientProvider>
-    </EquipmentLoanProvider>
+    <UserProvider>
+      <AttachmentProvider>
+        <OxygenTankLoanProvider>
+          <EquipmentLoanProvider>
+            <PatientProvider>{children}</PatientProvider>
+          </EquipmentLoanProvider>
+        </OxygenTankLoanProvider>
+      </AttachmentProvider>
+    </UserProvider>
   );
 };
+
+//Create sub context to provide more order

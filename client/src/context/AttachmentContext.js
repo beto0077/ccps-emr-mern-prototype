@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { getAttachmentsRequest, createAttachmentRequest, updateAttachmentRequest, deleteAttachmentRequest, getAttachmentRequest } from '../api/attachment.api';
+import { getAttachmentsRequest, createAttachmentRequest, updateAttachmentRequest, deleteAttachmentRequest, getAttachmentRequest } from '../api/attachment.api.js';
 
 const AttachmentContext = createContext();
 

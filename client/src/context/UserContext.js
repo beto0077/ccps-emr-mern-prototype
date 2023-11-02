@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-import { loginRequest, getUsersRequest, createUserRequest, getUserRequest, updateUserRequest, deleteUserRequest } from '../api/user.api';
+import { loginRequest, getUsersRequest, createUserRequest, getUserRequest, updateUserRequest, deleteUserRequest } from '../api/user.api.js';
 
 const UserContext = createContext();
 

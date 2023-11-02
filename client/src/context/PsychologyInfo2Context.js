@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-import { getPsychologyInfo2sRequest, createPsychologyInfo2Request, deletePsychologyInfo2Request, getPsychologyInfo2Request, updatePsychologyInfo2Request } from '../api/psychologyInfo2.api';
+import { getPsychologyInfo2sRequest, createPsychologyInfo2Request, deletePsychologyInfo2Request, getPsychologyInfo2Request, updatePsychologyInfo2Request } from '../api/psychologyInfo2.api.js';
 
 const PsychologyInfo2Context = createContext();
 

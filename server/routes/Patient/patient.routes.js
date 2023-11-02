@@ -6,7 +6,7 @@ import {
     createPatient, 
     updatePatient, 
     deletePatient 
-} from "../../controllers/equipmentLoan.controller.js";
+} from "../../controllers/patient.controller.js";
 
 const router = Router();
 

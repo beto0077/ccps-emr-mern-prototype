@@ -53,7 +53,7 @@ export const updatePatient = async (req, res) => {
         );
         res.json(result);
     } catch (error) {
-        console.error("DB error:", error);
+        console.error("Database error:", error);
         return res.status(500).json({ message: error.message });
     }
 };

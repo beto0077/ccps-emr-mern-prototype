@@ -6,20 +6,20 @@ import {
     updateInternalReferenceRequest, 
     deleteInternalReferenceRequest, 
     getInternalReferenceRequest 
-} from '../api/internalReference.api';
+} from '../api/internalReference.api.js';
 
-const InternalReferencesContext = createContext();
+const InternalReferenceContext = createContext();
 
-export const useInternalReferencesContext = () => {
-    const context = useContext(InternalReferencesContext);
+export const useInternalReferenceContext = () => {
+    const context = useContext(InternalReferenceContext);
     if (context === undefined) {
-        throw new Error("useInternalReferencesContext must be used within an InternalReferencesProvider");
+        throw new Error("useInternalReferenceContext must be used within an InternalReferenceProvider");
     }
 
     return context;
 }
 
-export const InternalReferencesProvider = ({ children }) => {
+export const InternalReferenceProvider = ({ children }) => {
     const [internalReferences, setInternalReferences] = useState([]);
 
     async function loadInternalReferences() {
@@ -65,7 +65,7 @@ export const InternalReferencesProvider = ({ children }) => {
     }
 
     return (
-        <InternalReferencesContext.Provider 
+        <InternalReferenceContext.Provider 
             value={{
                 internalReferences, 
                 loadInternalReferences, 
@@ -76,6 +76,6 @@ export const InternalReferencesProvider = ({ children }) => {
             }}
         >
             {children}
-        </InternalReferencesContext.Provider>
+        </InternalReferenceContext.Provider>
     );
 }
