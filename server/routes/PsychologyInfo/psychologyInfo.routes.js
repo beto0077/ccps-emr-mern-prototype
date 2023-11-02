@@ -4,7 +4,9 @@ import { getPsychologyInfo, createPsychologyInfo, updatePsychologyInfo, deletePs
 
 const router = Router();
 
-router.get('/psychologyInfo/:id', getPsychologyInfo);
-router.post('/psychologyInfo', createPsychologyInfo);
+router.get('/psychologyInfos/:id', getPsychologyInfo);
+router.post('/psychologyInfos', createPsychologyInfo);
 router.put('/psychologyInfos/:id', updatePsychologyInfo);
 router.delete('/psychologyInfos/:id', deletePsychologyInfo);
+
+export default router;

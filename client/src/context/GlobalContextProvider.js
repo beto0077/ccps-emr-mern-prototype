@@ -6,6 +6,7 @@ import { OxygenTankLoanProvider } from "./OxygenTankLoanContext";
 import { PhysicalTherapyInfoProvider } from "./PhysicalTherapyInfoContext";
 import { ControlNoteProvider } from "./ControlNoteContext";
 import { SocialWorkInfo3Provider } from "./SocialWorkInfo3Context";
+import { PsychologyInfoProvider } from "./PsychologyInfoContext";
 import { PsychologyInfo2Provider } from "./PsychologyInfo2Context";
 import { PsychologyInfo3Provider } from "./PsychologyInfo3Context";
 import { InternalReferenceProvider } from "./InternalReferenceContext";
