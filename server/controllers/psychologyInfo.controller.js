@@ -1,8 +1,8 @@
-// Import the database connection from '../utils/db.js'
-import { db } from '../utils/db.js';
+// Import the database connection from '../utils/database.js'
+import { database } from '../utils/database.js';
 
 export const createPsychologyInfo = async (req, res) => {
-    const connection = await db.getConnection();
+    const connection = await database.getConnection();
     try {
         await connection.beginTransaction();
 
@@ -37,8 +37,6 @@ export const createPsychologyInfo = async (req, res) => {
 
         const psychology_info_id = result.insertId;
 
-                // Continuing from the previous code...
-
         // Insert data into DiagnosisOncologicalConditions
         const { selected_diagnoses } = req.body;
         if (selected_diagnoses && selected_diagnoses.length > 0) {
@@ -71,8 +69,6 @@ export const createPsychologyInfo = async (req, res) => {
                 );
             }
         }
-
-                // Continuing from the previous code...
 
         // Insert data into EmotionalPsychologicalSymptoms
         const { emotional_psychological_symptoms } = req.body;
@@ -110,11 +106,9 @@ export const createPsychologyInfo = async (req, res) => {
     }
 };
 
-// psychologyInfo.controller.js (Continuation)
-
 export const getPsychologyInfo = async (req, res) => {
     const { psychology_info_id } = req.params;
-    const connection = await pool.getConnection();
+    const connection = await database.getConnection();
 
     try {
         // Fetch data from PsychologyInfo
@@ -175,8 +169,6 @@ export const getPsychologyInfo = async (req, res) => {
     }
 };
 
-// psychologyInfo.controller.js (Continuation)
-
 export const updatePsychologyInfo = async (req, res) => {
     const { psychology_info_id } = req.params;
     const {
@@ -208,7 +200,7 @@ export const updatePsychologyInfo = async (req, res) => {
         treatmentPlan
     } = req.body;
 
-    const connection = await pool.getConnection();
+    const connection = await database.getConnection();
 
     try {
         // Begin transaction
@@ -249,11 +241,6 @@ export const updatePsychologyInfo = async (req, res) => {
             ]
         );
 
-        // psychologyInfo.controller.js (Continuation)
-
-// ... (previous code)
-
-        // Update data in sub-tables
         // Update DiagnosisOncologicalConditions
         await connection.query('DELETE FROM DiagnosisOncologicalConditions WHERE psychology_info_id = ?', [psychology_info_id]);
         for (const diagnosis of diagnosisOncologicalConditions) {
@@ -284,9 +271,6 @@ export const updatePsychologyInfo = async (req, res) => {
             await connection.query('INSERT INTO TreatmentPlan (psychology_info_id, selected_intervention) VALUES (?, ?)', [psychology_info_id, intervention]);
         }
 
-// ... (next code)
-
-
         // Commit transaction
         await connection.commit();
 
@@ -300,12 +284,10 @@ export const updatePsychologyInfo = async (req, res) => {
     }
 };
 
-// psychologyInfo.controller.js (Continuation)
-
 // Delete PsychologyInfo and related records
 export const deletePsychologyInfo = async (req, res) => {
     const psychologyInfoId = req.params.id;
-    const connection = await pool.getConnection();
+    const connection = await database.getConnection();
 
     try {
         // Start a transaction

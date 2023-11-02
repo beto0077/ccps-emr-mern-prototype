@@ -13,6 +13,7 @@ import InternalReferenceRoutes from './routes/InternalReferencesInfo/internalRef
 import AttachmentRoutes from './routes/Attachment/attachment.routes.js'
 import PhysicalTherapyInfoRoutes from './routes/PhysicalTherapyInfo/physicalTherapyInfo.routes.js'
 import ControlNoteRoutes from './routes/PhysicalTherapyInfo/controlNote.routes.js'
+import PsychologyInfoRoutes from './routes/PsychologyInfo/psychologyInfo.routes.js'
 import PsychologyInfo2Routes from './routes/PsychologyInfo/psychologyInfo2.routes.js'
 import PsychologyInfo3Routes from './routes/PsychologyInfo/psychologyInfo3.routes.js'
 
@@ -31,6 +32,7 @@ app.use('/internalReference', InternalReferenceRoutes);
 app.use('/attachment', AttachmentRoutes);
 app.use('/physicalTherapyInfo', PhysicalTherapyInfoRoutes);
 app.use('/controlNote', ControlNoteRoutes);
+app.use('/psychologyInfo', PsychologyInfoRoutes);
 app.use('/psychologyInfo2', PsychologyInfo2Routes);
 app.use('/psychologyInfo3', PsychologyInfo3Routes);
 
