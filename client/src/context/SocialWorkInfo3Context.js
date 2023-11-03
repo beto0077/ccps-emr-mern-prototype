@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from 'react';
 
 import { 
-    getSocialWorkInfosRequest, 
-    createSocialWorkInfoRequest, 
-    deleteSocialWorkInfoRequest, 
-    getSocialWorkInfoRequest, 
-    updateSocialWorkInfoRequest 
+    getSocialWorkInfo3sRequest, 
+    createSocialWorkInfo3Request, 
+    deleteSocialWorkInfo3Request, 
+    getSocialWorkInfo3Request, 
+    updateSocialWorkInfo3Request 
 } from '../api/socialWorkInfo3.api.js';
 
 const SocialWorkInfo3Context = createContext();
@@ -19,35 +19,35 @@ export const useSocialWorkInfo3Context = () => {
 };
 
 export const SocialWorkInfo3Provider = ({ children }) => {
-    const [socialWorkInfos, setSocialWorkInfos] = useState([]);
+    const [socialWorkInfos3, setSocialWorkInfos3] = useState([]);
 
-    async function loadSocialWorkInfos() {
-        const response = await getSocialWorkInfosRequest();
-        setSocialWorkInfos(response.data);
+    async function loadSocialWorkInfo3s() {
+        const response = await getSocialWorkInfo3sRequest();
+        setSocialWorkInfos3(response.data);
     }
 
-    const deleteSocialWorkInfo = async (id) => {
-        await deleteSocialWorkInfoRequest(id);
-        setSocialWorkInfos(socialWorkInfos.filter((info) => info.social_work_info3_id !== id));
+    const deleteSocialWorkInfo3 = async (id) => {
+        await deleteSocialWorkInfo3Request(id);
+        setSocialWorkInfos3(socialWorkInfos3.filter((info) => info.social_work_info3_id !== id));
     };
 
-    const createSocialWorkInfo = async (info) => {
-        await createSocialWorkInfoRequest(info);
+    const createSocialWorkInfo3 = async (info) => {
+        await createSocialWorkInfo3Request(info);
     };
 
-    const getSocialWorkInfo = async (id) => {
-        const response = await getSocialWorkInfoRequest(id);
+    const getSocialWorkInfo3 = async (id) => {
+        const response = await getSocialWorkInfo3Request(id);
         return response.data;
     };
 
-    const updateSocialWorkInfo = async (id, newFields) => {
-        await updateSocialWorkInfoRequest(id, newFields);
+    const updateSocialWorkInfo3 = async (id, newFields) => {
+        await updateSocialWorkInfo3Request(id, newFields);
     };
 
     return (
         <SocialWorkInfo3Context.Provider 
             value={{
-                socialWorkInfos, loadSocialWorkInfos, deleteSocialWorkInfo, createSocialWorkInfo, getSocialWorkInfo, updateSocialWorkInfo
+                socialWorkInfos: socialWorkInfos3, loadSocialWorkInfos: loadSocialWorkInfo3s, deleteSocialWorkInfo: deleteSocialWorkInfo3, createSocialWorkInfo: createSocialWorkInfo3, getSocialWorkInfo: getSocialWorkInfo3, updateSocialWorkInfo: updateSocialWorkInfo3
             }}
         >
             {children}

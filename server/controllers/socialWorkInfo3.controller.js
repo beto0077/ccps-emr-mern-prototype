@@ -1,7 +1,7 @@
 // Import the database connection from '../utils/database.js'
 import { database } from '../utils/database.js';
 
-export const getSocialWorkInfos = async (req, res) => {
+export const getSocialWorkInfo3s = async (req, res) => {
     try {
         const [result] = await database.query("SELECT * FROM SocialWorkInfo3 ORDER BY social_work_info3_id ASC");
         res.json(result);
@@ -10,7 +10,7 @@ export const getSocialWorkInfos = async (req, res) => {
     }
 };
 
-export const getSocialWorkInfo = async (req, res) => {
+export const getSocialWorkInfo3 = async (req, res) => {
     try {
         const [result] = await database.query("SELECT * FROM SocialWorkInfo3 WHERE social_work_info3_id = ?", [req.params.id]);
 
@@ -24,7 +24,7 @@ export const getSocialWorkInfo = async (req, res) => {
     }
 };
 
-export const createSocialWorkInfo = async (req, res) => {
+export const createSocialWorkInfo3 = async (req, res) => {
     try {
         const {
             patient_id,
@@ -54,7 +54,7 @@ export const createSocialWorkInfo = async (req, res) => {
     }
 };
 
-export const updateSocialWorkInfo = async (req, res) => {
+export const updateSocialWorkInfo3 = async (req, res) => {
     try {
         const result = await database.query(
             "UPDATE SocialWorkInfo3 SET ? WHERE social_work_info3_id = ?",
@@ -67,7 +67,7 @@ export const updateSocialWorkInfo = async (req, res) => {
     }
 };
 
-export const deleteSocialWorkInfo = async (req, res) => {
+export const deleteSocialWorkInfo3 = async (req, res) => {
     try {
         const [result] = await database.query("DELETE FROM SocialWorkInfo3 WHERE social_work_info3_id = ?", [req.params.id]);
 

@@ -29,6 +29,8 @@ app.use('/user', UserRoutes);
 app.use('/patient', PatientRoutes);
 app.use('/equipmentLoan', EquipmentLoanRoutes);
 app.use('/oxygenTankLoan', OxygenTankLoanRoutes);
+app.use('/socialWorkInfo1', SocialWorkInfo1Routes);
+app.use('/socialWorkInfo2', SocialWorkInfo2Routes);
 app.use('/socialWorkInfo3', SocialWorkInfo3Routes);
 app.use('/internalReference', InternalReferenceRoutes);
 app.use('/attachment', AttachmentRoutes);

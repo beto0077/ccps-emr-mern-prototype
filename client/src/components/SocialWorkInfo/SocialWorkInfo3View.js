@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom';
 import { useSocialWorkInfo3Context } from '../../context/SocialWorkInfo3Context';
 
 function SocialWorkInfo3View() {
-    const { getSocialWorkInfo } = useSocialWorkInfo3Context();
-    const [socialWorkInfo, setSocialWorkInfo] = useState({
+    const { getSocialWorkInfo3 } = useSocialWorkInfo3Context();
+    const [socialWorkInfo3, setSocialWorkInfo3] = useState({
         patient_name: '',
         id: '',
         address: '',
@@ -17,13 +17,13 @@ function SocialWorkInfo3View() {
 
     const params = useParams();
     useEffect(() => {
-        const loadSocialWorkInfo = async () => {
+        const loadSocialWorkInfo3 = async () => {
             if (params.id) {
-                const details = await getSocialWorkInfo(params.id);
-                setSocialWorkInfo(details);
+                const details = await getSocialWorkInfo3(params.id);
+                setSocialWorkInfo3(details);
             }
         };
-        loadSocialWorkInfo();
+        loadSocialWorkInfo3();
     }, []);
 
     return (
@@ -43,23 +43,23 @@ function SocialWorkInfo3View() {
                                         <tbody>
                                             <tr>
                                                 <td>Patient Name</td>
-                                                <td>{socialWorkInfo.patient_name}</td>
+                                                <td>{socialWorkInfo3.patient_name}</td>
                                             </tr>
                                             <tr>
                                                 <td>ID</td>
-                                                <td>{socialWorkInfo.id}</td>
+                                                <td>{socialWorkInfo3.id}</td>
                                             </tr>
                                             <tr>
                                                 <td>Address</td>
-                                                <td>{socialWorkInfo.address}</td>
+                                                <td>{socialWorkInfo3.address}</td>
                                             </tr>
                                             <tr>
                                                 <td>Evolution</td>
-                                                <td>{socialWorkInfo.evolution}</td>
+                                                <td>{socialWorkInfo3.evolution}</td>
                                             </tr>
                                             <tr>
                                                 <td>Treatment</td>
-                                                <td>{socialWorkInfo.treatment}</td>
+                                                <td>{socialWorkInfo3.treatment}</td>
                                             </tr>
                                         </tbody>
                                     </Table>

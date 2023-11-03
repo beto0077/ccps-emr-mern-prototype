@@ -1,19 +1,19 @@
 import { Router } from "express";
 
 import { 
-    getSocialWorkInfos, 
-    getSocialWorkInfo, 
-    createSocialWorkInfo, 
-    updateSocialWorkInfo, 
-    deleteSocialWorkInfo 
+    getSocialWorkInfo3s, 
+    getSocialWorkInfo3, 
+    createSocialWorkInfo3, 
+    updateSocialWorkInfo3, 
+    deleteSocialWorkInfo3 
 } from "../../controllers/socialWorkInfo3.controller.js"; // New import for SocialWorkInfo3 controller
 
 const router = Router();
 
-router.get('/socialWorkInfos', getSocialWorkInfos);
-router.get('/socialWorkInfos/:id', getSocialWorkInfo);
-router.post('/socialWorkInfos', createSocialWorkInfo);
-router.put('/socialWorkInfos/:id', updateSocialWorkInfo);
-router.delete('/socialWorkInfos/:id', deleteSocialWorkInfo);
+router.get('/socialWorkInfo3s', getSocialWorkInfo3s);
+router.get('/socialWorkInfos3/:id', getSocialWorkInfo3);
+router.post('/socialWorkInfos3', createSocialWorkInfo3);
+router.put('/socialWorkInfos3/:id', updateSocialWorkInfo3);
+router.delete('/socialWorkInfos3/:id', deleteSocialWorkInfo3);
 
 export default router;
