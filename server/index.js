@@ -8,6 +8,8 @@ import PatientRoutes from './routes/Patient/patient.routes.js';
 import EquipmentLoanRoutes from './routes/LoanInfo/equipmentLoan.routes.js'
 import OxygenTankLoanRoutes from './routes/LoanInfo/oxygenTankLoan.routes.js';
 import UserRoutes from './routes/User/user.routes.js'
+import SocialWorkInfo1Routes from './routes/SocialWorkInfo/socialWorkInfo1.routes.js'
+import SocialWorkInfo2Routes from './routes/SocialWorkInfo/socialWorkInfo2.routes.js'
 import SocialWorkInfo3Routes from './routes/SocialWorkInfo/socialWorkInfo3.routes.js'
 import InternalReferenceRoutes from './routes/InternalReferencesInfo/internalReference.routes.js'
 import AttachmentRoutes from './routes/Attachment/attachment.routes.js'
