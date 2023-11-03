@@ -40,15 +40,35 @@ function PsychologyInfoView() {
   const params = useParams();
 
   useEffect(() => {
-    const loadInfo = async () => {
-      if (params.id) {
-        const details = await getPsychologyInfo(params.id);
-        setInfo(details);
-        // Here, we'll also fetch and set the data for the subtables
+    const fetchPsychologyInfo = async () => {
+      try {
+        setLoading(true);
+        const response = await getPsychologyInfo(params.id);
+        const {
+          psychologyInfo,
+          diagnosisOncologicalConditions,
+          diseaseStatus,
+          treatmentHistory,
+          emotionalPsychologicalSymptoms,
+          treatmentPlan
+        } = response.data;
+  
+        setInfo(psychologyInfo);
+        setDiagnosisOncologicalConditions(diagnosisOncologicalConditions);
+        setDiseaseStatuses(diseaseStatus);
+        setTreatmentHistories(treatmentHistory);
+        setEmotionalPsychologicalSymptoms(emotionalPsychologicalSymptoms);
+        setTreatmentPlans(treatmentPlan);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setLoading(false);
       }
     };
-    loadInfo();
+  
+    fetchPsychologyInfo();
   }, []);
+  
 
   return (
     <div className="bg-dark">
