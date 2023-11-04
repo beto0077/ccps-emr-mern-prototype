@@ -27,27 +27,47 @@ export const SocialWorkInfo3Provider = ({ children }) => {
     }
 
     const deleteSocialWorkInfo3 = async (id) => {
-        await deleteSocialWorkInfo3Request(id);
-        setSocialWorkInfos3(socialWorkInfos3.filter((info) => info.social_work_info3_id !== id));
+        try {
+            const response = await deleteSocialWorkInfo3Request(id);
+            setSocialWorkInfos3(socialWorkInfos3.filter((info) => info.social_work_info3_id !== id));
+            return response;
+        } catch (error) {
+            console.log(error.response.status);
+            return error.response.status;   
+        }
     };
 
     const createSocialWorkInfo3 = async (info) => {
-        await createSocialWorkInfo3Request(info);
+        try {
+            const response = await createSocialWorkInfo3Request(info);
+            return response;
+        } catch (error) {
+            console.log(error)   
+        }
     };
 
     const getSocialWorkInfo3 = async (id) => {
-        const response = await getSocialWorkInfo3Request(id);
-        return response.data;
+        try {
+            const response = await getSocialWorkInfo3Request(id);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const updateSocialWorkInfo3 = async (id, newFields) => {
-        await updateSocialWorkInfo3Request(id, newFields);
+        try {
+            const response = await updateSocialWorkInfo3Request(id, newFields);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <SocialWorkInfo3Context.Provider 
             value={{
-                socialWorkInfos: socialWorkInfos3, loadSocialWorkInfos: loadSocialWorkInfo3s, deleteSocialWorkInfo: deleteSocialWorkInfo3, createSocialWorkInfo: createSocialWorkInfo3, getSocialWorkInfo: getSocialWorkInfo3, updateSocialWorkInfo: updateSocialWorkInfo3
+                socialWorkInfos3, loadSocialWorkInfo3s, deleteSocialWorkInfo3, createSocialWorkInfo3, getSocialWorkInfo3, updateSocialWorkInfo3
             }}
         >
             {children}

@@ -6,9 +6,9 @@ import {
 
 const router = Router();
 
-router.get('/socialWorkInfos/:id', getSocialWorkInfo2);
-router.post('/socialWorkInfos', createSocialWorkInfo2);
-router.put('/socialWorkInfos/:id', updateSocialWorkInfo2);
-router.delete('/socialWorkInfos/:id', deleteSocialWorkInfo2);
+router.get('/socialWorkInfos2/:id', getSocialWorkInfo2);
+router.post('/socialWorkInfos2', createSocialWorkInfo2);
+router.put('/socialWorkInfos2/:id', updateSocialWorkInfo2);
+router.delete('/socialWorkInfos2/:id', deleteSocialWorkInfo2);
 
 export default router;

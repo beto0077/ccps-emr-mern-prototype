@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useSocialWorkInfo3Context } from "../../context/SocialWorkInfo3Context";
 
 function SocialWorkInfo3Form() {
-    const { createSocialWorkInfo, getSocialWorkInfo, updateSocialWorkInfo } = useSocialWorkInfo3Context();
+    const { createSocialWorkInfo3, getSocialWorkInfo3, updateSocialWorkInfo3 } = useSocialWorkInfo3Context();
     const [socialWorkInfo, setSocialWorkInfo] = useState({
         patient_id: "",
         patient_name: "",
@@ -21,7 +21,7 @@ function SocialWorkInfo3Form() {
     useEffect(() => {
         const loadSocialWorkInfo = async () => {
             if (params.id) {
-                const loadedInfo = await getSocialWorkInfo(params.id);
+                const loadedInfo = await getSocialWorkInfo3(params.id);
                 setSocialWorkInfo(loadedInfo);
             }
         };
@@ -39,9 +39,9 @@ function SocialWorkInfo3Form() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (params.id) {
-            await updateSocialWorkInfo(params.id, socialWorkInfo);
+            await updateSocialWorkInfo3(params.id, socialWorkInfo);
         } else {
-            await createSocialWorkInfo(socialWorkInfo);
+            await createSocialWorkInfo3(socialWorkInfo);
         }
         navigate("/socialWorkInfo3");
         setSocialWorkInfo({

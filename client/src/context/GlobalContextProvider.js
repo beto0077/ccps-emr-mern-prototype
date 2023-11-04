@@ -5,6 +5,8 @@ import { EquipmentLoanProvider } from "./EquipmentLoanContext";
 import { OxygenTankLoanProvider } from "./OxygenTankLoanContext";
 import { PhysicalTherapyInfoProvider } from "./PhysicalTherapyInfoContext";
 import { ControlNoteProvider } from "./ControlNoteContext";
+import { SocialWorkInfo1Provider } from "./SocialWorkInfo1Context";
+import { SocialWorkInfo2Provider } from "./SocialWorkInfo2Context";
 import { SocialWorkInfo3Provider } from "./SocialWorkInfo3Context";
 import { PsychologyInfoProvider } from "./PsychologyInfoContext";
 import { PsychologyInfo2Provider } from "./PsychologyInfo2Context";
