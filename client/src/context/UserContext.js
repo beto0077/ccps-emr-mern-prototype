@@ -1,6 +1,12 @@
 import { createContext, useContext, useState } from 'react';
 
-import { loginRequest, getUsersRequest, createUserRequest, getUserRequest, updateUserRequest, deleteUserRequest } from '../api/user.api.js';
+import {
+    loginRequest,
+    getUsersRequest,
+    createUserRequest,
+    getUserRequest,
+    updateUserRequest,
+    deleteUserRequest } from '../api/user.api.js';
 
 const UserContext = createContext();
 
@@ -71,7 +77,13 @@ export const UserProvider = ({ children }) => {
     return (
         <UserContext.Provider 
             value={{
-                users, loadUsers, deleteUser, createUser, getUser, updateUser, loginUser
+                users,
+                loadUsers,
+                deleteUser,
+                createUser,
+                getUser,
+                updateUser,
+                loginUser
             }}
         >
             {children}

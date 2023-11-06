@@ -1,6 +1,11 @@
 import { createContext, useContext, useState } from 'react';
 
-import { getOxygenTankLoansRequest, createOxygenTankLoanRequest, deleteOxygenTankLoanRequest, getOxygenTankLoanRequest, updateOxygenTankLoanRequest } from '../api/oxygenTankLoan.api.js';
+import { 
+    getOxygenTankLoansRequest,
+    createOxygenTankLoanRequest,
+    deleteOxygenTankLoanRequest,
+    getOxygenTankLoanRequest,
+    updateOxygenTankLoanRequest } from '../api/oxygenTankLoan.api.js';
 
 const OxygenTankLoanContext = createContext();
 
@@ -14,17 +19,17 @@ export const useOxygenTankLoanContext = () => {
 }
 
 export const OxygenTankLoanProvider = ({ children }) => {
-    const [loans, setLoans] = useState([]);
+    const [oxygenTankLoans, setOxygenTankLoans] = useState([]);
 
-    async function loadLoans() {
+    async function loadOxygenTankLoans() {
         const response = await getOxygenTankLoansRequest();
-        setLoans(response.data);
+        setOxygenTankLoans(response.data);
     }
 
-    const deleteLoan = async (id) => {
+    const deleteOxygenTankLoan = async (id) => {
         try {
             const response = await deleteOxygenTankLoanRequest(id);
-            setLoans(loans.filter((loan) => loan.oxygen_loan_id !== id));
+            setOxygenTankLoans(oxygenTankLoans.filter((loan) => loan.oxygen_loan_id !== id));
             return response;
         } catch (error) {
             console.log(error.response.status);
@@ -32,7 +37,7 @@ export const OxygenTankLoanProvider = ({ children }) => {
         }
     }
 
-    const createLoan = async (loan) => {
+    const createOxygenTankLoan = async (loan) => {
         try {
             await createOxygenTankLoanRequest(loan);
         } catch (error) {
@@ -40,7 +45,7 @@ export const OxygenTankLoanProvider = ({ children }) => {
         }
     }
 
-    const getLoan = async (id) => {
+    const getOxygenTankLoan = async (id) => {
         try {
             const response = await getOxygenTankLoanRequest(id);
             return response.data;
@@ -49,7 +54,7 @@ export const OxygenTankLoanProvider = ({ children }) => {
         }
     }
 
-    const updateLoan = async (id, newFields) => {
+    const updateOxygenTankLoan = async (id, newFields) => {
         try {
             const response = await updateOxygenTankLoanRequest(id, newFields);
             console.log(response);
@@ -61,7 +66,12 @@ export const OxygenTankLoanProvider = ({ children }) => {
     return (
         <OxygenTankLoanContext.Provider 
             value={{
-                loans, loadLoans, deleteLoan, createLoan, getLoan, updateLoan
+                oxygenTankLoans,
+                loadOxygenTankLoans,
+                deleteOxygenTankLoan,
+                createOxygenTankLoan,
+                getOxygenTankLoan,
+                updateOxygenTankLoan
             }}
         >
             {children}

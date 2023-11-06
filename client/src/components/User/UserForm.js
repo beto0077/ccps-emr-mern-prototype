@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useUserContext } from "../../context/UserContext";
 
 function UserForm() {
-    const { createUser, getUser, updateUser, loginUser } = useUserContext();
+    const { createUser, getUser, updateUser } = useUserContext();
     const [user, setUser] = useState({
         email_address: "",
         password: "",

@@ -15,7 +15,7 @@ import { InternalReferenceProvider } from "./InternalReferenceContext";
 import { AttachmentProvider } from "./AttachmentContext";
 import { UserProvider } from "./UserContext";
 
-export const GlobalContextProvider = ({ children }) => {
+/*export const GlobalContextProvider = ({ children }) => {
   return (
     <UserProvider>
       <AttachmentProvider>
@@ -27,6 +27,37 @@ export const GlobalContextProvider = ({ children }) => {
       </AttachmentProvider>
     </UserProvider>
   );
+};*/
+export const GlobalContextProvider = ({ children }) => {
+  return (
+    <UserProvider>
+    <PatientProvider>
+      <AttachmentProvider>
+        <EquipmentLoanProvider>
+          <OxygenTankLoanProvider>
+            <PhysicalTherapyInfoProvider>
+              <ControlNoteProvider>
+                <SocialWorkInfo1Provider>
+                  <SocialWorkInfo2Provider>
+                    <SocialWorkInfo3Provider>
+                      <PsychologyInfoProvider>
+                        <PsychologyInfo2Provider>
+                          <PsychologyInfo3Provider>
+                            <InternalReferenceProvider>
+                              {children}
+                            </InternalReferenceProvider>
+                          </PsychologyInfo3Provider>
+                        </PsychologyInfo2Provider>
+                      </PsychologyInfoProvider>
+                    </SocialWorkInfo3Provider>
+                  </SocialWorkInfo2Provider>
+                </SocialWorkInfo1Provider>
+              </ControlNoteProvider>
+            </PhysicalTherapyInfoProvider>
+          </OxygenTankLoanProvider>
+        </EquipmentLoanProvider>
+      </AttachmentProvider>
+    </PatientProvider>
+  </UserProvider>
+  );
 };
-
-//Create sub context to provide more order

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar'; // Assuming there's a common Navbar component
+import Navbar from '../NavigationBar';
 import Footer from '../Footer';
 import { Container, Row, Col, Table, Card, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import { usePhysicalTherapyContext } from '../../context/PhysicalTherapyContext'; // Assuming a new context for PhysicalTherapy
+import { usePhysicalTherapyInfoContext } from '../../context/PhysicalTherapyInfoContext'; // Assuming a new context for PhysicalTherapy
 
 function PhysicalTherapyInfoView() {
-    const { getPhysicalTherapyInfo } = usePhysicalTherapyContext();
+    const { getPhysicalTherapyInfo } = usePhysicalTherapyInfoContext();
     const [therapyInfo, setTherapyInfo] = useState({
         professional: '',
         clinical_diagnosis: '',

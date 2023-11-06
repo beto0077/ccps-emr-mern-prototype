@@ -3,10 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useInternalReferencesContext } from "../../context/InternalReferencesContext";
+import { useInternalReferenceContext } from "../../context/InternalReferenceContext";
 
 function InternalReferenceForm() {
-    const { createInternalReference, getInternalReference, updateInternalReference } = useInternalReferencesContext();
+    const { createInternalReference, getInternalReference, updateInternalReference } = useInternalReferenceContext();
     const [reference, setReference] = useState({
         date: '',
         full_name: '',

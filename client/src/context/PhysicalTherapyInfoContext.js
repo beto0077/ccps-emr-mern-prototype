@@ -1,5 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import { getPhysicalTherapyInfosRequest, createPhysicalTherapyInfoRequest, updatePhysicalTherapyInfoRequest, deletePhysicalTherapyInfoRequest } from '../api/physicalTherapyInfo.api';
+import { 
+    getPhysicalTherapyInfoRequest,
+    createPhysicalTherapyInfoRequest,
+    updatePhysicalTherapyInfoRequest,
+    deletePhysicalTherapyInfoRequest } from '../api/physicalTherapyInfo.api';
 
 const PhysicalTherapyInfoContext = createContext();
 
@@ -13,11 +17,6 @@ export const usePhysicalTherapyInfoContext = () => {
 
 export const PhysicalTherapyInfoProvider = ({ children }) => {
     const [physicalTherapyInfos, setPhysicalTherapyInfos] = useState([]);
-
-    async function loadPhysicalTherapyInfos() {
-        const response = await getPhysicalTherapyInfosRequest();
-        setPhysicalTherapyInfos(response.data);
-    }
 
     const deletePhysicalTherapyInfo = async (id) => {
         try {
@@ -59,7 +58,11 @@ export const PhysicalTherapyInfoProvider = ({ children }) => {
     return (
         <PhysicalTherapyInfoContext.Provider 
             value={{
-                physicalTherapyInfos, loadPhysicalTherapyInfos, deletePhysicalTherapyInfo, createPhysicalTherapyInfo, getPhysicalTherapyInfo, updatePhysicalTherapyInfo
+                physicalTherapyInfos,
+                deletePhysicalTherapyInfo,
+                createPhysicalTherapyInfo,
+                getPhysicalTherapyInfo,
+                updatePhysicalTherapyInfo
             }}
         >
             {children}

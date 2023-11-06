@@ -1,5 +1,10 @@
 import { createContext, useContext, useState } from 'react';
-import { getPatientRequest, getPatientsRequest, createPatientRequest, updatePatientRequest, deletePatientRequest } from '../api/patient.api.js';
+import { 
+    getPatientRequest, 
+    getPatientsRequest, 
+    createPatientRequest, 
+    updatePatientRequest, 
+    deletePatientRequest } from '../api/patient.api.js';
 
 const PatientContext = createContext();
 

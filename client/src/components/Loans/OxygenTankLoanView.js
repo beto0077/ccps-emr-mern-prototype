@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
+import Navbar from '../NavigationBar';
 import Footer from '../Footer';
 import 'mdbreact';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';

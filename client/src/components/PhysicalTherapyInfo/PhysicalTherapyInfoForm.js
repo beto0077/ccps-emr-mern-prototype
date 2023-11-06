@@ -3,14 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { usePhysicalTherapyContext } from "../../context/PhysicalTherapyContext";
+import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
 
 function PhysicalTherapyForm() {
   const {
     createPhysicalTherapyInfo,
     getPhysicalTherapyInfo,
     updatePhysicalTherapyInfo,
-  } = usePhysicalTherapyContext();
+  } = usePhysicalTherapyInfoContext();
   const [physicalTherapyInfo, setPhysicalTherapyInfo] = useState({
     professional: "",
     clinical_diagnosis: "",

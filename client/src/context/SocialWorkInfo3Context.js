@@ -67,7 +67,12 @@ export const SocialWorkInfo3Provider = ({ children }) => {
     return (
         <SocialWorkInfo3Context.Provider 
             value={{
-                socialWorkInfos3, loadSocialWorkInfo3s, deleteSocialWorkInfo3, createSocialWorkInfo3, getSocialWorkInfo3, updateSocialWorkInfo3
+                socialWorkInfos3,
+                loadSocialWorkInfo3s,
+                deleteSocialWorkInfo3,
+                createSocialWorkInfo3,
+                getSocialWorkInfo3,
+                updateSocialWorkInfo3
             }}
         >
             {children}

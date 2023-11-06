@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
-import Navber from "../Navber/Navber";
-import Footer from "../Footer/Footer";
+import Navber from "../NavigationBar";
+import Footer from "../Footer";
 import { useUserContext } from "../../context/UserContext";
 
 function UsersList() {

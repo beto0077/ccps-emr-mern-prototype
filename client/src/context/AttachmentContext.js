@@ -1,5 +1,10 @@
 import { createContext, useContext, useState } from 'react';
-import { getAttachmentsRequest, createAttachmentRequest, updateAttachmentRequest, deleteAttachmentRequest, getAttachmentRequest } from '../api/attachment.api.js';
+import { 
+    getAttachmentsRequest, 
+    createAttachmentRequest, 
+    updateAttachmentRequest, 
+    deleteAttachmentRequest, 
+    getAttachmentRequest } from '../api/attachment.api.js';
 
 const AttachmentContext = createContext();
 
@@ -59,7 +64,12 @@ export const AttachmentProvider = ({ children }) => {
     return (
         <AttachmentContext.Provider 
             value={{
-                attachments, loadAttachments, deleteAttachment, createAttachment, getAttachment, updateAttachment
+                attachments,
+                loadAttachments,
+                deleteAttachment,
+                createAttachment,
+                getAttachment,
+                updateAttachment
             }}
         >
             {children}

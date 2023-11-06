@@ -6,7 +6,7 @@ import {
     createControlNote, 
     updateControlNote, 
     deleteControlNote 
-} from "../../../controllers/controlNotes.controller.js";
+} from "../../controllers/controlNote.controller.js";
 
 const router = Router();
 

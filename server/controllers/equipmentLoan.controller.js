@@ -1,8 +1,8 @@
-import { db } from '../utils/db.js';
+import { database } from '../utils/database.js';
 
 export const getLoans = async (req, res) => {
     try {
-        const [result] = await db.query("SELECT * FROM EquipmentLoanInformation ORDER BY loan_id ASC");
+        const [result] = await database.query("SELECT * FROM EquipmentLoanInformation ORDER BY loan_id ASC");
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -11,7 +11,7 @@ export const getLoans = async (req, res) => {
 
 export const getLoan = async (req, res) => {
     try {
-        const [result] = await db.query("SELECT * FROM EquipmentLoanInformation WHERE loan_id = ?", [req.params.id]);
+        const [result] = await database.query("SELECT * FROM EquipmentLoanInformation WHERE loan_id = ?", [req.params.id]);
         if (result.length === 0) {
             return res.status(404).json({ message: "Loan information not found" });
         }
@@ -44,7 +44,7 @@ export const createLoan = async (req, res) => {
             loan_completed
         } = req.body;
 
-        const [result] = await db.query(
+        const [result] = await database.query(
             "INSERT INTO EquipmentLoanInformation (patient_id, delivery_date, return_date, description, plate, quantity, beneficiary, reference_issued_by_doctor, person_receiving_equipment, id_number, exact_address, phone_number, contract_number, justification, person_returning_equipment, prepared_by, preparation_date, loan_completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [patient_id, delivery_date, return_date, description, plate, quantity, beneficiary, reference_issued_by_doctor, person_receiving_equipment, id_number, exact_address, phone_number, contract_number, justification, person_returning_equipment, prepared_by, preparation_date, loan_completed]
         );
@@ -60,7 +60,7 @@ export const createLoan = async (req, res) => {
 
 export const updateLoan = async (req, res) => {
     try {
-        const result = await db.query(
+        const result = await database.query(
             "UPDATE EquipmentLoanInformation SET ? WHERE loan_id = ?",
             [req.body, req.params.id]
         );
@@ -73,7 +73,7 @@ export const updateLoan = async (req, res) => {
 
 export const deleteLoan = async (req, res) => {
     try {
-        const [result] = await db.query("DELETE FROM EquipmentLoanInformation WHERE loan_id = ?", [req.params.id]);
+        const [result] = await database.query("DELETE FROM EquipmentLoanInformation WHERE loan_id = ?", [req.params.id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Loan information not found" });

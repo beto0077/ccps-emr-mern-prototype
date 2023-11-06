@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './InternalReferenceNavbar'; // Assuming you have a navbar for this component
+import Navbar from '../NavigationBar';
 import Footer from '../Footer';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import { useInternalReferencesContext } from '../../context/InternalReferencesContext';
+import { useInternalReferenceContext } from '../../context/InternalReferenceContext';
 
 function InternalReferenceView() {
-    const { getInternalReference } = useInternalReferencesContext();
+    const { getInternalReference } = useInternalReferenceContext();
     const [referenceInfo, setReferenceInfo] = useState({
         date: '',
         full_name: '',

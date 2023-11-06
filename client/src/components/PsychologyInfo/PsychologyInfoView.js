@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./PsychologyInfoNavbar";
+import Navbar from "../NavigationBar";
 import Footer from "../Footer";
 import { Container, Row, Col, Table, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -35,6 +35,7 @@ function PsychologyInfoView() {
   const [emotionalPsychologicalSymptoms, setEmotionalPsychologicalSymptoms] =
     useState([]);
   const [treatmentPlans, setTreatmentPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { getPsychologyInfo } = usePsychologyInfoContext();
   const params = useParams();

@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useEquipmentLoanContext } from "../../context/EquipmentLoanContext";
 
 function EquipmentLoanForm() {
-  const { createEquipmentLoan, getEquipmentLoan, updateEquipmentLoan } = useEquipmentLoanContext();
+  const { createLoan, getLoan, updateLoan } = useEquipmentLoanContext();
   const [loan, setLoan] = useState({
     patient_id: "",
     delivery_date: "",
@@ -33,7 +33,7 @@ function EquipmentLoanForm() {
   useEffect(() => {
     const loadEquipmentLoan = async () => {
       if (params.id) {
-        const loadedLoan = await getEquipmentLoan(params.id);
+        const loadedLoan = await getLoan(params.id);
         setLoan({
           patient_id: loadedLoan.patient_id,
           delivery_date: loadedLoan.delivery_date,
@@ -70,9 +70,9 @@ function EquipmentLoanForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (params.id) {
-      await updateEquipmentLoan(params.id, loan);
+      await updateLoan(params.id, loan);
     } else {
-      await createEquipmentLoan(loan);
+      await createLoan(loan);
     }
     navigate(`/equipmentLoan/${params.id}`);
     setLoan({

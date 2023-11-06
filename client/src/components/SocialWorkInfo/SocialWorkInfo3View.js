@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './SocialWorkInfo3Navbar';
+import Navbar from '../NavigationBar';
 import Footer from '../Footer';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';

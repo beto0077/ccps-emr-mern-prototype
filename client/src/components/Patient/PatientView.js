@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navber from "../NavigationBar";
 import Footer from "../Footer";
 import "mdbreact";
-import { Container, Row, Col, Table, Card, Image } from "react-bootstrap";
+import { Container, Row, Col, Table, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { usePatientContext } from "../../context/PatientContext";
 

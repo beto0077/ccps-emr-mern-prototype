@@ -29,9 +29,11 @@ export const ControlNoteProvider = ({ children }) => {
 
     const deleteControlNote = async (id) => {
         try {
-            await deleteControlNoteRequest(id);
+            const response = await deleteControlNoteRequest(id);
             setControlNotes(controlNotes.filter((note) => note.control_note_id !== id));
+            return response;
         } catch (error) {
+            console.log(error.response.status);
             console.error(error);
         }
     }

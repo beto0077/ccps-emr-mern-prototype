@@ -1,6 +1,11 @@
 import { createContext, useContext, useState } from 'react';
 
-import { getLoansRequest, createLoanRequest, deleteLoanRequest, getLoanRequest, updateLoanRequest } from '../api/equipmentLoan.api.js';
+import { 
+    getLoansRequest,
+    createLoanRequest,
+    deleteLoanRequest,
+    getLoanRequest,
+    updateLoanRequest } from '../api/equipmentLoan.api.js';
 
 const EquipmentLoanContext = createContext();
 
@@ -61,7 +66,12 @@ export const EquipmentLoanProvider = ({ children }) => {
     return (
         <EquipmentLoanContext.Provider 
             value={{
-                loans, loadLoans, deleteLoan, createLoan, getLoan, updateLoan
+                loans,
+                loadLoans,
+                deleteLoan,
+                createLoan,
+                getLoan,
+                updateLoan
             }}
         >
             {children}

@@ -1,5 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import { createPsychologyInfoRequest, getPsychologyInfoRequest, updatePsychologyInfoRequest, deletePsychologyInfoRequest } from '../api/psychologyInfo.api';
+import { 
+    createPsychologyInfoRequest,
+    getPsychologyInfoRequest,
+    updatePsychologyInfoRequest,
+    deletePsychologyInfoRequest } from '../api/psychologyInfo.api';
 
 const PsychologyInfoContext = createContext();
 
@@ -54,7 +58,11 @@ export const PsychologyInfoProvider = ({ children }) => {
     return (
         <PsychologyInfoContext.Provider
             value={{
-                psychologyInfo, getPsychologyInfo, deletePsychologyInfo, createPsychologyInfo, updatePsychologyInfo
+                psychologyInfo,
+                getPsychologyInfo,
+                deletePsychologyInfo,
+                createPsychologyInfo,
+                updatePsychologyInfo
             }}
         >
             {children}

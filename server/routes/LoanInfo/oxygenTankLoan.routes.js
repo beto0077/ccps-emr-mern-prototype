@@ -6,7 +6,7 @@ import {
     createOxygenTankLoan, 
     updateOxygenTankLoan, 
     deleteOxygenTankLoan 
-} from "../../../controllers/oxygenTankLoan.controller.js";
+} from "../../controllers/oxygenTankLoan.controller.js";
 
 const router = Router();
 

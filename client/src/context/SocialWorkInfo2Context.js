@@ -1,12 +1,15 @@
 import { createContext, useContext, useState } from 'react';
 
 import {
-    createSocialWorkInfo2Request, getSocialWorkInfo2Request, updateSocialWorkInfo2Request, deleteSocialWorkInfo2Request 
+    createSocialWorkInfo2Request,
+    getSocialWorkInfo2Request,
+    updateSocialWorkInfo2Request,
+    deleteSocialWorkInfo2Request 
 } from '../api/socialWorkInfo2.api.js';
 
 const SocialWorkInfo2Context = createContext();
 
-export const useSocialWorkInfo3Context = () => {
+export const useSocialWorkInfo2Context = () => {
     const context = useContext(SocialWorkInfo2Context);
     if (context === undefined) {
         throw new Error("useSocialWorkInfo2Context must be used within a SocialWorkInfo2Provider");
@@ -58,7 +61,11 @@ export const SocialWorkInfo2Provider = ({ children }) => {
     return (
         <SocialWorkInfo2Context.Provider 
             value={{
-                socialWorkInfos2, deleteSocialWorkInfo2, createSocialWorkInfo2, getSocialWorkInfo2, updateSocialWorkInfo2
+                socialWorkInfos2,
+                deleteSocialWorkInfo2,
+                createSocialWorkInfo2,
+                getSocialWorkInfo2,
+                updateSocialWorkInfo2
             }}
         >
             {children}

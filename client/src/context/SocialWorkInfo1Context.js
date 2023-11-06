@@ -1,7 +1,10 @@
 import { createContext, useContext, useState } from 'react';
 
 import { 
-    createSocialWorkInfo1Request, getSocialWorkInfo1Request, updateSocialWorkInfo1Request, deleteSocialWorkInfo1Request 
+    createSocialWorkInfo1Request,
+    getSocialWorkInfo1Request,
+    updateSocialWorkInfo1Request,
+    deleteSocialWorkInfo1Request 
 } from '../api/socialWorkInfo1.api.js';
 
 const SocialWorkInfo1Context = createContext();
@@ -58,7 +61,11 @@ export const SocialWorkInfo1Provider = ({ children }) => {
     return (
         <SocialWorkInfo1Context.Provider 
             value={{
-                socialWorkInfos1, deleteSocialWorkInfo1, createSocialWorkInfo1, getSocialWorkInfo1, updateSocialWorkInfo1
+                socialWorkInfos1,
+                deleteSocialWorkInfo1,
+                createSocialWorkInfo1,
+                getSocialWorkInfo1,
+                updateSocialWorkInfo1
             }}
         >
             {children}

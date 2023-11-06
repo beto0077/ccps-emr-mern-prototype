@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
+import Navbar from '../NavigationBar';
 import Footer from '../Footer';
 import 'mdbreact';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useEquipmentLoanContext } from '../../context/EquipmentLoanContext';
 
 function EquipmentLoanView() {
-    const { getEquipmentLoan } = useEquipmentLoanContext();
+    const { getLoan } = useEquipmentLoanContext();
     const [loanInfo, setLoanInfo] = useState({
         loan_id: '',
         patient_id: '',
@@ -34,7 +34,7 @@ function EquipmentLoanView() {
     useEffect(() => {
         const loadEquipmentLoan = async () => {
             if (params.id) {
-                const details = await getEquipmentLoan(params.id);
+                const details = await getLoan(params.id);
                 setLoanInfo(details);
             }
         };

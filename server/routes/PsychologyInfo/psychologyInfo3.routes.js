@@ -6,7 +6,7 @@ import {
     createPsychologyInfo3, 
     updatePsychologyInfo3, 
     deletePsychologyInfo3 
-} from "../../../controllers/psychologyInfo3.controller.js";
+} from "../../controllers/psychologyInfo3.controller.js";
 
 const router = Router();
 

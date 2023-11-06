@@ -6,7 +6,7 @@ import {
   createPhysicalTherapyInfo,
   updatePhysicalTherapyInfo,
   deletePhysicalTherapyInfo
-} from "../../../controllers/physicalTherapyInfo.controller.js";
+} from "../../controllers/physicalTherapyInfo.controller.js";
 
 const router = Router();
 

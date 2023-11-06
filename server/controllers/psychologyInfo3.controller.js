@@ -1,9 +1,9 @@
-// Import the database connection from '../utils/db.js'
-import { db } from '../utils/db.js';
+// Import the database connection from '../utils/database.js'
+import { database } from '../utils/database.js';
 
 export const getPsychologyInfo3s = async (req, res) => {
     try {
-        const [result] = await db.query("SELECT * FROM PsychologyInfo3 ORDER BY psychology_info3_id ASC");
+        const [result] = await database.query("SELECT * FROM PsychologyInfo3 ORDER BY psychology_info3_id ASC");
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error });
@@ -12,7 +12,7 @@ export const getPsychologyInfo3s = async (req, res) => {
 
 export const getPsychologyInfo3 = async (req, res) => {
     try {
-        const [result] = await db.query("SELECT * FROM PsychologyInfo3 WHERE psychology_info3_id = ?", [req.params.id]);
+        const [result] = await database.query("SELECT * FROM PsychologyInfo3 WHERE psychology_info3_id = ?", [req.params.id]);
 
         if (result.length === 0) {
             return res.status(404).json({ message: "Record not found" });
@@ -34,7 +34,7 @@ export const createPsychologyInfo3 = async (req, res) => {
             treatment
         } = req.body;
 
-        const [result] = await db.query(
+        const [result] = await database.query(
             "INSERT INTO PsychologyInfo3 (patient_id, name, id, progress, treatment) VALUES (?, ?, ?, ?, ?)",
             [patient_id, name, id, progress, treatment]
         );
@@ -54,7 +54,7 @@ export const createPsychologyInfo3 = async (req, res) => {
 
 export const updatePsychologyInfo3 = async (req, res) => {
     try {
-        const result = await db.query(
+        const result = await database.query(
             "UPDATE PsychologyInfo3 SET ? WHERE psychology_info3_id = ?",
             [req.body, req.params.id]
         );
@@ -67,7 +67,7 @@ export const updatePsychologyInfo3 = async (req, res) => {
 
 export const deletePsychologyInfo3 = async (req, res) => {
     try {
-        const [result] = await db.query("DELETE FROM PsychologyInfo3 WHERE psychology_info3_id = ?", [req.params.id]);
+        const [result] = await database.query("DELETE FROM PsychologyInfo3 WHERE psychology_info3_id = ?", [req.params.id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Record not found" });

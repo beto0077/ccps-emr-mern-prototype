@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -17,6 +18,8 @@ function SocialWorkInfo2Form() {
     monthly_incomes: [],
     monthly_expenses: [],
   });
+  const params = useParams();
+  const navigate = useNavigate();
 
   // Function to add a new monthly income entry
   const addMonthlyIncome = () => {
@@ -86,12 +89,27 @@ function SocialWorkInfo2Form() {
 
   // useEffect to fetch data and calculate totals
   useEffect(() => {
-    // Fetch data logic here (similar to SocialWorkInfo3Form.js)
-    // ...
-
-    // Calculate totals after fetching data
-    calculateTotals();
-  }, []); // Add dependencies if needed
+    // Fetch data logic
+    const fetchData = async () => {
+      try {
+        const response = await getSocialWorkInfo2(params.id);
+        if (response.data) {
+          setSocialWorkInfo({
+            ...response.data,
+            monthly_incomes: response.data.monthlyIncome,
+            monthly_expenses: response.data.monthlyExpenses,
+          });
+          // Calculate totals after fetching data
+          calculateTotals();
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
   // Handle changes in form fields
   const handleChange = (e) => {
@@ -103,11 +121,32 @@ function SocialWorkInfo2Form() {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Save or update data logic here (similar to SocialWorkInfo3Form.js)
-    // ...
-  };
+    try {
+      // Determine if it's a new entry or an update based on the presence of an ID
+      if (socialWorkInfo.id) {
+        // Update existing data
+        const response = await updateSocialWorkInfo2(socialWorkInfo.id, socialWorkInfo);
+        if (response.status === 200) {
+          console.log("Data updated successfully");
+          //NAVIGATE TO VIEW PAGE
+          // Optionally: Redirect, show a success message, etc.
+        }
+      } else {
+        // Save new data
+        const response = await createSocialWorkInfo2(socialWorkInfo);
+        if (response.status === 201) {
+          console.log("Data saved successfully");
+          //NAVIGATE TO VIEW PAGE
+          // Optionally: Redirect, show a success message, etc.
+        }
+      }
+    } catch (error) {
+      console.error("Error saving or updating data:", error);
+      // Optionally: Show an error message, etc.
+    }
+  };  
 
   return (
     <div style={{ display: "block", margin: "auto", width: 400, padding: 30 }}>

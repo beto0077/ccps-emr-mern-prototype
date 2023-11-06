@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './ControlNotesNavbar'; // Assuming you'll have a navbar for ControlNotes
+import Navbar from '../NavigationBar';
 import Footer from '../Footer';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import { useControlNotesContext } from '../../context/ControlNotesContext';
+import { useControlNoteContext } from '../../context/ControlNoteContext';
 
 function ControlNote() {
-    const { getControlNote } = useControlNotesContext();
+    const { getControlNote } = useControlNoteContext();
     const [controlNoteInfo, setControlNoteInfo] = useState({
         control_note_id: '',
         physical_therapy_id: '',

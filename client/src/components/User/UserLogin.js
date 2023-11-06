@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navber from '../Navber/Navber';
+import Navber from '../NavigationBar';
 import { useUserContext } from '../../context/UserContext';
 
 function UserLogin() {

@@ -6,7 +6,7 @@ import {
     createInternalReference, 
     updateInternalReference, 
     deleteInternalReference 
-} from "../../../controllers/internalReferences.controller.js";
+} from "../../controllers/internalReference.controller.js";
 
 const router = Router();
 

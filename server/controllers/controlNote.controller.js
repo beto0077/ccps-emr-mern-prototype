@@ -1,11 +1,11 @@
 // Import the database connection
-import { db } from '../utils/db.js';
+import { database } from '../utils/database.js';
 
 // Other necessary imports...
 
 export const getControlNotes = async (req, res) => {
     try {
-        const [result] = await db.query("SELECT * FROM ControlNotes ORDER BY control_note_id ASC");
+        const [result] = await database.query("SELECT * FROM ControlNotes ORDER BY control_note_id ASC");
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -14,7 +14,7 @@ export const getControlNotes = async (req, res) => {
 
 export const getControlNote = async (req, res) => {
     try {
-        const [result] = await db.query("SELECT * FROM ControlNotes WHERE control_note_id = ?", [req.params.id]);
+        const [result] = await database.query("SELECT * FROM ControlNotes WHERE control_note_id = ?", [req.params.id]);
 
         if (result.length === 0) {
             return res.status(404).json({ message: "Control Note not found" });
@@ -35,7 +35,7 @@ export const createControlNote = async (req, res) => {
             control_notes
         } = req.body;
 
-        const [result] = await db.query(
+        const [result] = await database.query(
             "INSERT INTO ControlNotes (physical_therapy_id, date, patient_name, control_notes) VALUES (?, ?, ?, ?)",
             [physical_therapy_id, date, patient_name, control_notes]
         );
@@ -54,7 +54,7 @@ export const createControlNote = async (req, res) => {
 
 export const updateControlNote = async (req, res) => {
     try {
-        const result = await db.query(
+        const result = await database.query(
             "UPDATE ControlNotes SET ? WHERE control_note_id = ?",
             [req.body, req.params.id]
         );
@@ -67,7 +67,7 @@ export const updateControlNote = async (req, res) => {
 
 export const deleteControlNote = async (req, res) => {
     try {
-        const [result] = await db.query("DELETE FROM ControlNotes WHERE control_note_id = ?", [req.params.id]);
+        const [result] = await database.query("DELETE FROM ControlNotes WHERE control_note_id = ?", [req.params.id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Control Note not found" });
