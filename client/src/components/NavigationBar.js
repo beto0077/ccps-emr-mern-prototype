@@ -41,6 +41,7 @@ function PatientNavbar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto ms-auto">
             <Nav.Link className="text-white" href={userDirection} >Home</Nav.Link>
+            <Nav.Link className="text-white" href="/patientSearch">Buscar Paciente</Nav.Link>
             <Nav.Link className="text-white" onClick={handleLogout}>Log Out</Nav.Link>
           </Nav>
         </Navbar.Collapse>

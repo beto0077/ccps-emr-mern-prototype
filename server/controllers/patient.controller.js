@@ -23,6 +23,20 @@ export const getPatient = async (req, res) => {
     }
 };
 
+// Search for a patient by ID number
+export const searchPatientById = async (req, res) => {
+    try {
+        const idNumber = req.params.id;
+        const [result] = await database.query("SELECT * FROM PatientInformation WHERE id_number = ?", [idNumber]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: "Patient not found" });
+        }
+        res.json(result[0]);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 // Create a new patient
 export const createPatient = async (req, res) => {
     try {

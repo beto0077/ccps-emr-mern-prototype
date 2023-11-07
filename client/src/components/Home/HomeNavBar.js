@@ -39,7 +39,7 @@ function HomeNavBar() {
             
             <NavDropdown title="Login" id="basic-nav-dropdown" className="mr-5" align="end">
               
-              <NavDropdown.Item href="/doctors/login">Doctor Login</NavDropdown.Item>
+              <NavDropdown.Item href="/login">Test Login</NavDropdown.Item>
               <NavDropdown.Item href="/superAdministrator/login">Super Admin Login</NavDropdown.Item>
               <NavDropdown.Item href="/administrator/login">Admin Login</NavDropdown.Item>
             </NavDropdown>

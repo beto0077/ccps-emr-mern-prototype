@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 import { 
     getPatientRequest, 
-    getPatientsRequest, 
+    getPatientsRequest,
+    searchPatientByIdRequest,
     createPatientRequest, 
     updatePatientRequest, 
     deletePatientRequest } from '../api/patient.api.js';
@@ -61,10 +62,29 @@ export const PatientProvider = ({ children }) => {
         }
     }
 
+    const searchPatientById = async (idNumber) => {
+        try {
+            // Replace 'searchPatientByIdRequest' with the actual function name you define in patient.api.js
+            const response = await searchPatientByIdRequest(idNumber);
+            if (response.status === 200) {
+                // Assuming the patient data is returned directly in the response body
+                return response.data;
+            } else {
+                // Handle any other HTTP status codes appropriately
+                console.error(`Failed to search patient by ID, status code: ${response.status}`);
+                return null;
+            }
+        } catch (error) {
+            // Handle errors appropriately - you might want to log them, throw them, or return null
+            console.error("Failed to search patient by ID:", error);
+            return null;
+        }
+    };
+
     return (
         <PatientContext.Provider 
             value={{
-                patients, loadPatients, deletePatient, createPatient, getPatient, updatePatient
+                patients, loadPatients, deletePatient, createPatient, getPatient, updatePatient, searchPatientById
             }}
         >
             {children}

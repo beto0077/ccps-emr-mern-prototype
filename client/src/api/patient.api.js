@@ -14,5 +14,8 @@ export const deletePatientRequest = async (id) =>
 export const getPatientRequest = async (id) =>
   await axios.get(`${BASE_URL}/patient/patients/${id}`);
 
+export const searchPatientByIdRequest = async (idNumber) =>
+  await axios.get(`${BASE_URL}/patient/patients/search/${idNumber}`);
+
 export const updatePatientRequest = async (id, newFields) =>
   await axios.put(`${BASE_URL}/patient/patients/${id}`, newFields);

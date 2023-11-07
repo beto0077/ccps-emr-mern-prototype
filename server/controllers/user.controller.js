@@ -61,22 +61,24 @@ export const createUser = async (req, res) => {
             password,
             email_address,
             user_name,
-            role
+            role,
+            specialty
         } = req.body;
 
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const [result] = await database.query(
-            "INSERT INTO Users (password, email_address, user_name, role) VALUES (?, ?, ?, ?)",
-            [hashedPassword, email_address, user_name, role]
+            "INSERT INTO Users (password, email_address, user_name, role, specialty) VALUES (?, ?, ?, ?, ?)",
+            [hashedPassword, email_address, user_name, role, specialty]
         );
 
         res.json({
             user_id: result.insertId,
             email_address,
             user_name,
-            role
+            role,
+            specialty
         });
     } catch (error) {
         return res.status(500).json({ message: error.message });

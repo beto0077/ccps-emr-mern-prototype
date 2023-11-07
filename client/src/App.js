@@ -7,6 +7,7 @@ import UnauthorizedUser from "./components/UnauthorizedUser";
 import Home from "./components/Home/Home";
 import PatientView from "./components/Patient/PatientView";
 import PatientForm from "./components/Patient/PatientForm";
+import PatientSearch from "./components/Patient/PatientSearch";
 import EquipmentLoanView from "./components/Loans/EquipmentLoanView";
 import EquipmentLoanForm from "./components/Loans/EquipmentLoanForm";
 import OxygenTankLoanView from "./components/Loans/OxygenTankLoanView";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/patientProfile/:id" element={<PatientView/>}/>
           <Route path="/createPatient" element={<PatientForm/>}/>
           <Route path="/editPatient/:id" element={<PatientForm/>}/>
+          <Route path="/patientSearch" element={<PatientSearch/>}/>
           <Route path="/equipmentLoan/:id" element={<EquipmentLoanView/>}/>
           <Route path="/createEquipmentLoan" element={<EquipmentLoanForm/>}/>
           <Route path="/editEquipmentLoan/:id" element={<EquipmentLoanForm/>}/>

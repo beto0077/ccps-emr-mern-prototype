@@ -55,9 +55,9 @@ function PatientView() {
     <div className="bg-dark">
       <Navber />
       <h2 className="text-white my-3 text-center" style={{ marginTop: "75px" }}>
-        Patient Home
+        Paciente: {patientInfo.id_number}
       </h2>
-      <h3 className="text-white my-3 text-center">Welcome!</h3>
+      <h3 className="text-white my-3 text-center">{patientInfo.name}</h3>
       <Container>
         <Row>
           <Col>
@@ -66,7 +66,7 @@ function PatientView() {
                 <div className="container ml-3">
                   <Card className="mt-5" style={{ backgroundColor: "#e0e0e0" }}>
                     <Card.Body>
-                      <h2 className="text-primary">Patient Information</h2>
+                      <h2 className="text-primary">Información general</h2>
                       <Table striped bordered responsive>
                         <tbody>
                           <tr>

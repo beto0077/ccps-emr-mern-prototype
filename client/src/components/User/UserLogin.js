@@ -27,6 +27,7 @@ function UserLogin() {
     const onSubmit = async e => {
         e.preventDefault();
 
+        /*
         const user = {
             email_address: email,
             password,
@@ -40,12 +41,14 @@ function UserLogin() {
                 const decodedToken = jwt_decode(token);
                 sessionStorage.setItem('usertoken', token);
                 sessionStorage.setItem('userData', JSON.stringify(decodedToken));
-                navigate("/dashboard");
+                navigate("/patientSearch");
             }
         } catch (error) {
             console.log(error.message);
             setErrorAlert("An error occurred. Please try again later.");
-        }
+        }*/
+        //TESTING
+        navigate("/patientSearch");
     };
 
     return (
