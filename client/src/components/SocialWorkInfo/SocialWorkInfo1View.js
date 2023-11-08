@@ -1,8 +1,9 @@
 // SocialWorkInfo1View.js
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Container, Row, Col, Table, Card } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useSocialWorkInfo1Context } from "../../context/SocialWorkInfo1Context";
+import Navbar from "../NavigationBar";
 
 function SocialWorkInfo1View() {
   const { getSocialWorkInfo1 } = useSocialWorkInfo1Context();
@@ -40,25 +41,53 @@ function SocialWorkInfo1View() {
     family_type: "",
   });
   const [familyGroup, setFamilyGroup] = useState([]);
+  const [error, setError] = useState(false);
 
   const params = useParams();
-
-  // ... continuation from the previous part
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadSocialWorkInfo1 = async () => {
       if (params.id) {
-        const response = await getSocialWorkInfo1(params.id);
-        const { socialWorkInfo1, familyGroup } = response;
-        setSocialWorkInfo1(socialWorkInfo1);
-        setFamilyGroup(familyGroup);
+        try {
+          const response = await getSocialWorkInfo1(params.id);
+          const { socialWorkInfo1, familyGroup } = response;
+          
+          if (!socialWorkInfo1 || Object.keys(socialWorkInfo1).length === 0) {
+            // If the response is empty, set the error state to true
+            setError(true);
+          } else {
+            // If there is data, set the state with the fetched data
+            setSocialWorkInfo1(socialWorkInfo1);
+            setFamilyGroup(familyGroup);
+            setError(false); // Reset the error state
+          }
+        } catch (error) {
+          console.error("Error fetching social work info: ", error);
+          setError(true); // Set the error state to true if there is an error fetching the data
+        }
       }
     };
+  
     loadSocialWorkInfo1();
   }, [params.id, getSocialWorkInfo1]);
 
   return (
-    <Container>
+    <>
+        <Navbar />
+        {error ? (
+            <div className="text-center">
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(`/createSocialWorkInfo1`)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Generar Información
+          </Button>
+            </div>
+        ) : (
+          <Container>
       <Row>
         <Col>
           <Card>
@@ -236,6 +265,8 @@ function SocialWorkInfo1View() {
         </Col>
       </Row>
     </Container>
+        )}
+        </>
   );
 }
 

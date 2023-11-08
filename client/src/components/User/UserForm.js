@@ -48,7 +48,7 @@ function UserForm() {
     } else {
       await createUser(user);
     }
-    navigate("/dashboard"); // Adjusted the navigation route
+    navigate(`/usersList`); // Adjusted the navigation route
     setUser({
       email_address: "",
       password: "",

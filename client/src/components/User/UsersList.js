@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Navber from "../NavigationBar";
-import Footer from "../Footer";
 import { useUserContext } from "../../context/UserContext";
 
 function UsersList() {
@@ -46,6 +45,16 @@ function UsersList() {
                 Welcome!
             </h3>
             <br />
+            <div className="text-center">
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(`/createUser`)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Create User
+          </Button>
+            </div>
             <Container>
                 <Row>
                     <Col>
@@ -106,7 +115,6 @@ function UsersList() {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
         </div>
     );
 }

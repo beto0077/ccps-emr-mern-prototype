@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../NavigationBar";
 import Footer from "../Footer";
-import { Container, Row, Col, Table, Card } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePsychologyInfoContext } from "../../context/PsychologyInfoContext";
 
 function PsychologyInfoView() {
@@ -36,9 +36,11 @@ function PsychologyInfoView() {
     useState([]);
   const [treatmentPlans, setTreatmentPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const { getPsychologyInfo } = usePsychologyInfoContext();
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPsychologyInfo = async () => {
@@ -54,14 +56,20 @@ function PsychologyInfoView() {
           treatmentPlan
         } = response.data;
   
-        setInfo(psychologyInfo);
-        setDiagnosisOncologicalConditions(diagnosisOncologicalConditions);
-        setDiseaseStatuses(diseaseStatus);
-        setTreatmentHistories(treatmentHistory);
-        setEmotionalPsychologicalSymptoms(emotionalPsychologicalSymptoms);
-        setTreatmentPlans(treatmentPlan);
+        if (!psychologyInfo || Object.keys(psychologyInfo).length === 0) {
+          setError(true); // Set the error state to true if no data is found
+        } else {
+          setInfo(psychologyInfo);
+          setDiagnosisOncologicalConditions(diagnosisOncologicalConditions);
+          setDiseaseStatuses(diseaseStatus);
+          setTreatmentHistories(treatmentHistory);
+          setEmotionalPsychologicalSymptoms(emotionalPsychologicalSymptoms);
+          setTreatmentPlans(treatmentPlan);
+          setError(false); // Reset error state if data is loaded successfully
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
+        setError(true); // Set the error state to true when an actual error occurs
       } finally {
         setLoading(false);
       }
@@ -72,7 +80,21 @@ function PsychologyInfoView() {
   
 
   return (
-    <div className="bg-dark">
+    <>
+        <Navbar />
+        {error ? (
+            <div className="text-center">
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(`/createPsychologyInfo`)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Generar Información
+          </Button>
+            </div>
+        ) : (
+          <div className="bg-dark">
       <Navbar />
       <h2 className="text-white my-3 text-center" style={{ marginTop: "75px" }}>
         Psychology Info Home
@@ -311,6 +333,8 @@ function PsychologyInfoView() {
 
       <Footer />
     </div>
+        )}
+      </>
   );
 }
 

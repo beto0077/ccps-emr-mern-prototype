@@ -40,6 +40,7 @@ import UserView from "./components/User/UserView";
 import UserForm from "./components/User/UserForm";
 import UserLogin from "./components/User/UserLogin";
 import UsersList from "./components/User/UsersList";
+import AdminDashboard from "./components/User/AdminDashboard";
 
 function App() {
   return (
@@ -97,6 +98,7 @@ function App() {
           <Route path="/editUser/:id" element={<UserForm/>}/>
           <Route path="/login" element={<UserLogin/>}/>
           <Route path="/usersList" element={<UsersList/>}/>
+          <Route path="/adminDashboard" element={<AdminDashboard/>}/>
         </Routes>
       </GlobalContextProvider>
     </div>

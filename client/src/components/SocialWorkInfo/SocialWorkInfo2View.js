@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
 import Footer from '../Footer';
-import { Container, Row, Col, Table, Card } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSocialWorkInfo2Context } from '../../context/SocialWorkInfo2Context';
 
 function SocialWorkInfo2View() {
@@ -17,29 +17,50 @@ function SocialWorkInfo2View() {
         monthly_incomes: [],
         monthly_expenses: []
     });
+    const [error, setError] = useState(false);
 
     const params = useParams();
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await getSocialWorkInfo2(params.social_work_info2_id);
-                if (response && response.socialWorkInfo2) {
-                    setSocialWorkInfo2({
-                        ...response.socialWorkInfo2,
-                        monthly_incomes: response.monthlyIncome,
-                        monthly_expenses: response.monthlyExpenses
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
+          try {
+            const response = await getSocialWorkInfo2(params.social_work_info2_id);
+            if (response && response.socialWorkInfo2 && Object.keys(response.socialWorkInfo2).length > 0) {
+              setSocialWorkInfo2({
+                ...response.socialWorkInfo2,
+                monthly_incomes: response.monthlyIncome,
+                monthly_expenses: response.monthlyExpenses
+              });
+              setError(false); // Reset the error state if data is loaded successfully
+            } else {
+              // If the response is empty, set the error state to true
+              setError(true);
             }
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            setError(true); // Set the error state to true if there is an error fetching the data
+          }
         };
-
+      
         fetchData();
-    }, [params.social_work_info2_id, getSocialWorkInfo2]);
+      }, []);
 
     return (
-        <div>
+        <>
+        <Navbar />
+        {error ? (
+            <div className="text-center">
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(`/createSocialWorkInfo2`)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Generar Información
+          </Button>
+            </div>
+        ) : (
+            <div>
             <Navbar />
             <Container>
                 <Row className="justify-content-md-center">
@@ -112,6 +133,8 @@ function SocialWorkInfo2View() {
             </Container>
             <Footer />
         </div>
+        )}
+        </>
     );
 }
 

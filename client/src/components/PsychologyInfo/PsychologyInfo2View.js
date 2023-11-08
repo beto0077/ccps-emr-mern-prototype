@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
 import Footer from '../Footer';
-import { Container, Row, Col, Table, Card, Image } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { usePsychologyInfo2Context } from '../../context/PsychologyInfo2Context';
 
@@ -26,20 +26,49 @@ function PsychologyInfo2() {
         family_aspects_family_diagram: '',
         approach_plan: ''
     });
+    const [error, setError] = useState(false);
 
     const params = useParams();
+    const navigate = useNavigate();
     useEffect(() => {
         const loadInfo = async () => {
-            if (params.id) {
-                const details = await getPsychologyInfo2(params.id);
+          if (params.id) {
+            try {
+              const details = await getPsychologyInfo2(params.id);
+              if (!details || Object.keys(details).length === 0) {
+                // If the response is empty, set the error state to true
+                setError(true);
+              } else {
+                // If there is data, set the info state with the fetched data
                 setInfo(details);
+                setError(false); // Reset the error state
+              }
+            } catch (error) {
+              console.error("Error fetching psychology info: ", error);
+              setError(true); // Set the error state to true if there is an error fetching the data
             }
+          }
         };
+      
         loadInfo();
-    }, []);
+      }, []);
 
     return (
-        <div className="bg-dark">
+        <>
+        <Navbar />
+        {error ? (
+            <div className="text-center">
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(`/createPsychologyInfo2`)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Generar Información
+          </Button>
+            </div>
+        ) : (
+            <div className="bg-dark">
             <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
                 Psychology Info 2 Home
@@ -130,6 +159,8 @@ function PsychologyInfo2() {
             </Container>
             <Footer />
         </div>
+        )}
+        </>
     );
 }
 

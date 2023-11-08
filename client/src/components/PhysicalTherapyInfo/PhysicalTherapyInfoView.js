@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
 import Footer from '../Footer';
-import { Container, Row, Col, Table, Card, Image } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { usePhysicalTherapyInfoContext } from '../../context/PhysicalTherapyInfoContext'; // Assuming a new context for PhysicalTherapy
 
@@ -32,20 +32,46 @@ function PhysicalTherapyInfoView() {
         postural_hygiene: ''
     });
 
+    const navigate = useNavigate();
+    const [error, setError] = useState(false);
     const params = useParams();
     useEffect(() => {
         const loadPhysicalTherapyInfo = async () => {
             if (params.id) {
-                const details = await getPhysicalTherapyInfo(params.id);
-                setTherapyInfo(details);
+                try {
+                    const details = await getPhysicalTherapyInfo(params.id);
+                    if (Object.keys(details).length === 0) { // Check if the response is empty
+                        setError(true); // Set error state to true
+                    } else {
+                        setTherapyInfo(details);
+                        setError(false); // Reset error state if data is loaded successfully
+                    }
+                } catch (error) {
+                    console.error('Failed to load physical therapy info:', error);
+                    setError(true); // Set error state to true on catch
+                }
             }
         };
         loadPhysicalTherapyInfo();
     }, []);
 
     return (
-        <div className="bg-dark">
-            <Navbar />
+        <>
+        <Navbar />
+        {error ? (
+            <div className="text-center">
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(`/createPhysicalTherapyInfo`)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Generar Información
+          </Button>
+            </div>
+        ) : (
+            <div className="bg-dark">
+            
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
                 Physical Therapy Information
             </h2>
@@ -150,6 +176,8 @@ function PhysicalTherapyInfoView() {
             </Container>
             <Footer />
         </div>
+        )}
+        </>
     );
 }
 
