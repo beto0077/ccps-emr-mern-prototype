@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
-import { usePatientContext } from '../../context/PatientContext'; // Assuming there is a function to search patients
-import Navbar from '../NavigationBar'; // Assuming you have a Navbar component
-import Footer from '../Footer'; // Assuming you have a Footer component
+import { usePatientContext } from '../../context/PatientContext'; 
+import Navbar from '../NavigationBar'; 
+import Footer from '../Footer'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PatientSearch() {

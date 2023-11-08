@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navber from "../NavigationBar";
 import Footer from "../Footer";
 import "mdbreact";
-import { Container, Row, Col, Table, Card } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Container, Row, Col, Table, Card, Dropdown } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePatientContext } from "../../context/PatientContext";
 
 function PatientView() {
@@ -41,6 +41,7 @@ function PatientView() {
 };
 
   const params = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const loadPatient = async () => {
       if (params.id) {
@@ -52,12 +53,28 @@ function PatientView() {
   }, []);
 
   return (
-    <div className="bg-dark">
+    <div className="bg-white">
       <Navber />
-      <h2 className="text-white my-3 text-center" style={{ marginTop: "75px" }}>
+      <h2 className="text-black my-3 text-center" style={{ marginTop: "75px" }}>
         Paciente: {patientInfo.id_number}
       </h2>
-      <h3 className="text-white my-3 text-center">{patientInfo.name}</h3>
+      <h3 className="text-black my-3 text-center">{patientInfo.name}</h3>
+      <Dropdown className="mt-2 mt-lg-4">
+          <Dropdown.Toggle id="dropdown-basic">
+            Consultar
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => navigate(`/loansDashboard/${params.id}`)}>Prestamos de equipo</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}>Terapia Física</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}>Trabajo Social</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/psychologyDashboard/${params.id}`)}>Psicología</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      
       <Container>
         <Row>
           <Col>
