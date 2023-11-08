@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import { usePatientContext } from '../../context/PatientContext'; // Assuming there is a function to search patients
@@ -10,7 +10,8 @@ function PatientSearch() {
   const [idNumber, setIdNumber] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { searchPatientById } = usePatientContext(); // This function needs to be implemented in your context
+  const { searchPatientById } = usePatientContext();
+  const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -28,10 +29,29 @@ function PatientSearch() {
     }
   };
 
+  useEffect(() => {
+    const updateAvailableHeight = () => {
+      // Get the height of the navbar by its ref or class name
+      const navbarHeight = document.querySelector('.navbar').offsetHeight;
+      // Calculate the available height by subtracting the navbar height from the window inner height
+      const newAvailableHeight = window.innerHeight - navbarHeight;
+      setAvailableHeight(newAvailableHeight);
+    };
+
+    // Update the available height on mount and whenever the window is resized
+    window.addEventListener('resize', updateAvailableHeight);
+    updateAvailableHeight();
+
+    // Cleanup the event listener when the component is unmounted
+    return () => window.removeEventListener('resize', updateAvailableHeight);
+  }, []);
+
   return (
-    <div className="bg-dark">
-      <Navbar />
-      <Container className="py-5">
+    <>
+    <Navbar />
+    <div className="bg-dark" style={{ display: 'flex', flexDirection: 'column', height: `${availableHeight}px` }}>
+      
+      <Container className="py-5" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <Row className="justify-content-center">
           <Col md={6}>
             <Card>
@@ -58,8 +78,9 @@ function PatientSearch() {
           </Col>
         </Row>
       </Container>
-      <Footer />
+      
     </div>
+    </>
   );
 }
 
