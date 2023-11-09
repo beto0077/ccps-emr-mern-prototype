@@ -3,7 +3,7 @@ import { database } from '../utils/database.js';
 
 export const getAttachments = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM Attachment ORDER BY date_added ASC");
+        const [result] = await database.query("SELECT * FROM Attachment WHERE patient_id = ? ORDER BY date_added ASC", [req.params.id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error });

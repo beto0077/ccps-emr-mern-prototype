@@ -19,8 +19,8 @@ export const useAttachmentContext = () => {
 export const AttachmentProvider = ({ children }) => {
     const [attachments, setAttachments] = useState([]);
 
-    async function loadAttachments() {
-        const response = await getAttachmentsRequest();
+    async function loadAttachments(id) {
+        const response = await getAttachmentsRequest(id);
         setAttachments(response.data);
     }
 

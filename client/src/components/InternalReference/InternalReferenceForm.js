@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useInternalReferenceContext } from "../../context/InternalReferenceContext";
 
 function InternalReferenceForm() {
+    const location = useLocation();
     const { createInternalReference, getInternalReference, updateInternalReference } = useInternalReferenceContext();
     const [reference, setReference] = useState({
+        patient_id: location.state?.id || '',
         date: '',
         full_name: '',
         id_number: '',
@@ -56,8 +58,9 @@ function InternalReferenceForm() {
         } else {
             await createInternalReference(reference);
         }
-        navigate("/internalReferencesHome"); // Assuming you have a route for this
+        navigate(`/internalReferenceDashboard/${location.state.id}`); // Assuming you have a route for this
         setReference({
+            patient_id: '',
             date: '',
             full_name: '',
             id_number: '',

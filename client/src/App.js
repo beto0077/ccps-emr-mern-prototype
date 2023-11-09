@@ -37,6 +37,7 @@ import InternalReferenceForm from "./components/InternalReference/InternalRefere
 import InternalReferenceDashboard from "./components/InternalReference/InternalReferenceDashboard";
 import AttachmentView from "./components/Attachment/AttachmentView";
 import AttachmentForm from "./components/Attachment/AttachmentForm";
+import AttachmentDashboard from "./components/Attachment/AttachmentDashboard";
 import UserView from "./components/User/UserView";
 import UserForm from "./components/User/UserForm";
 import UserLogin from "./components/User/UserLogin";
@@ -95,6 +96,7 @@ function App() {
           <Route path="/attachment/:id" element={<AttachmentView/>}/>
           <Route path="/createAttachment" element={<AttachmentForm/>}/>
           <Route path="/editAttachment/:id" element={<AttachmentForm/>}/>
+          <Route path="/attachmentDashboard/:id" element={<AttachmentDashboard/>}/>
           <Route path="/userProfile/:id" element={<UserView/>}/>
           <Route path="/createUser" element={<UserForm/>}/>
           <Route path="/editUser/:id" element={<UserForm/>}/>

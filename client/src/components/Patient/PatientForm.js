@@ -74,7 +74,7 @@ function PatientForm() {
         } else {
             await createPatient(patientData);
         }
-        navigate(`/patientProfile/${params.id}`);
+        navigate(`/patientSearch`);
         setPatient({
             admission_date: "",
             name: "",

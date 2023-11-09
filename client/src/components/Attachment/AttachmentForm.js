@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useAttachmentContext } from "../../context/AttachmentContext";
 
 function AttachmentForm() {
+    const location = useLocation();
     const { createAttachment, getAttachment, updateAttachment } = useAttachmentContext();
     const [attachment, setAttachment] = useState({
-        patient_id: "",
+        patient_id: location.state?.id || "",
         section_reference: "",
         attachment_type: "",
         file_name: "",
@@ -61,7 +62,7 @@ function AttachmentForm() {
         } else {
             await createAttachment(attachment);
         }
-        navigate("/attachments"); // Assuming there's a route for attachments
+        navigate(`/attachmentDashboard/${location.state.id}`); // Assuming there's a route for attachments
     };
 
     return (

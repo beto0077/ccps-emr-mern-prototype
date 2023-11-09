@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const getAttachmentsRequest = async () =>
-  await axios.get(`${BASE_URL}/attachment/attachments`);
+export const getAttachmentsRequest = async (id) =>
+  await axios.get(`${BASE_URL}/attachment/allAttachments/${id}`);
 
 export const createAttachmentRequest = async (attachment) =>
   await axios.post(`${BASE_URL}/attachment/attachments`, attachment);
