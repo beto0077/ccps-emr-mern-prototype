@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/internalReferences', getInternalReferences);
+router.get('/allInternalReferences/:id', getInternalReferences);
 router.get('/internalReferences/:id', getInternalReference);
 router.post('/internalReferences', createInternalReference);
 router.put('/internalReferences/:id', updateInternalReference);

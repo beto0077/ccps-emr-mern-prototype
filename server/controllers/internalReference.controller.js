@@ -3,7 +3,7 @@ import { database } from '../utils/database.js';
 
 export const getInternalReferences = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM InternalReferencesForm ORDER BY internal_reference_id ASC");
+        const [result] = await database.query("SELECT * FROM InternalReferencesForm WHERE patient_id = ? ORDER BY internal_reference_id ASC", [req.params.id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error });

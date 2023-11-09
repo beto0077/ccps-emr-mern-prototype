@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Navber from "../NavigationBar";
-import { useUserContext } from "../../context/UserContext";
+import { useInternalReferenceContext } from "../../context/InternalReferenceContext";
 
-function UsersList() {
-    const { users, loadUsers, deleteUser } = useUserContext();
+function InternalReferenceDashboard() {
+    const { internalReferences, loadInternalReferences, deleteInternalReference } = useInternalReferenceContext();
     const navigate = useNavigate();
+    const params = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
     useEffect(() => {
-        loadUsers();
+        loadInternalReferences(params.id);
         setIsLoading(false);
 
         const updateAvailableHeight = () => {
@@ -26,26 +27,6 @@ function UsersList() {
         return () => window.removeEventListener('resize', updateAvailableHeight);
     }, []);
 
-    // Function to handle deletion confirmation and action
-    const handleDeleteConfirmation = async (user) => {
-        if (window.confirm(`Are you sure you want to delete ${user.user_name}?`)) {
-            try {
-                const response = await deleteUser(user.user_id);
-                if (response.status === 204) {
-                    alert(`User ${user.user_name} has been deleted.`);
-                    loadUsers(); // Refresh the user list after deletion
-                } else if (response === 404) {
-                    alert("User not found.");
-                } else {
-                    alert("An error occurred while deleting the user.");
-                }
-            } catch (error) {
-                console.error("Error deleting user:", error);
-                alert("An error occurred while deleting the user.");
-            }
-        }
-    };
-
     return (
         <>
         <Navber />
@@ -53,62 +34,54 @@ function UsersList() {
             
             <br />
             <h2 className="text-white text-center">
-                Lista de usuarios
+                Referencias internas
             </h2>
             <br />
             <div className="text-center">
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createUser`)}
+            onClick={() => navigate(`/createInternalReference`)}
             className="mx-2 my-2 my-lg-3"
           >
-            Crear usuario
+            Crear referencia interna
           </Button>
             </div>
             <Container>
                 <Row>
                     <Col>
                         <div className="jumbotron mt-5 mb-5" style={{ backgroundColor: "#e0e0e0" }}>
-                            <h2 className="text-primary">Usuarios</h2>
+                            <h2 className="text-primary">Referencias</h2>
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Correo electrónico</th>
-                                        <th>Rol</th>
+                                        <th>Fecha</th>
+                                        <th>Referido a</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {!isLoading ? (
-                                        users.map((user) => (
-                                            <tr key={user.user_id}>
-                                                <td>{user.user_id}</td>
-                                                <td>{user.user_name}</td>
-                                                <td>{user.email_address}</td>
-                                                <td>{user.role}</td>
+                                        internalReferences.map((internalReference) => (
+                                            <tr key={internalReference.internal_reference_id}>
+                                                <td>{internalReference.internal_reference_id}</td>
+                                                <td>{internalReference.date}</td>
+                                                <td>{internalReference.referred_to}</td>
                                                 <td>
                                                     <Button
                                                         variant="outline-secondary"
                                                         className="mr-2"
-                                                        onClick={() => navigate(`/userProfile/${user.user_id}`)}
+                                                        onClick={() => navigate(`/internalReference/${internalReference.internal_reference_id}`)}
                                                     >
-                                                        Perfil
+                                                        Más detalles
                                                     </Button>
                                                     <Button
                                                         variant="outline-secondary"
                                                         className="mr-2"
-                                                        onClick={() => navigate(`/editUser/${user.user_id}`)}
+                                                        onClick={() => navigate(`/editInternalReference/${internalReference.internal_reference_id}`)}
                                                     >
                                                         Editar
-                                                    </Button>
-                                                    <Button
-                                                        variant="outline-secondary"
-                                                        onClick={() => handleDeleteConfirmation(user)}
-                                                    >
-                                                        Eliminar
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -131,4 +104,4 @@ function UsersList() {
     );
 }
 
-export default UsersList;
+export default InternalReferenceDashboard;

@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const getInternalReferencesRequest = async () =>
-  await axios.get(`${BASE_URL}/internalReference/internalReferences`);
+export const getInternalReferencesRequest = async (id) =>
+  await axios.get(`${BASE_URL}/internalReference/allInternalReferences/${id}`);
 
 export const createInternalReferenceRequest = async (internalReference) =>
   await axios.post(`${BASE_URL}/internalReference/internalReferences`, internalReference);

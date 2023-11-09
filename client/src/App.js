@@ -34,6 +34,7 @@ import PsychologyInfo3Form from "./components/PsychologyInfo/PsychologyInfo3Form
 import PsychologyDashboard from "./components/PsychologyInfo/PsychologyDashboard";
 import InternalReferenceView from "./components/InternalReference/InternalReferenceView";
 import InternalReferenceForm from "./components/InternalReference/InternalReferenceForm";
+import InternalReferenceDashboard from "./components/InternalReference/InternalReferenceDashboard";
 import AttachmentView from "./components/Attachment/AttachmentView";
 import AttachmentForm from "./components/Attachment/AttachmentForm";
 import UserView from "./components/User/UserView";
@@ -90,6 +91,7 @@ function App() {
           <Route path="/internalReference/:id" element={<InternalReferenceView/>}/>
           <Route path="/createInternalReference" element={<InternalReferenceForm/>}/>
           <Route path="/editInternalReference/:id" element={<InternalReferenceForm/>}/>
+          <Route path="/internalReferenceDashboard/:id" element={<InternalReferenceDashboard/>}/>
           <Route path="/attachment/:id" element={<AttachmentView/>}/>
           <Route path="/createAttachment" element={<AttachmentForm/>}/>
           <Route path="/editAttachment/:id" element={<AttachmentForm/>}/>

@@ -22,8 +22,8 @@ export const useInternalReferenceContext = () => {
 export const InternalReferenceProvider = ({ children }) => {
     const [internalReferences, setInternalReferences] = useState([]);
 
-    async function loadInternalReferences() {
-        const response = await getInternalReferencesRequest();
+    async function loadInternalReferences(id) {
+        const response = await getInternalReferencesRequest(id);
         setInternalReferences(response.data);
     }
 
