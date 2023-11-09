@@ -46,7 +46,9 @@ function AttachmentForm() {
         reader.onloadend = () => {
             setAttachment((prevAttachment) => ({
                 ...prevAttachment,
-                file_content: reader.result, // This is a base64 string, you might need to convert it back to a blob when sending to the server
+                file_content: reader.result,
+                file_name: file.name,
+                attachment_type: file.type
             }));
         };
 

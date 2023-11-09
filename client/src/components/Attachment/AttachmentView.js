@@ -14,6 +14,7 @@ function AttachmentView() {
         section_reference: '',
         attachment_type: '',
         file_name: '',
+        file_content: '',
         date_added: '',
         description: '',
         uploader_user_id: ''
@@ -28,7 +29,31 @@ function AttachmentView() {
             }
         };
         loadAttachment();
-    }, []);
+    }, [params.id]);
+
+    const getMimeType = (fileName) => {
+        const extension = fileName.split('.').pop().toLowerCase();
+        const mimeTypes = {
+            'pdf': 'application/pdf',
+            'jpg': 'image/jpeg',
+            'jpeg': 'image/jpeg',
+            'png': 'image/png'
+        };
+        return mimeTypes[extension] || 'application/octet-stream';
+    };
+
+    const renderAttachment = () => {
+        const mimeType = getMimeType(attachmentInfo.file_name);
+        const base64Src = `data:${mimeType};base64,${attachmentInfo.file_content}`;
+
+        if (attachmentInfo.attachment_type === 'pdf') {
+            return <iframe src={base64Src} width="100%" height="600px" />;
+        } else if (attachmentInfo.attachment_type === 'image') {
+            return <img src={base64Src} alt="Attachment" />;
+        }
+    };
+
+    const attachmentHref = `data:${getMimeType(attachmentInfo.file_name)};base64,${attachmentInfo.file_content}`;
 
     return (
         <div className="bg-dark">
@@ -64,6 +89,12 @@ function AttachmentView() {
                                             <tr>
                                                 <td>File Name</td>
                                                 <td>{attachmentInfo.file_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Attachment</td>
+                                                <td> <a href={attachmentHref} target="_blank" rel="noopener noreferrer" download={attachmentInfo.file_name}>
+                    Open Attachment
+                </a></td>
                                             </tr>
                                             <tr>
                                                 <td>Date Added</td>
