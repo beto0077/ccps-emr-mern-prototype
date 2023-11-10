@@ -13,6 +13,15 @@ function EquipmentLoanList() {
     const [isLoading, setIsLoading] = useState(true);
     const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+    
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
     useEffect(() => {
         loadLoans(params.id);
         setIsLoading(false);
@@ -71,7 +80,7 @@ function EquipmentLoanList() {
                                         activeLoans.map((loan) => (
                                             <tr key={loan.loan_id}>
                                                 <td>{loan.loan_id}</td>
-                                                <td>{loan.delivery_date}</td>
+                                                <td>{formatDate(loan.delivery_date)}</td>
                                                 <td>{loan.description}</td>
                                                 <td>
                                                     <Button
@@ -116,9 +125,9 @@ function EquipmentLoanList() {
                                         completedLoans.map((loan) => (
                                             <tr key={loan.loan_id}>
                                                 <td>{loan.loan_id}</td>
-                                                <td>{loan.delivery_date}</td>
+                                                <td>{formatDate(loan.delivery_date)}</td>
                                                 <td>{loan.description}</td>
-                                                <td>{loan.return_date}</td>
+                                                <td>{formatDate(loan.return_date)}</td>
                                                 <td>
                                                     <Button
                                                         variant="outline-secondary"

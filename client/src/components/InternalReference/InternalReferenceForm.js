@@ -3,11 +3,14 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Navbar from '../NavigationBar';
 import { useInternalReferenceContext } from "../../context/InternalReferenceContext";
+import { usePatientContext } from "../../context/PatientContext";
 
 function InternalReferenceForm() {
     const location = useLocation();
     const { createInternalReference, getInternalReference, updateInternalReference } = useInternalReferenceContext();
+    const { getPatient } = usePatientContext();
     const [reference, setReference] = useState({
         patient_id: location.state?.id || '',
         date: '',
@@ -33,15 +36,44 @@ function InternalReferenceForm() {
     const params = useParams();
     const navigate = useNavigate();
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+    
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     useEffect(() => {
         const loadReference = async () => {
             if (params.id) {
                 const loadedReference = await getInternalReference(params.id);
                 setReference(loadedReference);
+            } else {
+                const patient = await getPatient(location.state.id);
+                const todayFormatted = formatDate(new Date());
+                setReference(prevReference => ({
+                    ...prevReference,
+                    date: todayFormatted,
+                    full_name: patient.name,
+                    id_number: patient.id_number,
+                    religion: patient.religion,
+                    education_level: patient.education_level,
+                    occupation: patient.occupation,
+                    date_of_birth: formatDate(patient.date_of_birth),
+                    age: patient.age,
+                    marital_status: patient.marital_status,
+                    children: patient.children,
+                    phone_number: patient.cell_phone,
+                    nationality: patient.nationality,
+                    address: patient.address,
+                }))
             }
         };
         loadReference();
-    }, [params.id]);
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -83,13 +115,15 @@ function InternalReferenceForm() {
     };
 
     return (
+        <>
+        <Navbar/>
         <div style={{ display: 'block', margin: 'auto', width: 400, padding: 30 }}>
             <Form onSubmit={handleSubmit}>
                 <h1 className="text-center mb-4">
-                    {params.id ? "Edit Internal Reference" : "New Internal Reference"}
+                    {params.id ? "Editar referencia interna" : "Nueva referencia interna"}
                 </h1>
-                <Form.Group controlId="formDate">
-                    <Form.Label>Date</Form.Label>
+                <Form.Group controlId="formDate" className="mb-3">
+                    <Form.Label>Fecha</Form.Label>
                     <Form.Control
                         type="date"
                         name="date"
@@ -97,58 +131,58 @@ function InternalReferenceForm() {
                         value={reference.date}
                     />
                 </Form.Group>
-                <Form.Group controlId="formFullName">
-                    <Form.Label>Full Name</Form.Label>
+                <Form.Group controlId="formFullName" className="mb-3">
+                    <Form.Label>Nombre completo</Form.Label>
                     <Form.Control
                         type="text"
                         name="full_name"
-                        placeholder="Enter full name"
+                        placeholder="Ingrese nombre completo"
                         onChange={handleChange}
                         value={reference.full_name}
                     />
                 </Form.Group>
-                <Form.Group controlId="formIdNumber">
-                    <Form.Label>ID Number</Form.Label>
+                <Form.Group controlId="formIdNumber" className="mb-3">
+                    <Form.Label>Cédula</Form.Label>
                     <Form.Control
                         type="text"
                         name="id_number"
-                        placeholder="Enter ID number"
+                        placeholder="Número de cédula"
                         onChange={handleChange}
                         value={reference.id_number}
                     />
                 </Form.Group>
-                <Form.Group controlId="formReligion">
-                    <Form.Label>Religion</Form.Label>
+                <Form.Group controlId="formReligion" className="mb-3">
+                    <Form.Label>Religión</Form.Label>
                     <Form.Control
                         type="text"
                         name="religion"
-                        placeholder="Enter religion"
+                        placeholder="Ingrese religión"
                         onChange={handleChange}
                         value={reference.religion}
                     />
                 </Form.Group>
-                <Form.Group controlId="formEducationLevel">
-                    <Form.Label>Education Level</Form.Label>
+                <Form.Group controlId="formEducationLevel" className="mb-3">
+                    <Form.Label>Escolaridad</Form.Label>
                     <Form.Control
                         type="text"
                         name="education_level"
-                        placeholder="Enter education level"
+                        placeholder="Ingrese escolaridad"
                         onChange={handleChange}
                         value={reference.education_level}
                     />
                 </Form.Group>
-                <Form.Group controlId="formOccupation">
-                    <Form.Label>Occupation</Form.Label>
+                <Form.Group controlId="formOccupation" className="mb-3">
+                    <Form.Label>Ocupación</Form.Label>
                     <Form.Control
                         type="text"
                         name="occupation"
-                        placeholder="Enter occupation"
+                        placeholder="Ingrese ocupación"
                         onChange={handleChange}
                         value={reference.occupation}
                     />
                 </Form.Group>
-                <Form.Group controlId="formDateOfBirth">
-                    <Form.Label>Date of Birth</Form.Label>
+                <Form.Group controlId="formDateOfBirth" className="mb-3">
+                    <Form.Label>Fecha de nacimiento</Form.Label>
                     <Form.Control
                         type="date"
                         name="date_of_birth"
@@ -156,121 +190,131 @@ function InternalReferenceForm() {
                         value={reference.date_of_birth}
                     />
                 </Form.Group>
-                <Form.Group controlId="formAge">
-                    <Form.Label>Age</Form.Label>
+                <Form.Group controlId="formAge" className="mb-3">
+                    <Form.Label>Edad</Form.Label>
                     <Form.Control
                         type="number"
                         name="age"
-                        placeholder="Enter age"
+                        placeholder="Ingrese edad"
                         onChange={handleChange}
                         value={reference.age}
                     />
                 </Form.Group>
-                <Form.Group controlId="formMaritalStatus">
-                    <Form.Label>Marital Status</Form.Label>
+                <Form.Group controlId="formMaritalStatus" className="mb-3">
+                    <Form.Label>Estado Civil</Form.Label>
                     <Form.Control
                         type="text"
                         name="marital_status"
-                        placeholder="Enter marital status"
+                        placeholder="Ingrese estado civil"
                         onChange={handleChange}
                         value={reference.marital_status}
                     />
                 </Form.Group>
-                <Form.Group controlId="formChildren">
-                    <Form.Label>Children</Form.Label>
+                <Form.Group controlId="formChildren" className="mb-3">
+                    <Form.Label>Hijos</Form.Label>
                     <Form.Control
                         type="number"
                         name="children"
-                        placeholder="Enter number of children"
+                        placeholder="Ingrese el número de hijos"
                         onChange={handleChange}
                         value={reference.children}
                     />
                 </Form.Group>
-                <Form.Group controlId="formPhoneNumber">
-                    <Form.Label>Phone Number</Form.Label>
+                <Form.Group controlId="formPhoneNumber" className="mb-3">
+                    <Form.Label>Teléfono</Form.Label>
                     <Form.Control
                         type="text"
                         name="phone_number"
-                        placeholder="Enter phone number"
+                        placeholder="Ingrese número de teléfono"
                         onChange={handleChange}
                         value={reference.phone_number}
                     />
                 </Form.Group>
-                <Form.Group controlId="formNationality">
-                    <Form.Label>Nationality</Form.Label>
+                <Form.Group controlId="formNationality" className="mb-3">
+                    <Form.Label>Nacionalidad</Form.Label>
                     <Form.Control
                         type="text"
                         name="nationality"
-                        placeholder="Enter nationality"
+                        placeholder="Ingrese nacionalidad"
                         onChange={handleChange}
                         value={reference.nationality}
                     />
                 </Form.Group>
-                <Form.Group controlId="formAddress">
-                    <Form.Label>Address</Form.Label>
+                <Form.Group controlId="formAddress" className="mb-3">
+                    <Form.Label>Domicilio</Form.Label>
                     <Form.Control
                         type="text"
                         name="address"
-                        placeholder="Enter address"
+                        placeholder="Ingrese dirección de domicilio"
                         onChange={handleChange}
                         value={reference.address}
                     />
                 </Form.Group>
-                <Form.Group controlId="formServiceOfCare">
-                    <Form.Label>Service of Care</Form.Label>
+                <Form.Group controlId="formServiceOfCare" className="mb-3">
+                    <Form.Label>Servicio de atención</Form.Label>
                     <Form.Control
                         type="text"
                         name="service_of_care"
-                        placeholder="Enter service of care"
+                        placeholder="Ingrese servicio de atención"
                         onChange={handleChange}
                         value={reference.service_of_care}
                     />
                 </Form.Group>
-                <Form.Group controlId="formReferredTo">
-                    <Form.Label>Referred To</Form.Label>
+                <Form.Group controlId="formReferredTo" className="mb-3">
+    <Form.Label>Referido a</Form.Label>
+    <Form.Select 
+        name="referred_to" 
+        onChange={handleChange} 
+        value={reference.referred_to}
+    >
+        <option value="">Selecione una opción</option>
+        <option value="Trabajo Social">Trabajo Social</option>
+        <option value="Psicología">Psicología</option>
+        <option value="Terapia Física">Terapia Física</option>
+    </Form.Select>
+</Form.Group>
+
+                <Form.Group controlId="formClinicalDiagnosis" className="mb-3">
+                    <Form.Label>Diagnóstico Clínico</Form.Label>
                     <Form.Control
-                        type="text"
-                        name="referred_to"
-                        placeholder="Enter referred to"
-                        onChange={handleChange}
-                        value={reference.referred_to}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formClinicalDiagnosis">
-                    <Form.Label>Clinical Diagnosis</Form.Label>
-                    <Form.Control
-                        type="text"
+                        as="textarea" rows={3}
                         name="clinical_diagnosis"
                         placeholder="Enter clinical diagnosis"
                         onChange={handleChange}
                         value={reference.clinical_diagnosis}
                     />
                 </Form.Group>
-                <Form.Group controlId="formManagementPlan">
-                    <Form.Label>Management Plan</Form.Label>
+                <Form.Group controlId="formManagementPlan" className="mb-3">
+                    <Form.Label>Plan de manejo</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="textarea" rows={3}
                         name="management_plan"
                         placeholder="Enter management plan"
                         onChange={handleChange}
                         value={reference.management_plan}
                     />
                 </Form.Group>
-                <Form.Group controlId="formReasonForReferral">
-                    <Form.Label>Reason for Referral</Form.Label>
+                <Form.Group controlId="formReasonForReferral" className="mb-3">
+                    <Form.Label>Motivo de referencia</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="textarea" rows={3}
                         name="reason_for_referral"
                         placeholder="Enter reason for referral"
                         onChange={handleChange}
                         value={reference.reason_for_referral}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Save
-                </Button>
+                <div className="d-flex justify-content-between">
+                    <Button style={{marginTop: '30px'}} variant="primary" type="submit">
+                        Guardar
+                    </Button>
+                    <Button style={{marginTop: '30px'}} variant="outline-secondary" type="button" onClick={() => navigate(-1)}>
+                        Cancelar
+                    </Button>
+                </div>
             </Form>
         </div>
+        </>
     );
 }
 

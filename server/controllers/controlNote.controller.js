@@ -5,7 +5,7 @@ import { database } from '../utils/database.js';
 
 export const getControlNotes = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM ControlNotes ORDER BY control_note_id ASC");
+        const [result] = await database.query("SELECT * FROM ControlNotes WHERE physical_therapy_id = ? ORDER BY date ASC", [req.params.id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -36,13 +36,13 @@ function PatientNavbar() {
   return (
     <div>
       <Navbar className="navbar" bg="success" text="white" var="lg">
-        <Navbar.Brand style={{ color: "white" }}>New Hope Hospital Ltd</Navbar.Brand>
+        <Navbar.Brand style={{ color: "white" }}>Centro de Cuidados Paliativos de Sarchí</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto ms-auto">
-            <Nav.Link className="text-white" onClick={() => navigate(-1)} >Home</Nav.Link>
+            <Nav.Link className="text-white" onClick={() => navigate(-1)} >Atrás</Nav.Link>
             <Nav.Link className="text-white" href="/patientSearch">Buscar Paciente</Nav.Link>
-            <Nav.Link className="text-white" onClick={handleLogout}>Log Out</Nav.Link>
+            <Nav.Link className="text-white" onClick={handleLogout}>Cerrar sesión</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

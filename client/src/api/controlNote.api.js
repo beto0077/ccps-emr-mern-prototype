@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const getControlNotesRequest = async () =>
-  await axios.get(`${BASE_URL}/controlNote/controlNotes`);
+export const getControlNotesRequest = async (id) =>
+  await axios.get(`${BASE_URL}/controlNote/allControlNotes/${id}`);
 
 export const createControlNoteRequest = async (controlNote) =>
   await axios.post(`${BASE_URL}/controlNote/controlNotes`, controlNote);

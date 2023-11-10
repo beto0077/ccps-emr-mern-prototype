@@ -22,9 +22,13 @@ export const useControlNoteContext = () => {
 export const ControlNoteProvider = ({ children }) => {
     const [controlNotes, setControlNotes] = useState([]);
 
-    async function loadControlNotes() {
-        const response = await getControlNotesRequest();
-        setControlNotes(response.data);
+    async function loadControlNotes(id) {
+        try {
+            const response = await getControlNotesRequest(id);
+            setControlNotes(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const deleteControlNote = async (id) => {

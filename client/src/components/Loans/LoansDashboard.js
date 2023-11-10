@@ -55,15 +55,16 @@ function LoansDashboard() {
           <Button
             variant="secondary"
             size="lg"
-            onClick={() => navigate(`/oxygenTankLoan/${params.id}`)}
+            onClick={() => navigate(`/oxygenTankLoanList/${params.id}`)}
             className="mx-2 my-2 my-lg-3"
           >
-            Prestamos de tanques de oxigeno
+            Prestamos de tanques de oxígeno
           </Button>
         </div>
         <Dropdown className="mt-2 mt-lg-4">
           <Dropdown.Toggle id="dropdown-basic">Consultar</Dropdown.Toggle>
           <Dropdown.Menu>
+          <Dropdown.Item onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}>Referencias internas</Dropdown.Item>
             <Dropdown.Item
               onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}
             >
@@ -78,18 +79,6 @@ function LoansDashboard() {
               onClick={() => navigate(`/psychologyDashboard/${params.id}`)}
             >
               Psicología
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

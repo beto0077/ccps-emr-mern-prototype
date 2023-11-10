@@ -13,11 +13,13 @@ import EquipmentLoanForm from "./components/Loans/EquipmentLoanForm";
 import EquipmentLoanList from "./components/Loans/EquipmentLoanList";
 import OxygenTankLoanView from "./components/Loans/OxygenTankLoanView";
 import OxygenTankLoanForm from "./components/Loans/OxygenTankLoanForm";
+import OxygenTankLoanList from "./components/Loans/OxygenTankLoanList";
 import LoansDashboard from "./components/Loans/LoansDashboard";
 import PhysicalTherapyInfoView from "./components/PhysicalTherapyInfo/PhysicalTherapyInfoView";
 import PhysicalTherapyInfoForm from "./components/PhysicalTherapyInfo/PhysicalTherapyInfoForm";
 import ControlNoteView from "./components/PhysicalTherapyInfo/ControlNoteView";
 import ControlNoteForm from "./components/PhysicalTherapyInfo/ControlNoteForm";
+import ControlNoteList from "./components/PhysicalTherapyInfo/ControlNoteList";
 import PhysicalTherapyDashboard from "./components/PhysicalTherapyInfo/PhysicalTherapyDashboard";
 import SocialWorkInfo1View from "./components/SocialWorkInfo/SocialWorkInfo1View";
 import SocialWorkInfo1Form from "./components/SocialWorkInfo/SocialWorkInfo1Form";
@@ -63,6 +65,7 @@ function App() {
           <Route path="/oxygenTankLoan/:id" element={<OxygenTankLoanView/>}/>
           <Route path="/createOxygenTankLoan" element={<OxygenTankLoanForm/>}/>
           <Route path="/editOxygenTankLoan/:id" element={<OxygenTankLoanForm/>}/>
+          <Route path="/oxygenTankLoanList/:id" element={<OxygenTankLoanList/>}/>
           <Route path="/loansDashboard/:id" element={<LoansDashboard/>}/>
           <Route path="/physicalTherapyInfo/:id" element={<PhysicalTherapyInfoView/>}/>
           <Route path="/createPhysicalTherapyInfo" element={<PhysicalTherapyInfoForm/>}/>
@@ -70,6 +73,7 @@ function App() {
           <Route path="/controlNote/:id" element={<ControlNoteView/>}/>
           <Route path="/createControlNote" element={<ControlNoteForm/>}/>
           <Route path="/editControlNote/:id" element={<ControlNoteForm/>}/>
+          <Route path="/controlNoteList/:id" element={<ControlNoteList/>}/>
           <Route path="/physicalTherapyDashboard/:id" element={<PhysicalTherapyDashboard/>}/>
           <Route path="/socialWorkInfo1/:id" element={<SocialWorkInfo1View/>}/>
           <Route path="/createSocialWorkInfo1" element={<SocialWorkInfo1Form/>}/>

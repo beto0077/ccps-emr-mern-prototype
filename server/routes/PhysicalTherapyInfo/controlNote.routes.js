@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/controlNotes', getControlNotes);
+router.get('/allControlNotes/:id', getControlNotes);
 router.get('/controlNotes/:id', getControlNote);
 router.post('/controlNotes', createControlNote);
 router.put('/controlNotes/:id', updateControlNote);

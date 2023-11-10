@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
 import Footer from '../Footer';
+import 'mdbreact';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-
 import { useInternalReferenceContext } from '../../context/InternalReferenceContext';
 
 function InternalReferenceView() {
@@ -30,6 +30,17 @@ function InternalReferenceView() {
     });
 
     const params = useParams();
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+    
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     useEffect(() => {
         const loadInternalReference = async () => {
             if (params.id) {
@@ -44,90 +55,87 @@ function InternalReferenceView() {
         <div className="bg-dark">
             <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Internal Reference Home
+                Detalles de referencia interna
             </h2>
-            <h3 className="text-white my-3 text-center">
-                Welcome!
-            </h3>
             <Container>
                 <Row>
                     <Col>
                         <div className="container ml-3">
                             <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                                 <Card.Body>
-                                    <h2 className="text-primary">Internal Reference Information</h2>
+                                    <h2 className="text-primary">Referencia interna</h2>
                                     <Table striped bordered responsive>
                                         <tbody>
                                             <tr>
-                                                <td>DATE</td>
-                                                <td>{referenceInfo.date}</td>
+                                                <td>Fecha</td>
+                                                <td>{formatDate(referenceInfo.date)}</td>
                                             </tr>
                                             <tr>
-                                                <td>FULL NAME</td>
+                                                <td>Nombre completo</td>
                                                 <td>{referenceInfo.full_name}</td>
                                             </tr>
                                             <tr>
-                                                <td>ID NUMBER</td>
+                                                <td>Cédula</td>
                                                 <td>{referenceInfo.id_number}</td>
                                             </tr>
                                             <tr>
-                                                <td>RELIGION</td>
+                                                <td>Religión</td>
                                                 <td>{referenceInfo.religion}</td>
                                             </tr>
                                             <tr>
-                                                <td>EDUCATION LEVEL</td>
+                                                <td>Escolaridad</td>
                                                 <td>{referenceInfo.education_level}</td>
                                             </tr>
                                             <tr>
-                                                <td>OCCUPATION</td>
+                                                <td>Ocupación</td>
                                                 <td>{referenceInfo.occupation}</td>
                                             </tr>
                                             <tr>
-                                                <td>DATE OF BIRTH</td>
-                                                <td>{referenceInfo.date_of_birth}</td>
+                                                <td>Fecha de nacimiento</td>
+                                                <td>{formatDate(referenceInfo.date_of_birth)}</td>
                                             </tr>
                                             <tr>
-                                                <td>AGE</td>
+                                                <td>Edad</td>
                                                 <td>{referenceInfo.age}</td>
                                             </tr>
                                             <tr>
-                                                <td>MARITAL STATUS</td>
+                                                <td>Estado Civil</td>
                                                 <td>{referenceInfo.marital_status}</td>
                                             </tr>
                                             <tr>
-                                                <td>CHILDREN</td>
+                                                <td>Hijos</td>
                                                 <td>{referenceInfo.children}</td>
                                             </tr>
                                             <tr>
-                                                <td>PHONE NUMBER</td>
+                                                <td>Teléfono</td>
                                                 <td>{referenceInfo.phone_number}</td>
                                             </tr>
                                             <tr>
-                                                <td>NATIONALITY</td>
+                                                <td>Nacionalidad</td>
                                                 <td>{referenceInfo.nationality}</td>
                                             </tr>
                                             <tr>
-                                                <td>ADDRESS</td>
+                                                <td>Domicilio</td>
                                                 <td>{referenceInfo.address}</td>
                                             </tr>
                                             <tr>
-                                                <td>SERVICE OF CARE</td>
+                                                <td>Servicio de atención</td>
                                                 <td>{referenceInfo.service_of_care}</td>
                                             </tr>
                                             <tr>
-                                                <td>REFERRED TO</td>
+                                                <td>Referido a</td>
                                                 <td>{referenceInfo.referred_to}</td>
                                             </tr>
                                             <tr>
-                                                <td>CLINICAL DIAGNOSIS</td>
+                                                <td>Diagnóstico Clínico</td>
                                                 <td>{referenceInfo.clinical_diagnosis}</td>
                                             </tr>
                                             <tr>
-                                                <td>MANAGEMENT PLAN</td>
+                                                <td>Plan de manejo</td>
                                                 <td>{referenceInfo.management_plan}</td>
                                             </tr>
                                             <tr>
-                                                <td>REASON FOR REFERRAL</td>
+                                                <td>Motivo de referencia</td>
                                                 <td>{referenceInfo.reason_for_referral}</td>
                                             </tr>
                                         </tbody>

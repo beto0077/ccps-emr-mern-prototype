@@ -63,7 +63,7 @@ function PhysicalTherapyInfoView() {
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createPhysicalTherapyInfo`)}
+            onClick={() => navigate(`/createPhysicalTherapyInfo`, { state: { id: params.id } })}
             className="mx-2 my-2 my-lg-3"
           >
             Generar Información

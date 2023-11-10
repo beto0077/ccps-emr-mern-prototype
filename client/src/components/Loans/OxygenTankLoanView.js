@@ -6,10 +6,10 @@ import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useOxygenTankLoanContext } from '../../context/OxygenTankLoanContext';
 
-function OxygenTankLoanDashboard() {
+function OxygenTankLoanView() {
     const { getOxygenTankLoan } = useOxygenTankLoanContext();
     const [loanInfo, setLoanInfo] = useState({
-        loan_id: '',
+        oxygen_loan_id: '',
         patient_id: '',
         delivery_date: '',
         return_date: '',
@@ -31,6 +31,17 @@ function OxygenTankLoanDashboard() {
     });
 
     const params = useParams();
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+    
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     useEffect(() => {
         const loadOxygenTankLoan = async () => {
             if (params.id) {
@@ -45,91 +56,83 @@ function OxygenTankLoanDashboard() {
         <div className="bg-dark">
             <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Oxygen Tank Loan Details
+                Detalles de Préstamo de Tanque de Oxígeno
             </h2>
             <Container>
                 <Row>
                     <Col>
                         <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                             <Card.Body>
-                                <h2 className="text-primary">Oxygen Tank Loan Information</h2>
+                                <h2 className="text-primary">Préstamo</h2>
                                 <Table striped bordered responsive>
                                     <tbody>
                                         <tr>
-                                            <td>Loan ID</td>
-                                            <td>{loanInfo.loan_id}</td>
+                                            <td>Fecha Entrega</td>
+                                            <td>{formatDate(loanInfo.delivery_date)}</td>
                                         </tr>
                                         <tr>
-                                            <td>Patient ID</td>
-                                            <td>{loanInfo.patient_id}</td>
+                                            <td>Fecha Devolución</td>
+                                            <td>{formatDate(loanInfo.return_date)}</td>
                                         </tr>
                                         <tr>
-                                            <td>Delivery Date</td>
-                                            <td>{loanInfo.delivery_date}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Return Date</td>
-                                            <td>{loanInfo.return_date}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Description</td>
+                                            <td>Descripción</td>
                                             <td>{loanInfo.description}</td>
                                         </tr>
                                         <tr>
-                                            <td>Plate</td>
+                                            <td>Placa</td>
                                             <td>{loanInfo.plate}</td>
                                         </tr>
                                         <tr>
-                                            <td>Quantity</td>
+                                            <td>Cantidad</td>
                                             <td>{loanInfo.quantity}</td>
                                         </tr>
                                         <tr>
-                                            <td>Beneficiary</td>
+                                            <td>Beneficiario</td>
                                             <td>{loanInfo.beneficiary}</td>
                                         </tr>
                                         <tr>
-                                            <td>Reference Issued By Doctor</td>
+                                            <td>Referencia emitida por el médico</td>
                                             <td>{loanInfo.reference_issued_by_doctor}</td>
                                         </tr>
                                         <tr>
-                                            <td>Person Receiving Equipment</td>
+                                            <td>Persona que recibe el equipo</td>
                                             <td>{loanInfo.person_receiving_equipment}</td>
                                         </tr>
                                         <tr>
-                                            <td>ID Number</td>
+                                            <td>Cédula de persona que recibe el equipo</td>
                                             <td>{loanInfo.id_number}</td>
                                         </tr>
                                         <tr>
-                                            <td>Exact Address</td>
+                                            <td>Dirección exacta</td>
                                             <td>{loanInfo.exact_address}</td>
                                         </tr>
                                         <tr>
-                                            <td>Phone Number</td>
+                                            <td>Número de teléfono</td>
                                             <td>{loanInfo.phone_number}</td>
                                         </tr>
                                         <tr>
-                                            <td>Contract Number</td>
+                                            <td>Número de contrato</td>
                                             <td>{loanInfo.contract_number}</td>
                                         </tr>
                                         <tr>
-                                            <td>Justification</td>
+                                            <td>Justificación</td>
                                             <td>{loanInfo.justification}</td>
                                         </tr>
                                         <tr>
-                                            <td>Person Returning Equipment</td>
+                                            <td>Persona que devuelve el equipo</td>
                                             <td>{loanInfo.person_returning_equipment}</td>
                                         </tr>
                                         <tr>
-                                            <td>Prepared By</td>
+                                            <td>Creado por</td>
                                             <td>{loanInfo.prepared_by}</td>
                                         </tr>
                                         <tr>
-                                            <td>Preparation Date</td>
+                                            <td>Fecha de creación</td>
                                             <td>{loanInfo.preparation_date}</td>
                                         </tr>
                                         <tr>
-                                            <td>Loan Completed</td>
-                                            <td>{loanInfo.loan_completed ? "Yes" : "No"}</td>
+                                            <td>Prestamo completado</td>
+                                            <td>{loanInfo.loan_completed ? "Sí" : "No"}</td>
                                         </tr>
                                     </tbody>
                                 </Table>
@@ -143,4 +146,4 @@ function OxygenTankLoanDashboard() {
     );
 }
 
-export default OxygenTankLoanDashboard;
+export default OxygenTankLoanView;

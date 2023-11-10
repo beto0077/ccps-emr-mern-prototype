@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Navber from "../NavigationBar";
-import { useInternalReferenceContext } from "../../context/InternalReferenceContext";
+import { useControlNoteContext } from "../../context/ControlNoteContext";
+import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
 
-function InternalReferenceDashboard() {
-    const { internalReferences, loadInternalReferences, deleteInternalReference } = useInternalReferenceContext();
+function ControlNoteList() {
+    const { getPhysicalTherapyInfo } = usePhysicalTherapyInfoContext();
+    const { controlNotes, loadControlNotes, deleteControlNote } = useControlNoteContext();
     const navigate = useNavigate();
     const params = useParams();
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [therapyInfoId, setTherapyInfoId] = useState('');
     const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
     const formatDate = (dateString) => {
@@ -21,7 +25,24 @@ function InternalReferenceDashboard() {
         return `${year}-${month}-${day}`;
     };
     useEffect(() => {
-        loadInternalReferences(params.id);
+        const loadPhysicalTherapyInfo = async () => {
+            if (params.id) {
+                try {
+                    const details = await getPhysicalTherapyInfo(params.id);
+                    if (Object.keys(details).length === 0) { // Check if the response is empty
+                        setError(true); // Set error state to true
+                    } else {
+                        setTherapyInfoId(details.physical_therapy_id);
+                        setError(false); // Reset error state if data is loaded successfully
+                    }
+                } catch (error) {
+                    console.error('Failed to load physical therapy info:', error);
+                    setError(true); // Set error state to true on catch
+                }
+            }
+        };
+        loadPhysicalTherapyInfo();
+        loadControlNotes(therapyInfoId);
         setIsLoading(false);
 
         const updateAvailableHeight = () => {
@@ -39,11 +60,26 @@ function InternalReferenceDashboard() {
     return (
         <>
         <Navber />
+        {error ? (
+            <div className="text-center">
+                <h2 className="text-black text-center">
+                Se debe completar información general primero
+            </h2>
+                <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate(-1)}
+            className="mx-2 my-2 my-lg-3"
+          >
+            Volver
+          </Button>
+            </div>
+        ) : (
         <div className="bg-dark" style={{ minHeight: `${availableHeight}px` }}>
             
             <br />
             <h2 className="text-white text-center">
-                Referencias internas
+                Notas de control de terapia física
             </h2>
             <br />
             <div className="text-center">
@@ -53,35 +89,35 @@ function InternalReferenceDashboard() {
             onClick={() => navigate(`/createInternalReference`, { state: { id: params.id } })}
             className="mx-2 my-2 my-lg-3"
           >
-            Crear referencia interna
+            Crear nota de control
           </Button>
             </div>
             <Container>
                 <Row>
                     <Col>
                         <div className="jumbotron mt-5 mb-5" style={{ backgroundColor: "#e0e0e0" }}>
-                            <h2 className="text-primary">Referencias</h2>
+                            <h2 className="text-primary">Notas</h2>
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Fecha</th>
-                                        <th>Referido a</th>
-                                        <th>Acciones</th>
+                                        <th>Nota</th>
+                                        <th>Ver</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {!isLoading ? (
-                                        internalReferences.map((internalReference) => (
-                                            <tr key={internalReference.internal_reference_id}>
-                                                <td>{internalReference.internal_reference_id}</td>
-                                                <td>{formatDate(internalReference.date)}</td>
-                                                <td>{internalReference.referred_to}</td>
+                                        controlNotes.map((controlNote) => (
+                                            <tr key={controlNote.control_note_id}>
+                                                <td>{controlNote.control_note_id}</td>
+                                                <td>{formatDate(controlNote.date)}</td>
+                                                <td>{controlNote.control_notes}</td>
                                                 <td>
                                                     <Button
                                                         variant="outline-secondary"
                                                         className="mr-2"
-                                                        onClick={() => navigate(`/internalReference/${internalReference.internal_reference_id}`)}
+                                                        onClick={() => navigate(`/internalReference/${controlNote.internal_reference_id}`)}
                                                     >
                                                         Más detalles
                                                     </Button>
@@ -103,8 +139,9 @@ function InternalReferenceDashboard() {
                 </Row>
             </Container>
         </div>
+        )}
         </>
     );
 }
 
-export default InternalReferenceDashboard;
+export default ControlNoteList;

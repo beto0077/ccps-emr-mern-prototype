@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Navbar from "../NavigationBar";
 import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
+import { usePatientContext } from "../../context/PatientContext";
 
 function PhysicalTherapyForm() {
+  const location = useLocation();
   const {
     createPhysicalTherapyInfo,
     getPhysicalTherapyInfo,
     updatePhysicalTherapyInfo,
   } = usePhysicalTherapyInfoContext();
+  const { getPatient } = usePatientContext();
   const [physicalTherapyInfo, setPhysicalTherapyInfo] = useState({
+    patient_id: location.state?.id || "",
     professional: "",
     clinical_diagnosis: "",
     clinical_history: "",
@@ -40,14 +45,14 @@ function PhysicalTherapyForm() {
   useEffect(() => {
     const loadPhysicalTherapyInfo = async () => {
       if (params.id) {
-        const loadedPhysicalTherapyInfo = await getPhysicalTherapyInfo(
-          params.id
-        );
+        const loadedPhysicalTherapyInfo = await getPhysicalTherapyInfo(params.id);
         setPhysicalTherapyInfo(loadedPhysicalTherapyInfo);
+      } else {
+        //Get professional name
       }
     };
     loadPhysicalTherapyInfo();
-  }, [params.id]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,8 +69,9 @@ function PhysicalTherapyForm() {
     } else {
       await createPhysicalTherapyInfo(physicalTherapyInfo);
     }
-    navigate("/pathToRedirectAfterSubmit");
+    navigate(`/physicalTherapyDashboard/${location.state.id}`);
     setPhysicalTherapyInfo({
+      patient_id:"",
       professional: "",
       clinical_diagnosis: "",
       clinical_history: "",
@@ -91,10 +97,24 @@ function PhysicalTherapyForm() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div style={{ display: "block", margin: "auto", width: 400, padding: 30 }}>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="professional">
-          <Form.Label>Professional</Form.Label>
+      <h1 className="text-center mb-4">
+                    {params.id ? "Editar referencia interna" : "Nueva Terapia física"}
+                </h1>
+      <Form.Group controlId="professional">
+          <Form.Label>TEST</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter professional's name"
+            value={physicalTherapyInfo.patient_id}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="professional" className="mb-3">
+          <Form.Label>Profesional</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter professional's name"
@@ -103,154 +123,219 @@ function PhysicalTherapyForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="clinicalDiagnosis">
-          <Form.Label>Clinical Diagnosis</Form.Label>
+        <Form.Group controlId="clinicalDiagnosis" className="mb-3">
+          <Form.Label>Diagnóstico Clínico</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter clinical diagnosis"
+            placeholder="Ingrese diagnóstico clínico"
             value={physicalTherapyInfo.clinical_diagnosis}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="clinicalHistory">
-          <Form.Label>Clinical History</Form.Label>
+        <Form.Group controlId="clinicalHistory" className="mb-3">
+          <Form.Label>Historia Clínica</Form.Label>
           <Form.Control
             as="select"
             value={physicalTherapyInfo.clinical_history}
             onChange={handleChange}
           >
-            <option value="Home visit">Home visit</option>
-            <option value="External consultation">External consultation</option>
+            <option value="Visita domiciliar">Visita domiciliar</option>
+            <option value="Consulta externa">Consulta externa</option>
           </Form.Control>
         </Form.Group>
 
         <Form.Group controlId="edema">
-          <Form.Check
-            type="checkbox"
-            label="Edema"
-            checked={physicalTherapyInfo.edema}
-            onChange={(e) =>
-              setPhysicalTherapyInfo({
-                ...physicalTherapyInfo,
-                edema: e.target.checked,
-              })
-            }
-          />
-        </Form.Group>
+    <Form.Label>Edema</Form.Label>
+    <div>
+        <Form.Check 
+            inline
+            type="radio"
+            label="Sí"
+            name="edema"
+            value="Yes"
+            checked={physicalTherapyInfo.edema === true}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, edema: true })}
+        />
+        <Form.Check 
+            inline
+            type="radio"
+            label="No"
+            name="edema"
+            value="No"
+            checked={physicalTherapyInfo.edema === false}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, edema: false })}
+        />
+    </div>
+</Form.Group>
 
-        <Form.Group controlId="edemaLocation">
-          <Form.Label>Edema Location</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter edema location"
-            value={physicalTherapyInfo.edema_location}
-            onChange={handleChange}
-          />
-        </Form.Group>
+
+<Form.Group controlId="edemaLocation">
+    <Form.Label>Donde:</Form.Label>
+    <Form.Control
+        type="text"
+        placeholder="Ingrese la ubicación del edema"
+        value={physicalTherapyInfo.edema_location}
+        onChange={handleChange}
+        disabled={!physicalTherapyInfo.edema}
+    />
+</Form.Group>
+
 
         <Form.Group controlId="ulcer">
-          <Form.Check
-            type="checkbox"
-            label="Ulcer"
-            checked={physicalTherapyInfo.ulcer}
-            onChange={(e) =>
-              setPhysicalTherapyInfo({
-                ...physicalTherapyInfo,
-                ulcer: e.target.checked,
-              })
-            }
-          />
+        <Form.Label>Úlcera</Form.Label>
+    <div>
+        <Form.Check 
+            inline
+            type="radio"
+            label="Sí"
+            name="ulcer"
+            value="Yes"
+            checked={physicalTherapyInfo.ulcer === true}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, ulcer: true })}
+        />
+        <Form.Check 
+            inline
+            type="radio"
+            label="No"
+            name="ulcer"
+            value="No"
+            checked={physicalTherapyInfo.ulcer === false}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, ulcer: false })}
+        />
+    </div>
         </Form.Group>
 
         <Form.Group controlId="ulcerLocation">
-          <Form.Label>Ulcer Location</Form.Label>
+          <Form.Label>Donde:</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter ulcer location"
+            placeholder="Ingrese la ubicación de la úlcera"
             value={physicalTherapyInfo.ulcer_location}
             onChange={handleChange}
+            disabled={!physicalTherapyInfo.ulcer}
           />
         </Form.Group>
 
         <Form.Group controlId="activitiesOfDailyLiving">
-          <Form.Check
-            type="checkbox"
-            label="Activities of Daily Living"
-            checked={physicalTherapyInfo.activities_of_daily_living}
-            onChange={(e) =>
-              setPhysicalTherapyInfo({
-                ...physicalTherapyInfo,
-                activities_of_daily_living: e.target.checked,
-              })
-            }
-          />
+        <Form.Label>Actividades de la vida diaria (A.V.D)</Form.Label>
+    <div>
+        <Form.Check 
+            inline
+            type="radio"
+            label="Sí"
+            name="activitiesOfDailyLiving"
+            value="Yes"
+            checked={physicalTherapyInfo.activities_of_daily_living === true}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, activities_of_daily_living: true })}
+        />
+        <Form.Check 
+            inline
+            type="radio"
+            label="No"
+            name="activitiesOfDailyLiving"
+            value="No"
+            checked={physicalTherapyInfo.activities_of_daily_living === false}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, activities_of_daily_living: false })}
+        />
+    </div>
         </Form.Group>
 
         <Form.Group controlId="pain">
-          <Form.Check
-            type="checkbox"
-            label="Pain"
-            checked={physicalTherapyInfo.pain}
-            onChange={(e) =>
-              setPhysicalTherapyInfo({
-                ...physicalTherapyInfo,
-                pain: e.target.checked,
-              })
-            }
-          />
+        <Form.Label>Dolor</Form.Label>
+    <div>
+        <Form.Check 
+            inline
+            type="radio"
+            label="Sí"
+            name="pain"
+            value="Yes"
+            checked={physicalTherapyInfo.pain === true}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, pain: true })}
+        />
+        <Form.Check 
+            inline
+            type="radio"
+            label="No"
+            name="pain"
+            value="No"
+            checked={physicalTherapyInfo.pain === false}
+            onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, pain: false })}
+        />
+    </div>
         </Form.Group>
 
         <Form.Group controlId="painLocation">
-          <Form.Label>Pain Location</Form.Label>
+          <Form.Label>Donde:</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter pain location"
+            placeholder="Ingrese la ubicación del dolor"
             value={physicalTherapyInfo.pain_location}
             onChange={handleChange}
+            disabled={!physicalTherapyInfo.pain}
           />
         </Form.Group>
 
         <Form.Group controlId="muscleStrength">
-          <Form.Label>Muscle Strength</Form.Label>
+          <Form.Label>Fuerza muscular</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter muscle strength"
+            placeholder="Ingrese la fuerza muscular"
             value={physicalTherapyInfo.muscle_strength}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group controlId="rangeOfMotion">
-          <Form.Label>Range of Motion</Form.Label>
+          <Form.Label>Arcos movilidad</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter range of motion"
+            placeholder="Ingrese los arcos de movilidad"
             value={physicalTherapyInfo.range_of_motion}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group controlId="balance">
-          <Form.Label>Balance</Form.Label>
+          <Form.Label>Equilibrio</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter balance"
+            placeholder="Ingrese el equilibrio"
             value={physicalTherapyInfo.balance}
             onChange={handleChange}
           />
         </Form.Group>
 
         <Form.Group controlId="externalSupport">
-          <Form.Label>External Support</Form.Label>
-          <Form.Control
+    <Form.Label>External Support</Form.Label>
+    <Form.Select 
+        value={physicalTherapyInfo.external_support !== 'Bastón' && 
+                physicalTherapyInfo.external_support !== 'Andadera' && 
+                physicalTherapyInfo.external_support !== 'Silla de ruedas' && 
+                physicalTherapyInfo.external_support ? 'Otro' : physicalTherapyInfo.external_support}
+        onChange={(e) => {
+            setPhysicalTherapyInfo({ ...physicalTherapyInfo, external_support: e.target.value === 'Otro' ? '' : e.target.value });
+        }}
+    >
+        <option value="">Select an option</option>
+        <option value="Bastón">Bastón</option>
+        <option value="Andadera">Andadera</option>
+        <option value="Silla de ruedas">Silla de ruedas</option>
+        <option value="Otro">Otro</option>
+    </Form.Select>
+    {physicalTherapyInfo.external_support === 'Otro' && (
+        <Form.Control
             type="text"
-            placeholder="Enter external support"
+            placeholder="Specify external support"
             value={physicalTherapyInfo.external_support}
-            onChange={handleChange}
-          />
-        </Form.Group>
+            onChange={(e) =>
+                setPhysicalTherapyInfo({ ...physicalTherapyInfo, external_support: e.target.value })
+            }
+        />
+    )}
+</Form.Group>
+
 
         <Form.Group controlId="additionalExternalSupportInfo">
           <Form.Label>Additional External Support Info</Form.Label>
@@ -334,6 +419,7 @@ function PhysicalTherapyForm() {
         </Button>
       </Form>
     </div>
+    </>
   );
 }
 
