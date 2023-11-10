@@ -113,7 +113,7 @@ function EquipmentLoanList() {
                                 </thead>
                                 <tbody>
                                     {!isLoading ? (
-                                        activeLoans.map((loan) => (
+                                        completedLoans.map((loan) => (
                                             <tr key={loan.loan_id}>
                                                 <td>{loan.loan_id}</td>
                                                 <td>{loan.delivery_date}</td>

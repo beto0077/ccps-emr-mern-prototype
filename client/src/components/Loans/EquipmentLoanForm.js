@@ -84,12 +84,16 @@ function EquipmentLoanForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (params.id) {
-      await updateLoan(params.id, loan);
-    } else {
-      await createLoan(loan);
+    let loanData = { ...loan };
+    if (!loanData.return_date) {
+      loanData.return_date = null;
     }
-    navigate(`/equipmentLoan/${params.id}`);
+    if (params.id) {
+      await updateLoan(params.id, loanData);
+    } else {
+      await createLoan(loanData);
+    }
+    navigate(`/equipmentLoan/${location.state.id}`);
     setLoan({
       patient_id: "",
       delivery_date: "",
@@ -128,7 +132,7 @@ function EquipmentLoanForm() {
         </Form.Group>
         <Form.Group controlId="returnDate" className="mb-3">
           <Form.Label>Fecha Devolución</Form.Label>
-          <Form.Control disabled={!params.id} type="date" name="return_date" value={loan.return_date} onChange={handleChange} required />
+          <Form.Control disabled={!params.id} type="date" name="return_date" value={loan.return_date || ''} onChange={handleChange} required />
         </Form.Group>
         <Form.Group controlId="description" className="mb-3">
           <Form.Label>Descripción</Form.Label>
