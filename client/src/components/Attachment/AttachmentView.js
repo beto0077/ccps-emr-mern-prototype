@@ -1,3 +1,5 @@
+//STOP!!
+
 import React, { useState, useEffect } from "react";
 import Navbar from "../NavigationBar";
 import Footer from "../Footer";
@@ -21,20 +23,56 @@ function AttachmentView() {
   });
 
   const params = useParams();
-  useEffect(() => {
+  /*useEffect(() => {
     const loadAttachment = async () => {
       if (params.id) {
         const details = await getAttachment(params.id);
         // Assuming details.file_content is the Buffer object you logged
         const base64String = btoa(
+          //String.fromCharCode(...new Uint8Array(details.file_content.data))
           String.fromCharCode(...new Uint8Array(details.file_content.data))
         );
+        console.log(base64String);
         // Set the file_content to the base64 string
         setAttachmentInfo({ ...details, file_content: base64String });
       }
     };
     loadAttachment();
-  }, [params.id]);
+  }, [params.id]);*/
+  useEffect(() => {
+    const loadAttachment = async () => {
+      if (params.id) {
+        const details = await getAttachment(params.id);
+        console.log(details.file_content);
+        if (details.file_content && details.file_content.data) {
+          // Convert the Buffer object to a base64 string
+          const base64String = btoa(
+            String.fromCharCode(...new Uint8Array(details.file_content.data))
+          );
+          // Determine the MIME type
+          const mimeType = getMimeType(details.file_name);
+          // Convert the base64 string to a Blob
+          const blob = new Blob([Uint8Array.from(atob(base64String), c => c.charCodeAt(0))], { type: mimeType });
+          // Create a blob URL
+          const blobUrl = URL.createObjectURL(blob);
+          // Update the state with the new URL
+          /*setAttachmentInfo(prevState => ({
+            ...prevState,
+            file_content: blobUrl,
+          }));*/
+          setAttachmentInfo({ ...details, file_content: blobUrl });
+        }
+      }
+    };
+    loadAttachment();
+  
+    // Cleanup function to revoke the blob URL when the component unmounts
+    return () => {
+      if (attachmentInfo.file_content) {
+        URL.revokeObjectURL(attachmentInfo.file_content);
+      }
+    };
+  }, [params.id, getAttachment]);
 
   const getMimeType = (fileName) => {
     const extension = fileName.split(".").pop().toLowerCase();
@@ -109,7 +147,7 @@ function AttachmentView() {
                         <td>
                           {" "}
                           <a
-                            href={attachmentHref}
+                            href={attachmentInfo.file_content}
                             target="_blank"
                             rel="noopener noreferrer"
                           >

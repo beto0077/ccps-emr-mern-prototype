@@ -4,7 +4,7 @@ import { getLoans, getLoan, createLoan, updateLoan, deleteLoan } from "../../con
 
 const router = Router();
 
-router.get('/loans', getLoans);
+router.get('/allLoans/:id', getLoans);
 router.get('/loans/:id', getLoan);
 router.post('/loans', createLoan);
 router.put('/loans/:id', updateLoan);

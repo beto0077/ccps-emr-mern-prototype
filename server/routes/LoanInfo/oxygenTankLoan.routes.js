@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/oxygenTankLoans', getOxygenTankLoans);
+router.get('/allOxygenTankLoans/:id', getOxygenTankLoans);
 router.get('/oxygenTankLoans/:id', getOxygenTankLoan);
 router.post('/oxygenTankLoans', createOxygenTankLoan);
 router.put('/oxygenTankLoans/:id', updateOxygenTankLoan);

@@ -21,8 +21,8 @@ export const useEquipmentLoanContext = () => {
 export const EquipmentLoanProvider = ({ children }) => {
     const [loans, setLoans] = useState([]);
 
-    async function loadLoans() {
-        const response = await getLoansRequest();
+    async function loadLoans(id) {
+        const response = await getLoansRequest(id);
         setLoans(response.data);
     }
 

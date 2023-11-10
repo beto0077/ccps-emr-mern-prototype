@@ -2,7 +2,7 @@ import { database } from '../utils/database.js';
 
 export const getLoans = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM EquipmentLoanInformation ORDER BY loan_id ASC");
+        const [result] = await database.query("SELECT * FROM EquipmentLoanInformation WHERE patient_id = ? ORDER BY loan_id ASC", [req.params.id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });

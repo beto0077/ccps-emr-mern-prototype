@@ -10,6 +10,7 @@ import PatientForm from "./components/Patient/PatientForm";
 import PatientSearch from "./components/Patient/PatientSearch";
 import EquipmentLoanView from "./components/Loans/EquipmentLoanView";
 import EquipmentLoanForm from "./components/Loans/EquipmentLoanForm";
+import EquipmentLoanList from "./components/Loans/EquipmentLoanList";
 import OxygenTankLoanView from "./components/Loans/OxygenTankLoanView";
 import OxygenTankLoanForm from "./components/Loans/OxygenTankLoanForm";
 import LoansDashboard from "./components/Loans/LoansDashboard";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/equipmentLoan/:id" element={<EquipmentLoanView/>}/>
           <Route path="/createEquipmentLoan" element={<EquipmentLoanForm/>}/>
           <Route path="/editEquipmentLoan/:id" element={<EquipmentLoanForm/>}/>
+          <Route path="/equipmentLoanList/:id" element={<EquipmentLoanList/>}/>
           <Route path="/oxygenTankLoan/:id" element={<OxygenTankLoanView/>}/>
           <Route path="/createOxygenTankLoan" element={<OxygenTankLoanForm/>}/>
           <Route path="/editOxygenTankLoan/:id" element={<OxygenTankLoanForm/>}/>

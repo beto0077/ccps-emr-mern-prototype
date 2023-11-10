@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const getOxygenTankLoansRequest = async () =>
-  await axios.get(`${BASE_URL}/oxygenTankLoan/oxygenTankLoans`);
+export const getOxygenTankLoansRequest = async (id) =>
+  await axios.get(`${BASE_URL}/oxygenTankLoan/AllOxygenTankLoans/${id}`);
 
 export const createOxygenTankLoanRequest = async (loan) =>
   await axios.post(`${BASE_URL}/oxygenTankLoan/oxygenTankLoans`, loan);

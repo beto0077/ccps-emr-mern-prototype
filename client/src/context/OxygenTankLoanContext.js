@@ -21,8 +21,8 @@ export const useOxygenTankLoanContext = () => {
 export const OxygenTankLoanProvider = ({ children }) => {
     const [oxygenTankLoans, setOxygenTankLoans] = useState([]);
 
-    async function loadOxygenTankLoans() {
-        const response = await getOxygenTankLoansRequest();
+    async function loadOxygenTankLoans(id) {
+        const response = await getOxygenTankLoansRequest(id);
         setOxygenTankLoans(response.data);
     }
 

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useEquipmentLoanContext } from "../../context/EquipmentLoanContext";
 
 function EquipmentLoanForm() {
+  const location = useLocation();
   const { createLoan, getLoan, updateLoan } = useEquipmentLoanContext();
   const [loan, setLoan] = useState({
-    patient_id: "",
+    patient_id: location.state?.id || "",
     delivery_date: "",
     return_date: "",
     description: "",
