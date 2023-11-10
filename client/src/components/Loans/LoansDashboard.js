@@ -47,7 +47,7 @@ function LoansDashboard() {
           <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/equipmentLoan/${params.id}`)}
+            onClick={() => navigate(`/equipmentLoanList/${params.id}`)}
             className="mx-2 my-2 my-lg-3"
           >
             Prestamos de equipo general
