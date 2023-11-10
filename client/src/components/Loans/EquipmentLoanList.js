@@ -29,6 +29,9 @@ function EquipmentLoanList() {
         return () => window.removeEventListener('resize', updateAvailableHeight);
     }, []);
 
+    const activeLoans = loans.filter(loan => !loan.loan_completed);
+    const completedLoans = loans.filter(loan => loan.loan_completed);
+
     return (
         <>
         <Navber />
@@ -65,7 +68,7 @@ function EquipmentLoanList() {
                                 </thead>
                                 <tbody>
                                     {!isLoading ? (
-                                        loans.map((loan) => (
+                                        activeLoans.map((loan) => (
                                             <tr key={loan.loan_id}>
                                                 <td>{loan.loan_id}</td>
                                                 <td>{loan.delivery_date}</td>
@@ -84,6 +87,45 @@ function EquipmentLoanList() {
                                                         onClick={() => navigate(`/editEquipmentLoan/${loan.loan_id}`)}
                                                     >
                                                         Editar
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="5">
+                                                <h4>Cargando...</h4>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </Table>
+                            <h2 className="text-primary">Prestamos completados</h2>
+                            <Table striped bordered hover responsive>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha entrega</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha devolución</th>
+                                        <th>Ver</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {!isLoading ? (
+                                        activeLoans.map((loan) => (
+                                            <tr key={loan.loan_id}>
+                                                <td>{loan.loan_id}</td>
+                                                <td>{loan.delivery_date}</td>
+                                                <td>{loan.description}</td>
+                                                <td>{loan.return_date}</td>
+                                                <td>
+                                                    <Button
+                                                        variant="outline-secondary"
+                                                        className="mr-2"
+                                                        onClick={() => navigate(`/equipmentLoan/${loan.loan_id}`)}
+                                                    >
+                                                        Más detalles
                                                     </Button>
                                                 </td>
                                             </tr>
