@@ -62,9 +62,10 @@ function PsychologyInfoForm() {
     console.log("test")
     console.log(diagnosisOncologicalConditions)
     const finalConditions = getFinalDiagnosisConditions();
-    console.log(finalConditions);*/
-    console.log(diseaseStatuses);
-  }, [diseaseStatuses]);
+    console.log(finalConditions);
+    console.log(diseaseStatuses);*/
+    console.log(info.diagnosis_knowledge);
+  }, [info.diagnosis_knowledge]);
 
   const getFinalDiagnosisConditions = () => {
     return diagnosisOncologicalConditions.map((condition, index) => {
@@ -158,6 +159,7 @@ function PsychologyInfoForm() {
             onChange={handleChange}
             required
             >
+            <option value="">Seleccione una opción</option>
             <option value="Paciente">Paciente</option>
             <option value="Familiar">Familiar</option>
             <option value="Paciente y Familiar">Paciente y Familiar</option>
@@ -229,6 +231,7 @@ function PsychologyInfoForm() {
             onChange={handleChange}
             required
           >
+            <option value="">Seleccione una opción</option>
             <option value="Visita domiciliar">Visita domiciliar</option>
             <option value="Consulta externa">Consulta externa</option>
           </Form.Control>
@@ -245,6 +248,7 @@ function PsychologyInfoForm() {
             onChange={handleChange}
             required
             >
+            <option value="">Seleccione una opción</option>
             <option value="No lo conoce">No lo conoce</option>
             <option value="Confuso">Confuso</option>
             <option value="Ligeramente sabe">Ligeramente sabe</option>
@@ -260,6 +264,7 @@ function PsychologyInfoForm() {
             onChange={handleChange}
             required
             >
+            <option value="">Seleccione una opción</option>
             <option value="No lo conoce">No lo conoce</option>
             <option value="Confuso">Confuso</option>
             <option value="Ligeramente sabe">Ligeramente sabe</option>
@@ -275,6 +280,7 @@ function PsychologyInfoForm() {
             onChange={handleChange}
             required
             >
+            <option value="">Seleccione una opción</option>
             <option value="No lo conoce">No lo conoce</option>
             <option value="Confuso">Confuso</option>
             <option value="Ligeramente sabe">Ligeramente sabe</option>
@@ -398,46 +404,104 @@ function PsychologyInfoForm() {
   </Button>
 </Form.Group>
 
-        <Form.Group controlId="treatmentHistories">
-          <Form.Label>Treatment History</Form.Label>
-          {treatmentHistories.map((history, index) => (
+<Form.Group controlId="treatmentHistories">
+  <Form.Label>Treatment History</Form.Label>
+  {treatmentHistories.map((history, index) => (
+    <div key={index}>
+      <Form.Select
+        value={history.treatment_type}
+        onChange={(e) => {
+          const newHistories = [...treatmentHistories];
+          newHistories[index].treatment_type = e.target.value;
+          setTreatmentHistories(newHistories);
+        }}
+      >
+        <option value="">Seleccione una opción</option>
+        <option value="Surgery">Surgery</option>
+        <option value="Chemotherapy">Chemotherapy</option>
+        <option value="Radiotherapy">Radiotherapy</option>
+        <option value="Other">Other</option>
+      </Form.Select>
+
+      <Form.Select
+        value={history.treatment_status}
+        onChange={(e) => {
+          const newHistories = [...treatmentHistories];
+          newHistories[index].treatment_status = e.target.value;
+          setTreatmentHistories(newHistories);
+        }}
+      >
+        <option value="">Seleccione una opción</option>
+        <option value="Previous Treatment">Previous Treatment</option>
+        <option value="Current Treatment">Current Treatment</option>
+        <option value="Future Treatment">Future Treatment</option>
+      </Form.Select>
+
+      <Form.Control
+        type="text"
+        placeholder="Enter Additional Information"
+        value={history.additional_information}
+        onChange={(e) => {
+          const newHistories = [...treatmentHistories];
+          newHistories[index].additional_information = e.target.value;
+          setTreatmentHistories(newHistories);
+        }}
+      />
+
+      <Button
+        variant="danger"
+        onClick={() => {
+          const newHistories = [...treatmentHistories];
+          newHistories.splice(index, 1);
+          setTreatmentHistories(newHistories);
+        }}
+      >
+        Remove
+      </Button>
+    </div>
+  ))}
+  <Button
+    variant="primary"
+    onClick={() => {
+      setTreatmentHistories([
+        ...treatmentHistories,
+        { treatment_type: "", treatment_status: "", additional_information: "" },
+      ]);
+    }}
+  >
+    Add Treatment History
+  </Button>
+</Form.Group>
+<Form.Group controlId="emotionalPsychologicalSymptoms">
+          <Form.Label>Emotional Psychological Symptoms</Form.Label>
+          {emotionalPsychologicalSymptoms.map((symptom, index) => (
             <div key={index}>
               <Form.Control
                 type="text"
-                placeholder="Enter Treatment Type"
-                value={history.treatment_type}
+                placeholder="Enter Symptom"
+                value={symptom.symptom}
                 onChange={(e) => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories[index].treatment_type = e.target.value;
-                  setTreatmentHistories(newHistories);
+                  const newSymptoms = [...emotionalPsychologicalSymptoms];
+                  newSymptoms[index].symptom = e.target.value;
+                  setEmotionalPsychologicalSymptoms(newSymptoms);
                 }}
               />
               <Form.Control
                 type="text"
-                placeholder="Enter Treatment Status"
-                value={history.treatment_status}
+                placeholder="Enter Description"
+                value={symptom.description}
                 onChange={(e) => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories[index].treatment_status = e.target.value;
-                  setTreatmentHistories(newHistories);
-                }}
-              />
-              <Form.Control
-                type="text"
-                placeholder="Enter Additional Information"
-                value={history.additional_information}
-                onChange={(e) => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories[index].additional_information = e.target.value;
-                  setTreatmentHistories(newHistories);
+                  const newSymptoms = [...emotionalPsychologicalSymptoms];
+                  newSymptoms[index].description = e.target.value;
+                  setEmotionalPsychologicalSymptoms(newSymptoms);
                 }}
               />
               <Button
                 variant="danger"
                 onClick={() => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories.splice(index, 1);
-                  setTreatmentHistories(newHistories);
+                  const newSymptoms = [...emotionalPsychologicalSymptoms];
+                  newSymptoms.splice(index, 1);
+                  setEmotionalPsychologicalSymptoms(newSymptoms);
                 }}
               >
                 Remove
@@ -447,17 +511,13 @@ function PsychologyInfoForm() {
           <Button
             variant="primary"
             onClick={() => {
-              setTreatmentHistories([
-                ...treatmentHistories,
-                {
-                  treatment_type: "",
-                  treatment_status: "",
-                  additional_information: "",
-                },
+              setEmotionalPsychologicalSymptoms([
+                ...emotionalPsychologicalSymptoms,
+                { symptom: "", description: "" },
               ]);
             }}
           >
-            Add Treatment History
+            Add Symptom
           </Button>
         </Form.Group>
         <Form.Group controlId="pain_scale">
@@ -567,54 +627,7 @@ function PsychologyInfoForm() {
         </Form.Group>
         
         
-        <Form.Group controlId="emotionalPsychologicalSymptoms">
-          <Form.Label>Emotional Psychological Symptoms</Form.Label>
-          {emotionalPsychologicalSymptoms.map((symptom, index) => (
-            <div key={index}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Symptom"
-                value={symptom.symptom}
-                onChange={(e) => {
-                  const newSymptoms = [...emotionalPsychologicalSymptoms];
-                  newSymptoms[index].symptom = e.target.value;
-                  setEmotionalPsychologicalSymptoms(newSymptoms);
-                }}
-              />
-              <Form.Control
-                type="text"
-                placeholder="Enter Description"
-                value={symptom.description}
-                onChange={(e) => {
-                  const newSymptoms = [...emotionalPsychologicalSymptoms];
-                  newSymptoms[index].description = e.target.value;
-                  setEmotionalPsychologicalSymptoms(newSymptoms);
-                }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  const newSymptoms = [...emotionalPsychologicalSymptoms];
-                  newSymptoms.splice(index, 1);
-                  setEmotionalPsychologicalSymptoms(newSymptoms);
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="primary"
-            onClick={() => {
-              setEmotionalPsychologicalSymptoms([
-                ...emotionalPsychologicalSymptoms,
-                { symptom: "", description: "" },
-              ]);
-            }}
-          >
-            Add Symptom
-          </Button>
-        </Form.Group>
+        
         <Form.Group controlId="treatmentPlans">
           <Form.Label>Treatment Plan</Form.Label>
           {treatmentPlans.map((plan, index) => (
