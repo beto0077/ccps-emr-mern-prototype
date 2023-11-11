@@ -58,12 +58,13 @@ function PsychologyInfoForm() {
 
   //USEEFFECCT DE PRUEBA
   useEffect(() => {
-    console.log(customInputs)
+    /*console.log(customInputs)
     console.log("test")
     console.log(diagnosisOncologicalConditions)
     const finalConditions = getFinalDiagnosisConditions();
-    console.log(finalConditions);
-  }, [customInputs, diagnosisOncologicalConditions]);
+    console.log(finalConditions);*/
+    console.log(diseaseStatuses);
+  }, [diseaseStatuses]);
 
   const getFinalDiagnosisConditions = () => {
     return diagnosisOncologicalConditions.map((condition, index) => {
@@ -358,40 +359,45 @@ function PsychologyInfoForm() {
           />
         </Form.Group>
         <Form.Group controlId="diseaseStatuses">
-          <Form.Label>Actualización de enfermedad médica</Form.Label>
-          {diseaseStatuses.map((status, index) => (
-            <div key={index}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Disease Status"
-                value={status.selected_status}
-                onChange={(e) => {
-                  const newStatuses = [...diseaseStatuses];
-                  newStatuses[index].selected_status = e.target.value;
-                  setDiseaseStatuses(newStatuses);
-                }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  const newStatuses = [...diseaseStatuses];
-                  newStatuses.splice(index, 1);
-                  setDiseaseStatuses(newStatuses);
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="primary"
-            onClick={() => {
-              setDiseaseStatuses([...diseaseStatuses, { selected_status: "" }]);
-            }}
-          >
-            Add Disease Status
-          </Button>
-        </Form.Group>
+  <Form.Label>Actualización de enfermedad médica</Form.Label>
+  {diseaseStatuses.map((status, index) => (
+    <div key={index}>
+      <Form.Select
+        value={status.selected_status}
+        onChange={(e) => {
+          const newStatuses = [...diseaseStatuses];
+          newStatuses[index].selected_status = e.target.value;
+          setDiseaseStatuses(newStatuses);
+        }}
+      >
+        <option value="">Select a Status</option>
+        <option value="Stable">Stable</option>
+        <option value="Improving">Improving</option>
+        <option value="Worsening">Worsening</option>
+        {/* Add more predefined options here */}
+      </Form.Select>
+      <Button
+        variant="danger"
+        onClick={() => {
+          const newStatuses = [...diseaseStatuses];
+          newStatuses.splice(index, 1);
+          setDiseaseStatuses(newStatuses);
+        }}
+      >
+        Remove
+      </Button>
+    </div>
+  ))}
+  <Button
+    variant="primary"
+    onClick={() => {
+      setDiseaseStatuses([...diseaseStatuses, { selected_status: "" }]);
+    }}
+  >
+    Add Disease Status
+  </Button>
+</Form.Group>
+
         <Form.Group controlId="treatmentHistories">
           <Form.Label>Treatment History</Form.Label>
           {treatmentHistories.map((history, index) => (
