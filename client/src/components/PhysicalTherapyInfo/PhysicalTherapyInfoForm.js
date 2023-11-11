@@ -5,7 +5,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Navbar from "../NavigationBar";
 import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
-import { usePatientContext } from "../../context/PatientContext";
 
 function PhysicalTherapyForm() {
   const location = useLocation();
@@ -14,7 +13,7 @@ function PhysicalTherapyForm() {
     getPhysicalTherapyInfo,
     updatePhysicalTherapyInfo,
   } = usePhysicalTherapyInfoContext();
-  const { getPatient } = usePatientContext();
+  const [customSupport, setCustomSupport] = useState('');
   const [physicalTherapyInfo, setPhysicalTherapyInfo] = useState({
     patient_id: location.state?.id || "",
     professional: "",
@@ -39,6 +38,7 @@ function PhysicalTherapyForm() {
     physical_agents: "",
     postural_hygiene: "",
   });
+  
   const params = useParams();
   const navigate = useNavigate();
 
@@ -48,11 +48,24 @@ function PhysicalTherapyForm() {
         const loadedPhysicalTherapyInfo = await getPhysicalTherapyInfo(params.id);
         setPhysicalTherapyInfo(loadedPhysicalTherapyInfo);
       } else {
-        //Get professional name
+        //Get professional name later
       }
     };
     loadPhysicalTherapyInfo();
   }, []);
+
+  const handleCustomSupportChange = (e) => {
+    setCustomSupport(e.target.value);
+  };
+
+  const prepareDataForSubmission = () => {
+    if (physicalTherapyInfo.external_support === 'Otro') {
+      setPhysicalTherapyInfo(prevState => ({
+        ...prevState,
+        external_support: customSupport
+      }));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,12 +77,13 @@ function PhysicalTherapyForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    prepareDataForSubmission();
     if (params.id) {
       await updatePhysicalTherapyInfo(params.id, physicalTherapyInfo);
     } else {
       await createPhysicalTherapyInfo(physicalTherapyInfo);
     }
-    navigate(`/physicalTherapyDashboard/${location.state.id}`);
+    navigate(`/physicalTherapyDashboard/${physicalTherapyInfo.patient_id}`);
     setPhysicalTherapyInfo({
       patient_id:"",
       professional: "",
@@ -104,20 +118,13 @@ function PhysicalTherapyForm() {
       <h1 className="text-center mb-4">
                     {params.id ? "Editar referencia interna" : "Nueva Terapia física"}
                 </h1>
-      <Form.Group controlId="professional">
-          <Form.Label>TEST</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter professional's name"
-            value={physicalTherapyInfo.patient_id}
-            onChange={handleChange}
-          />
-        </Form.Group>
+      
         <Form.Group controlId="professional" className="mb-3">
           <Form.Label>Profesional</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter professional's name"
+            name="professional"
+            placeholder="Nombre del profesional espacialista"
             value={physicalTherapyInfo.professional}
             onChange={handleChange}
           />
@@ -128,6 +135,7 @@ function PhysicalTherapyForm() {
           <Form.Control
             as="textarea"
             rows={3}
+            name="clinical_diagnosis"
             placeholder="Ingrese diagnóstico clínico"
             value={physicalTherapyInfo.clinical_diagnosis}
             onChange={handleChange}
@@ -137,6 +145,7 @@ function PhysicalTherapyForm() {
         <Form.Group controlId="clinicalHistory" className="mb-3">
           <Form.Label>Historia Clínica</Form.Label>
           <Form.Control
+            name="clinical_history"
             as="select"
             value={physicalTherapyInfo.clinical_history}
             onChange={handleChange}
@@ -171,9 +180,10 @@ function PhysicalTherapyForm() {
 </Form.Group>
 
 
-<Form.Group controlId="edemaLocation">
+<Form.Group controlId="edemaLocation" className="mb-3">
     <Form.Label>Donde:</Form.Label>
     <Form.Control
+    name="edema_location"
         type="text"
         placeholder="Ingrese la ubicación del edema"
         value={physicalTherapyInfo.edema_location}
@@ -207,9 +217,10 @@ function PhysicalTherapyForm() {
     </div>
         </Form.Group>
 
-        <Form.Group controlId="ulcerLocation">
+        <Form.Group controlId="ulcerLocation" className="mb-3">
           <Form.Label>Donde:</Form.Label>
           <Form.Control
+          name="ulcer_location"
             type="text"
             placeholder="Ingrese la ubicación de la úlcera"
             value={physicalTherapyInfo.ulcer_location}
@@ -218,14 +229,14 @@ function PhysicalTherapyForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="activitiesOfDailyLiving">
+        <Form.Group controlId="activitiesOfDailyLiving" className="mb-3">
         <Form.Label>Actividades de la vida diaria (A.V.D)</Form.Label>
     <div>
         <Form.Check 
             inline
             type="radio"
             label="Sí"
-            name="activitiesOfDailyLiving"
+            name="activities_of_daily_living"
             value="Yes"
             checked={physicalTherapyInfo.activities_of_daily_living === true}
             onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, activities_of_daily_living: true })}
@@ -234,7 +245,7 @@ function PhysicalTherapyForm() {
             inline
             type="radio"
             label="No"
-            name="activitiesOfDailyLiving"
+            name="activities_of_daily_living"
             value="No"
             checked={physicalTherapyInfo.activities_of_daily_living === false}
             onChange={() => setPhysicalTherapyInfo({ ...physicalTherapyInfo, activities_of_daily_living: false })}
@@ -266,9 +277,10 @@ function PhysicalTherapyForm() {
     </div>
         </Form.Group>
 
-        <Form.Group controlId="painLocation">
+        <Form.Group controlId="painLocation" className="mb-3">
           <Form.Label>Donde:</Form.Label>
           <Form.Control
+          name="pain_location"
             type="text"
             placeholder="Ingrese la ubicación del dolor"
             value={physicalTherapyInfo.pain_location}
@@ -277,9 +289,10 @@ function PhysicalTherapyForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="muscleStrength">
+        <Form.Group controlId="muscleStrength" className="mb-3">
           <Form.Label>Fuerza muscular</Form.Label>
           <Form.Control
+            name="muscle_strength"
             type="text"
             placeholder="Ingrese la fuerza muscular"
             value={physicalTherapyInfo.muscle_strength}
@@ -287,9 +300,10 @@ function PhysicalTherapyForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="rangeOfMotion">
+        <Form.Group controlId="rangeOfMotion" className="mb-3">
           <Form.Label>Arcos movilidad</Form.Label>
           <Form.Control
+            name="range_of_motion"
             type="text"
             placeholder="Ingrese los arcos de movilidad"
             value={physicalTherapyInfo.range_of_motion}
@@ -297,9 +311,10 @@ function PhysicalTherapyForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="balance">
+        <Form.Group controlId="balance" className="mb-3">
           <Form.Label>Equilibrio</Form.Label>
           <Form.Control
+          name="balance"
             type="text"
             placeholder="Ingrese el equilibrio"
             value={physicalTherapyInfo.balance}
@@ -307,116 +322,124 @@ function PhysicalTherapyForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="externalSupport">
-    <Form.Label>External Support</Form.Label>
-    <Form.Select 
-        value={physicalTherapyInfo.external_support !== 'Bastón' && 
-                physicalTherapyInfo.external_support !== 'Andadera' && 
-                physicalTherapyInfo.external_support !== 'Silla de ruedas' && 
-                physicalTherapyInfo.external_support ? 'Otro' : physicalTherapyInfo.external_support}
-        onChange={(e) => {
-            setPhysicalTherapyInfo({ ...physicalTherapyInfo, external_support: e.target.value === 'Otro' ? '' : e.target.value });
-        }}
-    >
-        <option value="">Select an option</option>
-        <option value="Bastón">Bastón</option>
-        <option value="Andadera">Andadera</option>
-        <option value="Silla de ruedas">Silla de ruedas</option>
-        <option value="Otro">Otro</option>
-    </Form.Select>
-    {physicalTherapyInfo.external_support === 'Otro' && (
-        <Form.Control
-            type="text"
-            placeholder="Specify external support"
-            value={physicalTherapyInfo.external_support}
-            onChange={(e) =>
-                setPhysicalTherapyInfo({ ...physicalTherapyInfo, external_support: e.target.value })
-            }
-        />
-    )}
-</Form.Group>
+        <Form.Group controlId="externalSupport" className="mb-3">
+            <Form.Label>Apoyo externo</Form.Label>
+            <Form.Select 
+                value={physicalTherapyInfo.external_support}
+                onChange={(e) => {
+                    setPhysicalTherapyInfo({ ...physicalTherapyInfo, external_support: e.target.value });
+                }}
+            >
+                <option value="Ninguno">Ninguno</option>
+                <option value="Bastón">Bastón</option>
+                <option value="Andadera">Andadera</option>
+                <option value="Silla de ruedas">Silla de ruedas</option>
+                <option value="Otro">Otro</option>
+            </Form.Select>
+            {physicalTherapyInfo.external_support === 'Otro' && (
+                <Form.Control
+                    type="text"
+                    placeholder="Especifique el apoyo externo"
+                    value={customSupport}
+                    onChange={handleCustomSupportChange}
+                />
+            )}
+        </Form.Group>
 
 
-        <Form.Group controlId="additionalExternalSupportInfo">
-          <Form.Label>Additional External Support Info</Form.Label>
+        <Form.Group controlId="additionalExternalSupportInfo" className="mb-3">
+          <Form.Label>Justificación del apoyo externo</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter additional external support info"
+            name="additional_external_support_info"
+            placeholder="Justifique el apoyo externo"
             value={physicalTherapyInfo.additional_external_support_info}
             onChange={handleChange}
+            disabled={physicalTherapyInfo.external_support === 'Ninguno' || physicalTherapyInfo.external_support === ''}
           />
         </Form.Group>
 
-        <Form.Group controlId="workPlan">
-          <Form.Label>Work Plan</Form.Label>
+        <Form.Group controlId="workPlan" className="mb-3">
+          <Form.Label>Plan de trabajo</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter work plan"
+            name="work_plan"
+            placeholder="Ingrese el plan de trabajo"
             value={physicalTherapyInfo.work_plan}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="physicalTherapyTreatment">
-          <Form.Label>Physical Therapy Treatment</Form.Label>
+        <Form.Group controlId="physicalTherapyTreatment" className="mb-3">
+          <Form.Label>Tratamiento fisioterapeuta</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter physical therapy treatment"
+            name="physical_therapy_treatment"
+            placeholder="Ingrese el tratamiento fisioterapeuta"
             value={physicalTherapyInfo.physical_therapy_treatment}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="treatmentObjectives">
-          <Form.Label>Treatment Objectives</Form.Label>
+        <Form.Group controlId="treatmentObjectives" className="mb-3">
+          <Form.Label>Objetivos de tratamiento</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter treatment objectives"
+            name="treatment_objectives"
+            placeholder="Ingrese los objetivos del tratamiento"
             value={physicalTherapyInfo.treatment_objectives}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="exercises">
-          <Form.Label>Exercises</Form.Label>
+        <Form.Group controlId="exercises" className="mb-3">
+          <Form.Label>Ejercicios</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter exercises"
+            name="exercises"
+            placeholder="Ingreses ejercicios"
             value={physicalTherapyInfo.exercises}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="physicalAgents">
-          <Form.Label>Physical Agents</Form.Label>
+        <Form.Group controlId="physicalAgents" className="mb-3">
+          <Form.Label>Agente físicos</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter physical agents"
+            name="physical_agents"
+            placeholder="Ingrese agentes físicos"
             value={physicalTherapyInfo.physical_agents}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="posturalHygiene">
-          <Form.Label>Postural Hygiene</Form.Label>
+        <Form.Group controlId="posturalHygiene" className="mb-3">
+          <Form.Label>Higiene postural</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder="Enter postural hygiene"
+            name="postural_hygiene"
+            placeholder="Ingrese la higiene postural"
             value={physicalTherapyInfo.postural_hygiene}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        <div className="d-flex justify-content-between">
+                    <Button style={{marginTop: '30px'}} variant="primary" type="submit">
+                        Guardar
+                    </Button>
+                    <Button style={{marginTop: '30px'}} variant="outline-secondary" type="button" onClick={() => navigate(-1)}>
+                        Cancelar
+                    </Button>
+                </div>
       </Form>
     </div>
     </>

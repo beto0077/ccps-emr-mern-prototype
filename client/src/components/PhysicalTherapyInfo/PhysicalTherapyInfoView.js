@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
 import Footer from '../Footer';
+import 'mdbreact';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-
 import { usePhysicalTherapyInfoContext } from '../../context/PhysicalTherapyInfoContext'; // Assuming a new context for PhysicalTherapy
 
 function PhysicalTherapyInfoView() {
@@ -57,8 +57,10 @@ function PhysicalTherapyInfoView() {
 
     return (
         <>
-        <Navbar />
+        
         {error ? (
+            <>
+            <Navbar />
             <div className="text-center">
                 <Button
             variant="primary"
@@ -69,108 +71,111 @@ function PhysicalTherapyInfoView() {
             Generar Información
           </Button>
             </div>
+            </>
         ) : (
             <div className="bg-dark">
-            
+            <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Physical Therapy Information
+                Información de Terapia Física
             </h2>
             <Container>
                 <Row>
                     <Col>
+                    <div className="container ml-3">
                         <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                             <Card.Body>
-                                <h2 className="text-primary">Physical Therapy Details</h2>
+                                <h2 className="text-primary">Datos del paciente</h2>
                                 <Table striped bordered responsive>
                                     <tbody>
                                         <tr>
-                                            <td>Professional</td>
+                                            <td>Profesional</td>
                                             <td>{therapyInfo.professional}</td>
                                         </tr>
                                         <tr>
-                                            <td>Clinical Diagnosis</td>
+                                            <td>Diagnóstico Clínico</td>
                                             <td>{therapyInfo.clinical_diagnosis}</td>
                                         </tr>
                                         <tr>
-                                            <td>Clinical History</td>
+                                            <td>Historia Clínica</td>
                                             <td>{therapyInfo.clinical_history}</td>
                                         </tr>
                                         <tr>
                                             <td>Edema</td>
-                                            <td>{therapyInfo.edema ? 'Yes' : 'No'}</td>
+                                            <td>{therapyInfo.edema ? 'Sí' : 'No'}</td>
                                         </tr>
                                         <tr>
-                                            <td>Edema Location</td>
+                                            <td>Ubicación del Edema</td>
                                             <td>{therapyInfo.edema_location}</td>
                                         </tr>
                                         <tr>
-                                            <td>Ulcer</td>
-                                            <td>{therapyInfo.ulcer ? 'Yes' : 'No'}</td>
+                                            <td>Úlcera</td>
+                                            <td>{therapyInfo.ulcer ? 'Sí' : 'No'}</td>
                                         </tr>
                                         <tr>
-                                            <td>Ulcer Location</td>
+                                            <td>Ubicación de la úlcera</td>
                                             <td>{therapyInfo.ulcer_location}</td>
                                         </tr>
                                         <tr>
-                                            <td>Activities of Daily Living</td>
-                                            <td>{therapyInfo.activities_of_daily_living ? 'Yes' : 'No'}</td>
+                                            <td>Actividades de la vida diaria (A.V.D)</td>
+                                            <td>{therapyInfo.activities_of_daily_living ? 'Sí' : 'No'}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pain</td>
-                                            <td>{therapyInfo.pain ? 'Yes' : 'No'}</td>
+                                            <td>Dolor</td>
+                                            <td>{therapyInfo.pain ? 'Sí' : 'No'}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pain Location</td>
+                                            <td>Ubicación del dolor</td>
                                             <td>{therapyInfo.pain_location}</td>
                                         </tr>
                                         <tr>
-                                            <td>Muscle Strength</td>
+                                            <td>Fuerza muscular</td>
                                             <td>{therapyInfo.muscle_strength}</td>
                                         </tr>
                                         <tr>
-                                            <td>Range of Motion</td>
+                                            <td>Arcos movilidad</td>
                                             <td>{therapyInfo.range_of_motion}</td>
                                         </tr>
                                         <tr>
-                                            <td>Balance</td>
+                                            <td>Equilibrio</td>
                                             <td>{therapyInfo.balance}</td>
                                         </tr>
                                         <tr>
-                                            <td>External Support</td>
+                                            <td>Apoyo externo</td>
                                             <td>{therapyInfo.external_support}</td>
                                         </tr>
                                         <tr>
-                                            <td>Additional External Support Info</td>
+                                            <td>Justificación del apoyo externo</td>
                                             <td>{therapyInfo.additional_external_support_info}</td>
                                         </tr>
                                         <tr>
-                                            <td>Work Plan</td>
+                                            <td>Plan de trabajo</td>
                                             <td>{therapyInfo.work_plan}</td>
                                         </tr>
                                         <tr>
-                                            <td>Physical Therapy Treatment</td>
+                                            <td>Tratamiento fisioterapeuta</td>
                                             <td>{therapyInfo.physical_therapy_treatment}</td>
                                         </tr>
                                         <tr>
-                                            <td>Treatment Objectives</td>
+                                            <td>Objetivos de tratamiento</td>
                                             <td>{therapyInfo.treatment_objectives}</td>
                                         </tr>
                                         <tr>
-                                            <td>Exercises</td>
+                                            <td>Ejercicios</td>
                                             <td>{therapyInfo.exercises}</td>
                                         </tr>
                                         <tr>
-                                            <td>Physical Agents</td>
+                                            <td>Agente físicos</td>
                                             <td>{therapyInfo.physical_agents}</td>
                                         </tr>
                                         <tr>
-                                            <td>Postural Hygiene</td>
+                                            <td>Higiene postural</td>
                                             <td>{therapyInfo.postural_hygiene}</td>
                                         </tr>
                                     </tbody>
                                 </Table>
                             </Card.Body>
                         </Card>
+                        </div>
                     </Col>
                 </Row>
             </Container>
