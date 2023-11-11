@@ -40,6 +40,8 @@ function PsychologyInfoForm() {
   const [emotionalPsychologicalSymptoms, setEmotionalPsychologicalSymptoms] =
     useState([]);
   const [treatmentPlans, setTreatmentPlans] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [customInputs, setCustomInputs] = useState({});
 
   const params = useParams();
   const navigate = useNavigate();
@@ -54,6 +56,23 @@ function PsychologyInfoForm() {
     loadInfo();
   }, [params.id]);
 
+  //USEEFFECCT DE PRUEBA
+  useEffect(() => {
+    console.log(customInputs)
+    console.log("test")
+    console.log(diagnosisOncologicalConditions)
+    const finalConditions = getFinalDiagnosisConditions();
+    console.log(finalConditions);
+  }, [customInputs, diagnosisOncologicalConditions]);
+
+  const getFinalDiagnosisConditions = () => {
+    return diagnosisOncologicalConditions.map((condition, index) => {
+      if (condition === "Other" && customInputs[index]) {
+        return customInputs[index];
+      }
+      return condition;
+    });
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInfo((prevInfo) => ({
@@ -64,9 +83,10 @@ function PsychologyInfoForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const finalConditions = getFinalDiagnosisConditions();
     const formData = {
       ...info,
-      diagnosisOncologicalConditions,
+      finalConditions,
       diseaseStatuses,
       treatmentHistories,
       emotionalPsychologicalSymptoms,
@@ -261,25 +281,102 @@ function PsychologyInfoForm() {
           </Form.Control>
         </Form.Group>
         <Form.Group controlId="diagnosisOncologicalConditions" className="mb-3">
-          <Form.Label>Diagnosis Oncological Conditions</Form.Label>
-          {diagnosisOncologicalConditions.map((condition, index) => (
+  <Form.Label><h3 className="text-center mb-4">
+  Diagnóstico Oncológico
+        </h3></Form.Label>
+  {diagnosisOncologicalConditions.map((condition, index) => (
+    <div key={index}>
+      <Form.Select
+        aria-label="Select Diagnosis"
+        value={condition === "Other" ? condition : customInputs[index] || condition}
+        onChange={(e) => {
+          const newConditions = [...diagnosisOncologicalConditions];
+          if (e.target.value === "Other") {
+            newConditions[index] = "Other";
+            setCustomInputs({ ...customInputs, [index]: "" });
+          } else {
+            newConditions[index] = e.target.value;
+            const newCustomInputs = { ...customInputs };
+            delete newCustomInputs[index];
+            setCustomInputs(newCustomInputs);
+          }
+          setDiagnosisOncologicalConditions(newConditions);
+        }}
+      >
+        <option value="">Seleccione una opción</option>
+        <option value="CA de mama">CA de mama</option>
+        <option value="CA de ovario">CA de ovario</option>
+        <option value="Lymphoma">Lymphoma</option>
+        <option value="Other">Other</option>
+      </Form.Select>
+
+      {condition === "Other" && (
+        <Form.Control
+          type="text"
+          placeholder="Enter Custom Diagnosis"
+          value={customInputs[index] || ''}
+          onChange={(e) => {
+            setCustomInputs({ ...customInputs, [index]: e.target.value });
+          }}
+        />
+      )}
+
+      <Button
+        variant="danger"
+        onClick={() => {
+          const newConditions = [...diagnosisOncologicalConditions];
+          newConditions.splice(index, 1);
+          setDiagnosisOncologicalConditions(newConditions);
+          const newCustomInputs = { ...customInputs };
+          delete newCustomInputs[index];
+          setCustomInputs(newCustomInputs);
+        }}
+      >
+        Remove
+      </Button>
+    </div>
+  ))}
+  <Button
+    variant="primary"
+    onClick={() => {
+      setDiagnosisOncologicalConditions([...diagnosisOncologicalConditions, ""]);
+    }}
+  >
+    Agregar diagnóstico
+  </Button>
+</Form.Group>
+
+
+        <Form.Group controlId="date_of_diagnosis">
+          <Form.Label>Fecha de diagnóstico</Form.Label>
+          <Form.Control
+            type="date"
+            name="date_of_diagnosis"
+            value={info.date_of_diagnosis}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="diseaseStatuses">
+          <Form.Label>Actualización de enfermedad médica</Form.Label>
+          {diseaseStatuses.map((status, index) => (
             <div key={index}>
               <Form.Control
                 type="text"
-                placeholder="Enter Diagnosis Condition"
-                value={condition.selected_diagnosis}
+                placeholder="Enter Disease Status"
+                value={status.selected_status}
                 onChange={(e) => {
-                  const newConditions = [...diagnosisOncologicalConditions];
-                  newConditions[index].selected_diagnosis = e.target.value;
-                  setDiagnosisOncologicalConditions(newConditions);
+                  const newStatuses = [...diseaseStatuses];
+                  newStatuses[index].selected_status = e.target.value;
+                  setDiseaseStatuses(newStatuses);
                 }}
               />
               <Button
                 variant="danger"
                 onClick={() => {
-                  const newConditions = [...diagnosisOncologicalConditions];
-                  newConditions.splice(index, 1);
-                  setDiagnosisOncologicalConditions(newConditions);
+                  const newStatuses = [...diseaseStatuses];
+                  newStatuses.splice(index, 1);
+                  setDiseaseStatuses(newStatuses);
                 }}
               >
                 Remove
@@ -289,24 +386,73 @@ function PsychologyInfoForm() {
           <Button
             variant="primary"
             onClick={() => {
-              setDiagnosisOncologicalConditions([
-                ...diagnosisOncologicalConditions,
-                { selected_diagnosis: "" },
+              setDiseaseStatuses([...diseaseStatuses, { selected_status: "" }]);
+            }}
+          >
+            Add Disease Status
+          </Button>
+        </Form.Group>
+        <Form.Group controlId="treatmentHistories">
+          <Form.Label>Treatment History</Form.Label>
+          {treatmentHistories.map((history, index) => (
+            <div key={index}>
+              <Form.Control
+                type="text"
+                placeholder="Enter Treatment Type"
+                value={history.treatment_type}
+                onChange={(e) => {
+                  const newHistories = [...treatmentHistories];
+                  newHistories[index].treatment_type = e.target.value;
+                  setTreatmentHistories(newHistories);
+                }}
+              />
+              <Form.Control
+                type="text"
+                placeholder="Enter Treatment Status"
+                value={history.treatment_status}
+                onChange={(e) => {
+                  const newHistories = [...treatmentHistories];
+                  newHistories[index].treatment_status = e.target.value;
+                  setTreatmentHistories(newHistories);
+                }}
+              />
+              <Form.Control
+                type="text"
+                placeholder="Enter Additional Information"
+                value={history.additional_information}
+                onChange={(e) => {
+                  const newHistories = [...treatmentHistories];
+                  newHistories[index].additional_information = e.target.value;
+                  setTreatmentHistories(newHistories);
+                }}
+              />
+              <Button
+                variant="danger"
+                onClick={() => {
+                  const newHistories = [...treatmentHistories];
+                  newHistories.splice(index, 1);
+                  setTreatmentHistories(newHistories);
+                }}
+              >
+                Remove
+              </Button>
+            </div>
+          ))}
+          <Button
+            variant="primary"
+            onClick={() => {
+              setTreatmentHistories([
+                ...treatmentHistories,
+                {
+                  treatment_type: "",
+                  treatment_status: "",
+                  additional_information: "",
+                },
               ]);
             }}
           >
-            Add Diagnosis Condition
+            Add Treatment History
           </Button>
-        </Form.Group>
-        <Form.Group controlId="date_of_diagnosis">
-          <Form.Label>Date of Diagnosis</Form.Label>
-          <Form.Control
-            type="date"
-            name="date_of_diagnosis"
-            value={info.date_of_diagnosis}
-            onChange={handleChange}
-            required
-          />
         </Form.Group>
         <Form.Group controlId="pain_scale">
           <Form.Label>Pain Scale</Form.Label>
@@ -414,103 +560,7 @@ function PsychologyInfoForm() {
           />
         </Form.Group>
         
-        <Form.Group controlId="diseaseStatuses">
-          <Form.Label>Disease Status</Form.Label>
-          {diseaseStatuses.map((status, index) => (
-            <div key={index}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Disease Status"
-                value={status.selected_status}
-                onChange={(e) => {
-                  const newStatuses = [...diseaseStatuses];
-                  newStatuses[index].selected_status = e.target.value;
-                  setDiseaseStatuses(newStatuses);
-                }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  const newStatuses = [...diseaseStatuses];
-                  newStatuses.splice(index, 1);
-                  setDiseaseStatuses(newStatuses);
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="primary"
-            onClick={() => {
-              setDiseaseStatuses([...diseaseStatuses, { selected_status: "" }]);
-            }}
-          >
-            Add Disease Status
-          </Button>
-        </Form.Group>
-        <Form.Group controlId="treatmentHistories">
-          <Form.Label>Treatment History</Form.Label>
-          {treatmentHistories.map((history, index) => (
-            <div key={index}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Treatment Type"
-                value={history.treatment_type}
-                onChange={(e) => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories[index].treatment_type = e.target.value;
-                  setTreatmentHistories(newHistories);
-                }}
-              />
-              <Form.Control
-                type="text"
-                placeholder="Enter Treatment Status"
-                value={history.treatment_status}
-                onChange={(e) => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories[index].treatment_status = e.target.value;
-                  setTreatmentHistories(newHistories);
-                }}
-              />
-              <Form.Control
-                type="text"
-                placeholder="Enter Additional Information"
-                value={history.additional_information}
-                onChange={(e) => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories[index].additional_information = e.target.value;
-                  setTreatmentHistories(newHistories);
-                }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  const newHistories = [...treatmentHistories];
-                  newHistories.splice(index, 1);
-                  setTreatmentHistories(newHistories);
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="primary"
-            onClick={() => {
-              setTreatmentHistories([
-                ...treatmentHistories,
-                {
-                  treatment_type: "",
-                  treatment_status: "",
-                  additional_information: "",
-                },
-              ]);
-            }}
-          >
-            Add Treatment History
-          </Button>
-        </Form.Group>
+        
         <Form.Group controlId="emotionalPsychologicalSymptoms">
           <Form.Label>Emotional Psychological Symptoms</Form.Label>
           {emotionalPsychologicalSymptoms.map((symptom, index) => (
