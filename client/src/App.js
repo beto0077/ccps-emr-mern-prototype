@@ -27,6 +27,7 @@ import SocialWorkInfo2View from "./components/SocialWorkInfo/SocialWorkInfo2View
 import SocialWorkInfo2Form from "./components/SocialWorkInfo/SocialWorkInfo2Form";
 import SocialWorkInfo3View from "./components/SocialWorkInfo/SocialWorkInfo3View";
 import SocialWorkInfo3Form from "./components/SocialWorkInfo/SocialWorkInfo3Form";
+import SocialWorkInfo3List from "./components/SocialWorkInfo/SocialWorkInfo3List";
 import SocialWorkDashboard from "./components/SocialWorkInfo/SocialWorkDashboard";
 import PsychologyInfoView from "./components/PsychologyInfo/PsychologyInfoView";
 import PsychologyInfoForm from "./components/PsychologyInfo/PsychologyInfoForm";
@@ -34,6 +35,7 @@ import PsychologyInfo2View from "./components/PsychologyInfo/PsychologyInfo2View
 import PsychologyInfo2Form from "./components/PsychologyInfo/PsychologyInfo2Form";
 import PsychologyInfo3View from "./components/PsychologyInfo/PsychologyInfo3View";
 import PsychologyInfo3Form from "./components/PsychologyInfo/PsychologyInfo3Form";
+import PsychologyInfo3List from "./components/PsychologyInfo/PsychologyInfo3List";
 import PsychologyDashboard from "./components/PsychologyInfo/PsychologyDashboard";
 import InternalReferenceView from "./components/InternalReference/InternalReferenceView";
 import InternalReferenceForm from "./components/InternalReference/InternalReferenceForm";
@@ -84,6 +86,7 @@ function App() {
           <Route path="/socialWorkInfo3/:id" element={<SocialWorkInfo3View/>}/>
           <Route path="/createSocialWorkInfo3" element={<SocialWorkInfo3Form/>}/>
           <Route path="/editSocialWorkInfo3/:id" element={<SocialWorkInfo3Form/>}/>
+          <Route path="/socialWorkInfo3List/:id" element={<SocialWorkInfo3List/>}/>
           <Route path="/socialWorkDashboard/:id" element={<SocialWorkDashboard/>}/>
           <Route path="/psychologyInfo/:id" element={<PsychologyInfoView/>}/>
           <Route path="/createPsychologyInfo" element={<PsychologyInfoForm/>}/>
@@ -94,6 +97,7 @@ function App() {
           <Route path="/psychologyInfo3/:id" element={<PsychologyInfo3View/>}/>
           <Route path="/createPsychologyInfo3" element={<PsychologyInfo3Form/>}/>
           <Route path="/editPsychologyInfo3/:id" element={<PsychologyInfo3Form/>}/>
+          <Route path="/psychologyInfo3List/:id" element={<PsychologyInfo3List/>}/>
           <Route path="/psychologyDashboard/:id" element={<PsychologyDashboard/>}/>
           <Route path="/internalReference/:id" element={<InternalReferenceView/>}/>
           <Route path="/createInternalReference" element={<InternalReferenceForm/>}/>

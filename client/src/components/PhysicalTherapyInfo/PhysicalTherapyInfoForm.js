@@ -58,13 +58,22 @@ function PhysicalTherapyForm() {
     setCustomSupport(e.target.value);
   };
 
-  const prepareDataForSubmission = () => {
+  /*const prepareDataForSubmission = () => {
     if (physicalTherapyInfo.external_support === 'Otro') {
       setPhysicalTherapyInfo(prevState => ({
         ...prevState,
         external_support: customSupport
       }));
     }
+  };*/
+  const prepareDataForSubmission = () => {
+    if (physicalTherapyInfo.external_support === 'Otro') {
+      return {
+        ...physicalTherapyInfo,
+        external_support: customSupport
+      };
+    }
+    return physicalTherapyInfo;
   };
 
   const handleChange = (e) => {
@@ -77,11 +86,12 @@ function PhysicalTherapyForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    prepareDataForSubmission();
+    const updatedInfo = prepareDataForSubmission();
+    setPhysicalTherapyInfo(updatedInfo);
     if (params.id) {
-      await updatePhysicalTherapyInfo(params.id, physicalTherapyInfo);
+      await updatePhysicalTherapyInfo(params.id, updatedInfo);
     } else {
-      await createPhysicalTherapyInfo(physicalTherapyInfo);
+      await createPhysicalTherapyInfo(updatedInfo);
     }
     navigate(`/physicalTherapyDashboard/${physicalTherapyInfo.patient_id}`);
     setPhysicalTherapyInfo({

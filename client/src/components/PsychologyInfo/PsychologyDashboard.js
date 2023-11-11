@@ -34,7 +34,7 @@ function PsychologyDashboard() {
           <Button variant="secondary" size="lg" onClick={() => navigate(`/psychologyInfo2/${params.id}`)} className="mx-2 my-2 my-lg-3">
             Formulario de evaluación
           </Button>
-          <Button variant="success" size="lg" onClick={() => navigate(`/psychologyInfo3/${params.id}`)} className="mx-2 my-2 my-lg-3">
+          <Button variant="success" size="lg" onClick={() => navigate(`/psychologyInfo3List/${params.id}`)} className="mx-2 my-2 my-lg-3">
             Seguimiento
           </Button>
         </div>

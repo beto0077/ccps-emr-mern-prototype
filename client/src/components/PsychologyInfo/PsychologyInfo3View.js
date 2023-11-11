@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
-import Footer from '../Footer';
-import { Container, Row, Col, Table, Card, Image } from 'react-bootstrap';
+import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { usePsychologyInfo3Context } from '../../context/PsychologyInfo3Context';
 
@@ -13,6 +12,7 @@ function PsychologyInfo3View() {
         progress: '',
         treatment: ''
     });
+    const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
     const params = useParams();
     useEffect(() => {
@@ -28,40 +28,48 @@ function PsychologyInfo3View() {
             }
         };
         loadPsychologyInfo3();
+        const updateAvailableHeight = () => {
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            const newAvailableHeight = window.innerHeight - navbarHeight;
+            setAvailableHeight(newAvailableHeight);
+          };
+      
+        window.addEventListener('resize', updateAvailableHeight);
+        updateAvailableHeight();
+      
+        return () => window.removeEventListener('resize', updateAvailableHeight);
     }, []);
 
     return (
-        <div className="bg-dark">
-            <Navbar />
-            <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Psychology Info 3 Home
+        <>
+        <Navbar />
+        <div className="bg-white" style={{ minHeight: `${availableHeight}px` }}>
+            <h2 className="text-black my-3 mt-5 text-center" style={{ marginTop: '75px' }}>
+                Seguimiento de Psicología
             </h2>
-            <h3 className="text-white my-3 text-center">
-                Welcome!
-            </h3>
             <Container>
                 <Row>
                     <Col>
                         <div className="container ml-3">
                             <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                                 <Card.Body>
-                                    <h2 className="text-primary">Psychology Info 3 Details</h2>
+                                    <h2 className="text-primary">Detalles</h2>
                                     <Table striped bordered responsive>
                                         <tbody>
                                             <tr>
-                                                <td>Name</td>
+                                                <td>Nombre del paciente</td>
                                                 <td>{psychologyInfo.name}</td>
                                             </tr>
                                             <tr>
-                                                <td>ID</td>
+                                                <td>Cédula</td>
                                                 <td>{psychologyInfo.id}</td>
                                             </tr>
                                             <tr>
-                                                <td>Progress</td>
+                                                <td>Progreso</td>
                                                 <td>{psychologyInfo.progress}</td>
                                             </tr>
                                             <tr>
-                                                <td>Treatment</td>
+                                                <td>Tratamiento</td>
                                                 <td>{psychologyInfo.treatment}</td>
                                             </tr>
                                         </tbody>
@@ -72,8 +80,8 @@ function PsychologyInfo3View() {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
         </div>
+        </>
     );
 }
 

@@ -2,38 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Navber from "../NavigationBar";
-import { useControlNoteContext } from "../../context/ControlNoteContext";
-import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
-
-function ControlNoteList() {
-    const { getPhysicalTherapyInfo } = usePhysicalTherapyInfoContext();
-    const { controlNotes, loadControlNotes, deleteControlNote } = useControlNoteContext();
+import { useSocialWorkInfo3Context } from "../../context/SocialWorkInfo3Context";
+import { useSocialWorkInfo1Context } from "../../context/SocialWorkInfo1Context";
+function SocialWorkInfo3List() {
+    const { getSocialWorkInfo1 } = useSocialWorkInfo1Context();
+    const { socialWorkInfos3,
+        loadSocialWorkInfo3s,
+        deleteSocialWorkInfo3 } = useSocialWorkInfo3Context();
     const navigate = useNavigate();
     const params = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [therapyInfoId, setTherapyInfoId] = useState('');
     const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-    
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    };
     useEffect(() => {
-        const loadPhysicalTherapyInfo = async () => {
+
+        const loadSocialWorkInfo1 = async () => {
             if (params.id) {
                 try {
-                    const details = await getPhysicalTherapyInfo(params.id);
+                    const details = await getSocialWorkInfo1(params.id);
                     if (Object.keys(details).length === 0) { // Check if the response is empty
                         setError(true); // Set error state to true
                     } else {
-                        setTherapyInfoId(details.physical_therapy_id);
-                        loadControlNotes(details.physical_therapy_id);
                         setError(false); // Reset error state if data is loaded successfully
                     }
                 } catch (error) {
@@ -42,7 +32,9 @@ function ControlNoteList() {
                 }
             }
         };
-        loadPhysicalTherapyInfo();
+        loadSocialWorkInfo1();
+
+        loadSocialWorkInfo3s(params.id);
         setIsLoading(false);
 
         const updateAvailableHeight = () => {
@@ -79,45 +71,45 @@ function ControlNoteList() {
             
             <br />
             <h2 className="text-white text-center">
-                Notas de control de terapia física
+                Seguimientos de trabajo social
             </h2>
             <br />
             <div className="text-center">
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createControlNote`, { state: { id: therapyInfoId, patientId: params.id } })}
+            onClick={() => navigate(`/createSocialWorkInfo3`, { state: { id: params.id } })}
             className="mx-2 my-2 my-lg-3"
           >
-            Crear nota de control
+            Crear nota nueva
           </Button>
             </div>
             <Container>
                 <Row>
                     <Col>
                         <div className="jumbotron mt-5 mb-5" style={{ backgroundColor: "#e0e0e0" }}>
-                            <h2 className="text-primary">Notas</h2>
+                            <h2 className="text-primary">Seguimientos</h2>
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Fecha</th>
-                                        <th>Nota</th>
-                                        <th>Ver</th>
+                                        <th>Evolución</th>
+                                        <th>Tratamiento</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {!isLoading ? (
-                                        controlNotes.map((controlNote) => (
-                                            <tr key={controlNote.control_note_id}>
-                                                <td>{controlNote.control_note_id}</td>
-                                                <td>{formatDate(controlNote.date)}</td>
-                                                <td>{controlNote.control_notes}</td>
+                                        socialWorkInfos3.map((socialWorkInfo) => (
+                                            <tr key={socialWorkInfo.social_work_info3_id}>
+                                                <td>{socialWorkInfo.social_work_info3_id}</td>
+                                                <td>{socialWorkInfo.evolution}</td>
+                                                <td>{socialWorkInfo.treatment}</td>
                                                 <td>
                                                     <Button
                                                         variant="outline-secondary"
                                                         className="mr-2"
-                                                        onClick={() => navigate(`/controlNote/${controlNote.control_note_id}`)}
+                                                        onClick={() => navigate(`/socialWorkInfo3/${socialWorkInfo.social_work_info3_id}`)}
                                                     >
                                                         Más detalles
                                                     </Button>
@@ -144,4 +136,4 @@ function ControlNoteList() {
     );
 }
 
-export default ControlNoteList;
+export default SocialWorkInfo3List;

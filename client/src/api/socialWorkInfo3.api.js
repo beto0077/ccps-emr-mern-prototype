@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const getSocialWorkInfo3sRequest = async () =>
-  await axios.get(`${BASE_URL}/socialWorkInfo3/socialWorkInfo3s`);
+export const getSocialWorkInfo3sRequest = async (id) =>
+  await axios.get(`${BASE_URL}/socialWorkInfo3/allSocialWorkInfo3s/${id}`);
 
 export const createSocialWorkInfo3Request = async (socialWorkInfo) =>
   await axios.post(`${BASE_URL}/socialWorkInfo3/socialWorkInfos3`, socialWorkInfo);

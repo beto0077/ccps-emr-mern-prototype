@@ -21,8 +21,8 @@ export const useSocialWorkInfo3Context = () => {
 export const SocialWorkInfo3Provider = ({ children }) => {
     const [socialWorkInfos3, setSocialWorkInfos3] = useState([]);
 
-    async function loadSocialWorkInfo3s() {
-        const response = await getSocialWorkInfo3sRequest();
+    async function loadSocialWorkInfo3s(id) {
+        const response = await getSocialWorkInfo3sRequest(id);
         setSocialWorkInfos3(response.data);
     }
 

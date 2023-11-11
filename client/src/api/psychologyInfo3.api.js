@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const getPsychologyInfo3sRequest = async () =>
-  await axios.get(`${BASE_URL}/psychologyInfo3/psychologyInfo3s`);
+export const getPsychologyInfo3sRequest = async (id) =>
+  await axios.get(`${BASE_URL}/psychologyInfo3/allPsychologyInfo3s/${id}`);
 
 export const createPsychologyInfo3Request = async (psychologyInfo3) =>
   await axios.post(`${BASE_URL}/psychologyInfo3/psychologyInfo3s`, psychologyInfo3);

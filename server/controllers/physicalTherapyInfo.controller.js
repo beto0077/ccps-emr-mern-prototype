@@ -12,7 +12,8 @@ export const getPhysicalTherapyInfos = async (req, res) => {
 
 export const getPhysicalTherapyInfo = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM PhysicalTherapyInfo WHERE physical_therapy_id = ?", [req.params.id]);
+        //const [result] = await database.query("SELECT * FROM PhysicalTherapyInfo WHERE physical_therapy_id = ?", [req.params.id]);
+        const [result] = await database.query("SELECT * FROM PhysicalTherapyInfo WHERE patient_id = ?", [req.params.id]);
         if (result.length === 0) {
             return res.status(404).json({ message: "Record not found" });
         }

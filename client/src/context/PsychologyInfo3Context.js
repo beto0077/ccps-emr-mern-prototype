@@ -19,8 +19,8 @@ export const usePsychologyInfo3Context = () => {
 export const PsychologyInfo3Provider = ({ children }) => {
     const [psychologyInfo3s, setPsychologyInfo3s] = useState([]);
 
-    async function loadPsychologyInfo3s() {
-        const response = await getPsychologyInfo3sRequest();
+    async function loadPsychologyInfo3s(id) {
+        const response = await getPsychologyInfo3sRequest(id);
         setPsychologyInfo3s(response.data);
     }
 

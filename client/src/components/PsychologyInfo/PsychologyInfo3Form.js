@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Navbar from '../NavigationBar';
 import { usePsychologyInfo3Context } from "../../context/PsychologyInfo3Context";
+import { usePatientContext } from "../../context/PatientContext";
 
 function PsychologyInfo3Form() {
+    const location = useLocation();
     const { createPsychologyInfo3, getPsychologyInfo3, updatePsychologyInfo3 } = usePsychologyInfo3Context();
+    const { getPatient } = usePatientContext();
     const [psychologyInfo3, setPsychologyInfo3] = useState({
-        patient_id: "",
+        patient_id: location.state?.id || "",
         name: "",
         id: "",
         progress: "",
@@ -29,6 +33,13 @@ function PsychologyInfo3Form() {
                     progress: loadedPsychologyInfo3.progress,
                     treatment: loadedPsychologyInfo3.treatment
                 });
+            } else {
+                const patient = await getPatient(psychologyInfo3.patient_id);
+                setPsychologyInfo3(prevInfo => ({
+                    ...prevInfo,
+                    name: patient.name,
+                    id: patient.id_number
+                }));
             }
         };
         loadPsychologyInfo3();
@@ -49,7 +60,7 @@ function PsychologyInfo3Form() {
         } else {
             await createPsychologyInfo3(psychologyInfo3);
         }
-        navigate("/psychologyInfo3List"); // Assuming you'll have a route for listing PsychologyInfo3
+        navigate(`/psychologyInfo3List/${psychologyInfo3.patient_id}`); // Assuming you'll have a route for listing PsychologyInfo3
         setPsychologyInfo3({
             patient_id: "",
             name: "",
@@ -60,66 +71,64 @@ function PsychologyInfo3Form() {
     };
 
     return (
+        <>
+        <Navbar />
         <div style={{ display: 'block', margin: 'auto', width: 400, padding: 30 }}>
             <Form onSubmit={handleSubmit}>
                 <h1 className="text-center mb-4">
-                    {params.id ? "Edit Psychology Info" : "New Psychology Info"}
+                    {params.id ? "Edit Psychology Info" : "Nuevo seguimiento de psicología"}
                 </h1>
-                <Form.Group controlId="formPatientId">
-                    <Form.Label>Patient ID</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="patient_id"
-                        placeholder="Enter patient ID"
-                        onChange={handleChange}
-                        value={psychologyInfo3.patient_id}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formName">
-                    <Form.Label>Name</Form.Label>
+                <Form.Group controlId="formName" className="mb-3">
+                    <Form.Label>Nombre del paciente</Form.Label>
                     <Form.Control
                         type="text"
                         name="name"
-                        placeholder="Enter name"
+                        placeholder="Ingrese el nombre del paciente"
                         onChange={handleChange}
                         value={psychologyInfo3.name}
                     />
                 </Form.Group>
-                <Form.Group controlId="formId">
-                    <Form.Label>ID</Form.Label>
+                <Form.Group controlId="formId" className="mb-3">
+                    <Form.Label>Cédula</Form.Label>
                     <Form.Control
                         type="text"
                         name="id"
-                        placeholder="Enter ID"
+                        placeholder="Ingrese la cédula"
                         onChange={handleChange}
                         value={psychologyInfo3.id}
                     />
                 </Form.Group>
-                <Form.Group controlId="formProgress">
-                    <Form.Label>Progress</Form.Label>
+                <Form.Group controlId="formProgress" className="mb-3">
+                    <Form.Label>Progreso</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="textarea" rows={5}
                         name="progress"
-                        placeholder="Enter progress"
+                        placeholder="Escriba el progreso"
                         onChange={handleChange}
                         value={psychologyInfo3.progress}
                     />
                 </Form.Group>
-                <Form.Group controlId="formTreatment">
-                    <Form.Label>Treatment</Form.Label>
+                <Form.Group controlId="formTreatment" className="mb-3">
+                    <Form.Label>Tratamiento</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="textarea" rows={5}
                         name="treatment"
-                        placeholder="Enter treatment"
+                        placeholder="Ingrese el tratamiento"
                         onChange={handleChange}
                         value={psychologyInfo3.treatment}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Save
-                </Button>
+                <div className="d-flex justify-content-between">
+                    <Button style={{marginTop: '30px'}} variant="primary" type="submit">
+                        Guardar
+                    </Button>
+                    <Button style={{marginTop: '30px'}} variant="outline-secondary" type="button" onClick={() => navigate(-1)}>
+                        Cancelar
+                    </Button>
+                </div>
             </Form>
         </div>
+        </>
     );
 }
 

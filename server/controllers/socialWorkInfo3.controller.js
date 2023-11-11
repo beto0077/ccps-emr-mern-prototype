@@ -3,7 +3,7 @@ import { database } from '../utils/database.js';
 
 export const getSocialWorkInfo3s = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM SocialWorkInfo3 ORDER BY social_work_info3_id ASC");
+        const [result] = await database.query("SELECT * FROM SocialWorkInfo3 WHERE patient_id = ? ORDER BY social_work_info3_id ASC", [req.params.id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error });

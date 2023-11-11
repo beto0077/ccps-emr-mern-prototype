@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/socialWorkInfo3s', getSocialWorkInfo3s);
+router.get('/allSocialWorkInfo3s/:id', getSocialWorkInfo3s);
 router.get('/socialWorkInfos3/:id', getSocialWorkInfo3);
 router.post('/socialWorkInfos3', createSocialWorkInfo3);
 router.put('/socialWorkInfos3/:id', updateSocialWorkInfo3);

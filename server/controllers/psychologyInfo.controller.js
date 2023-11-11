@@ -107,14 +107,14 @@ export const createPsychologyInfo = async (req, res) => {
 };
 
 export const getPsychologyInfo = async (req, res) => {
-    const { psychology_info_id } = req.params;
+    
     const connection = await database.getConnection();
 
     try {
         // Fetch data from PsychologyInfo
         const [psychologyInfo] = await connection.query(
-            "SELECT * FROM PsychologyInfo WHERE psychology_info_id = ?",
-            [psychology_info_id]
+            "SELECT * FROM PsychologyInfo WHERE patient_id = ?",
+            [req.params.id]
         );
 
         if (psychologyInfo.length === 0) {
@@ -124,31 +124,31 @@ export const getPsychologyInfo = async (req, res) => {
         // Fetch data from DiagnosisOncologicalConditions
         const [diagnosisOncologicalConditions] = await connection.query(
             "SELECT * FROM DiagnosisOncologicalConditions WHERE psychology_info_id = ?",
-            [psychology_info_id]
+            [psychologyInfo[0].psychology_info_id]
         );
 
         // Fetch data from DiseaseStatus
         const [diseaseStatus] = await connection.query(
             "SELECT * FROM DiseaseStatus WHERE psychology_info_id = ?",
-            [psychology_info_id]
+            [psychologyInfo[0].psychology_info_id]
         );
 
         // Fetch data from TreatmentHistory
         const [treatmentHistory] = await connection.query(
             "SELECT * FROM TreatmentHistory WHERE psychology_info_id = ?",
-            [psychology_info_id]
+            [psychologyInfo[0].psychology_info_id]
         );
 
         // Fetch data from EmotionalPsychologicalSymptoms
         const [emotionalPsychologicalSymptoms] = await connection.query(
             "SELECT * FROM EmotionalPsychologicalSymptoms WHERE psychology_info_id = ?",
-            [psychology_info_id]
+            [psychologyInfo[0].psychology_info_id]
         );
 
         // Fetch data from TreatmentPlan
         const [treatmentPlan] = await connection.query(
             "SELECT * FROM TreatmentPlan WHERE psychology_info_id = ?",
-            [psychology_info_id]
+            [psychologyInfo[0].psychology_info_id]
         );
 
         // Construct the response

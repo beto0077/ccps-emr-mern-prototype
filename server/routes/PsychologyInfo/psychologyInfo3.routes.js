@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/psychologyInfo3s', getPsychologyInfo3s);
+router.get('/allPsychologyInfo3s/:id', getPsychologyInfo3s);
 router.get('/psychologyInfo3s/:id', getPsychologyInfo3);
 router.post('/psychologyInfo3s', createPsychologyInfo3);
 router.put('/psychologyInfo3s/:id', updatePsychologyInfo3);

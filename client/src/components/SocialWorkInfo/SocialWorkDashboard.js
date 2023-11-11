@@ -34,7 +34,7 @@ function SocialWorkDashboard() {
           <Button variant="secondary" size="lg" onClick={() => navigate(`/socialWorkInfo2/${params.id}`)} className="mx-2 my-2 my-lg-3">
           Situación Socio-económica
           </Button>
-          <Button variant="success" size="lg" onClick={() => navigate(`/socialWorkInfo3/${params.id}`)} className="mx-2 my-2 my-lg-3">
+          <Button variant="success" size="lg" onClick={() => navigate(`/socialWorkInfo3List/${params.id}`)} className="mx-2 my-2 my-lg-3">
             Seguimiento
           </Button>
         </div>

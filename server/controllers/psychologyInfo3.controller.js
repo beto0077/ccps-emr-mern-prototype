@@ -3,7 +3,7 @@ import { database } from '../utils/database.js';
 
 export const getPsychologyInfo3s = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM PsychologyInfo3 ORDER BY psychology_info3_id ASC");
+        const [result] = await database.query("SELECT * FROM PsychologyInfo3 WHERE patient_id = ? ORDER BY psychology_info3_id ASC", [req.params.id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error });

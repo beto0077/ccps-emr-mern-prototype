@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Navbar from "../NavigationBar";
 import { usePsychologyInfoContext } from "../../context/PsychologyInfoContext";
 
 function PsychologyInfoForm() {
+  const location = useLocation();
   const { createPsychologyInfo, getPsychologyInfo, updatePsychologyInfo } =
     usePsychologyInfoContext();
   const [info, setInfo] = useState({
-    psychology_info_id: "",
-    patient_id: "",
+    patient_id: location.state?.id || "",
     professional: "",
     evaluation_for: "",
     family_structure: "",
@@ -77,9 +78,8 @@ function PsychologyInfoForm() {
     } else {
       await createPsychologyInfo(formData);
     }
-    navigate("/PsychologyInfoHome");
+    navigate(`/PsychologyDashboard/${info.patient_id}`);
     setInfo({
-      psychology_info_id: "",
       patient_id: "",
       professional: "",
       evaluation_for: "",
@@ -110,66 +110,97 @@ function PsychologyInfoForm() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div style={{ display: "block", margin: "auto", width: 400, padding: 30 }}>
       <Form onSubmit={handleSubmit}>
         <h1 className="text-center mb-4">
-          {params.id ? "Edit Psychology Info" : "New Psychology Info"}
+          {params.id ? "Edit Psychology Info" : "Nueva información de psicología"}
         </h1>
-        <Form.Group controlId="professional">
-          <Form.Label>Professional</Form.Label>
+        <Form.Group controlId="professional" className="mb-3">
+          <Form.Label>Profesional</Form.Label>
           <Form.Control
             type="text"
             name="professional"
+            placeholder="Nombre del profesional espacialista"
             value={info.professional}
             onChange={handleChange}
             required
           />
         </Form.Group>
-        <Form.Group controlId="evaluation_for">
-          <Form.Label>Evaluation For</Form.Label>
+        <Form.Group controlId="evaluation_for" className="mb-3">
+          <Form.Label>Se atendió a</Form.Label>
           <Form.Control
-            type="text"
+            as="select"
             name="evaluation_for"
             value={info.evaluation_for}
             onChange={handleChange}
             required
-          />
+            >
+            <option value="Paciente">Paciente</option>
+            <option value="Familiar">Familiar</option>
+            <option value="Paciente y Familiar">Paciente y Familiar</option>
+          </Form.Control>
         </Form.Group>
-        <Form.Group controlId="family_structure">
-          <Form.Label>Family Structure</Form.Label>
+        <Form.Group controlId="family_structure" className="mb-3">
+          <Form.Label>Estructura Familiar (Cuidador Primario CP)</Form.Label>
           <Form.Control
             as="textarea"
-            rows={3}
+            rows={5}
             name="family_structure"
             value={info.family_structure}
             onChange={handleChange}
             required
           />
         </Form.Group>
-        <Form.Group controlId="family_functionality">
+        <Form.Group controlId="family_functionality" className="mb-3">
+        <Form.Label>Familia</Form.Label>
+        <div>
           <Form.Check
-            type="checkbox"
-            label="Family Functionality"
-            name="family_functionality"
-            checked={info.family_functionality}
-            onChange={(e) =>
-              setInfo({ ...info, family_functionality: e.target.checked })
-            }
+              inline
+              type="radio"
+              label="Funcional"
+              name="family_functionality"
+              value="Yes"
+              checked={info.family_functionality === true}
+              onChange={()=>setInfo({...info, family_functionality: true})}
           />
-        </Form.Group>
-        <Form.Group controlId="spiritual_support">
           <Form.Check
-            type="checkbox"
-            label="Spiritual Support"
-            name="spiritual_support"
-            checked={info.spiritual_support}
-            onChange={(e) =>
-              setInfo({ ...info, spiritual_support: e.target.checked })
-            }
+              inline
+              type="radio"
+              label="Disfuncional"
+              name="family_functionality"
+              value="No"
+              checked={info.family_functionality === false}
+              onChange={()=>setInfo({...info, family_functionality: false})}
           />
+        </div>
         </Form.Group>
-        <Form.Group controlId="clinical_history">
-          <Form.Label>Clinical History</Form.Label>
+        <Form.Group controlId="spiritual_support" className="mb-3">
+        <Form.Label>Soporte espiritual</Form.Label>
+        <div>
+          <Form.Check
+              inline
+              type="radio"
+              label="Sí"
+              name="spiritual_support"
+              value="Yes"
+              checked={info.spiritual_support === true}
+              onChange={()=>setInfo({...info, spiritual_support: true})}
+          />
+          <Form.Check
+              inline
+              type="radio"
+              label="No"
+              name="spiritual_support"
+              value="No"
+              checked={info.spiritual_support === false}
+              onChange={()=>setInfo({...info, spiritual_support: false})}
+          />
+        </div>
+        </Form.Group>
+        <Form.Group controlId="clinical_history" className="mb-3">
+          <Form.Label>Historia Clínica</Form.Label>
           <Form.Control
             as="select"
             name="clinical_history"
@@ -177,39 +208,95 @@ function PsychologyInfoForm() {
             onChange={handleChange}
             required
           >
-            <option value="Home visit">Home visit</option>
-            <option value="External consultation">External consultation</option>
+            <option value="Visita domiciliar">Visita domiciliar</option>
+            <option value="Consulta externa">Consulta externa</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group controlId="diagnosis_knowledge">
-          <Form.Label>Diagnosis Knowledge</Form.Label>
+        <h3 className="text-center mb-4">
+          Información del paciente
+        </h3>
+        <Form.Group controlId="diagnosis_knowledge" className="mb-3">
+          <Form.Label>Diagnóstico</Form.Label>
           <Form.Control
-            type="text"
+            as="select"
             name="diagnosis_knowledge"
             value={info.diagnosis_knowledge}
             onChange={handleChange}
             required
-          />
+            >
+            <option value="No lo conoce">No lo conoce</option>
+            <option value="Confuso">Confuso</option>
+            <option value="Ligeramente sabe">Ligeramente sabe</option>
+            <option value="Buena información">Buena información</option>
+          </Form.Control>
         </Form.Group>
-        <Form.Group controlId="treatment_knowledge">
-          <Form.Label>Treatment Knowledge</Form.Label>
+        <Form.Group controlId="treatment_knowledge" className="mb-3">
+          <Form.Label>Tratamiento</Form.Label>
           <Form.Control
-            type="text"
+            as="select"
             name="treatment_knowledge"
             value={info.treatment_knowledge}
             onChange={handleChange}
             required
-          />
+            >
+            <option value="No lo conoce">No lo conoce</option>
+            <option value="Confuso">Confuso</option>
+            <option value="Ligeramente sabe">Ligeramente sabe</option>
+            <option value="Buena información">Buena información</option>
+          </Form.Control>
         </Form.Group>
-        <Form.Group controlId="prognosis_knowledge">
-          <Form.Label>Prognosis Knowledge</Form.Label>
+        <Form.Group controlId="prognosis_knowledge" className="mb-3">
+          <Form.Label>Pronóstico</Form.Label>
           <Form.Control
-            type="text"
+            as="select"
             name="prognosis_knowledge"
             value={info.prognosis_knowledge}
             onChange={handleChange}
             required
-          />
+            >
+            <option value="No lo conoce">No lo conoce</option>
+            <option value="Confuso">Confuso</option>
+            <option value="Ligeramente sabe">Ligeramente sabe</option>
+            <option value="Buena información">Buena información</option>
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="diagnosisOncologicalConditions" className="mb-3">
+          <Form.Label>Diagnosis Oncological Conditions</Form.Label>
+          {diagnosisOncologicalConditions.map((condition, index) => (
+            <div key={index}>
+              <Form.Control
+                type="text"
+                placeholder="Enter Diagnosis Condition"
+                value={condition.selected_diagnosis}
+                onChange={(e) => {
+                  const newConditions = [...diagnosisOncologicalConditions];
+                  newConditions[index].selected_diagnosis = e.target.value;
+                  setDiagnosisOncologicalConditions(newConditions);
+                }}
+              />
+              <Button
+                variant="danger"
+                onClick={() => {
+                  const newConditions = [...diagnosisOncologicalConditions];
+                  newConditions.splice(index, 1);
+                  setDiagnosisOncologicalConditions(newConditions);
+                }}
+              >
+                Remove
+              </Button>
+            </div>
+          ))}
+          <Button
+            variant="primary"
+            onClick={() => {
+              setDiagnosisOncologicalConditions([
+                ...diagnosisOncologicalConditions,
+                { selected_diagnosis: "" },
+              ]);
+            }}
+          >
+            Add Diagnosis Condition
+          </Button>
         </Form.Group>
         <Form.Group controlId="date_of_diagnosis">
           <Form.Label>Date of Diagnosis</Form.Label>
@@ -326,44 +413,7 @@ function PsychologyInfoForm() {
             required
           />
         </Form.Group>
-        <Form.Group controlId="diagnosisOncologicalConditions">
-          <Form.Label>Diagnosis Oncological Conditions</Form.Label>
-          {diagnosisOncologicalConditions.map((condition, index) => (
-            <div key={index}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Diagnosis Condition"
-                value={condition.selected_diagnosis}
-                onChange={(e) => {
-                  const newConditions = [...diagnosisOncologicalConditions];
-                  newConditions[index].selected_diagnosis = e.target.value;
-                  setDiagnosisOncologicalConditions(newConditions);
-                }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  const newConditions = [...diagnosisOncologicalConditions];
-                  newConditions.splice(index, 1);
-                  setDiagnosisOncologicalConditions(newConditions);
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="primary"
-            onClick={() => {
-              setDiagnosisOncologicalConditions([
-                ...diagnosisOncologicalConditions,
-                { selected_diagnosis: "" },
-              ]);
-            }}
-          >
-            Add Diagnosis Condition
-          </Button>
-        </Form.Group>
+        
         <Form.Group controlId="diseaseStatuses">
           <Form.Label>Disease Status</Form.Label>
           {diseaseStatuses.map((status, index) => (
@@ -548,11 +598,17 @@ function PsychologyInfoForm() {
           </Button>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Save
-        </Button>
+        <div className="d-flex justify-content-between">
+                    <Button style={{marginTop: '30px'}} variant="primary" type="submit">
+                        Guardar
+                    </Button>
+                    <Button style={{marginTop: '30px'}} variant="outline-secondary" type="button" onClick={() => navigate(-1)}>
+                        Cancelar
+                    </Button>
+                </div>
       </Form>
     </div>
+    </>
   );
 }
 
