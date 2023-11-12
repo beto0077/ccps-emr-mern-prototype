@@ -3,6 +3,10 @@ import { database } from '../utils/database.js';
 
 export const createPsychologyInfo = async (req, res) => {
     const connection = await database.getConnection();
+    /*console.log(req.body.emotionalPsychologicalSymptoms[0].symptom);
+    console.log(req.body.emotionalPsychologicalSymptoms[0].description);
+    console.log(req.body.finalConditions[0]);
+    console.log(req.body);*/
     try {
         await connection.beginTransaction();
 
@@ -38,9 +42,9 @@ export const createPsychologyInfo = async (req, res) => {
         const psychology_info_id = result.insertId;
 
         // Insert data into DiagnosisOncologicalConditions
-        const { selected_diagnoses } = req.body;
-        if (selected_diagnoses && selected_diagnoses.length > 0) {
-            for (const diagnosis of selected_diagnoses) {
+        const { finalConditions } = req.body;
+        if (finalConditions && finalConditions.length > 0) {
+            for (const diagnosis of finalConditions) {
                 await connection.query(
                     "INSERT INTO DiagnosisOncologicalConditions (psychology_info_id, selected_diagnosis) VALUES (?, ?)",
                     [psychology_info_id, diagnosis]
@@ -49,31 +53,31 @@ export const createPsychologyInfo = async (req, res) => {
         }
 
         // Insert data into DiseaseStatus
-        const { selected_statuses } = req.body;
-        if (selected_statuses && selected_statuses.length > 0) {
-            for (const status of selected_statuses) {
+        const { diseaseStatuses } = req.body;
+        if (diseaseStatuses && diseaseStatuses.length > 0) {
+            for (const status of diseaseStatuses) {
                 await connection.query(
                     "INSERT INTO DiseaseStatus (psychology_info_id, selected_status) VALUES (?, ?)",
-                    [psychology_info_id, status]
+                    [psychology_info_id, status.selected_status]
                 );
             }
         }
 
         // Insert data into TreatmentHistory
-        const { treatment_histories } = req.body;
-        if (treatment_histories && treatment_histories.length > 0) {
-            for (const treatment of treatment_histories) {
+        const { treatmentHistories } = req.body;
+        if (treatmentHistories && treatmentHistories.length > 0) {
+            for (const treatment of treatmentHistories) {
                 await connection.query(
-                    "INSERT INTO TreatmentHistory (psychology_info_id, treatment_type, treatment_status, additional_information, identifier) VALUES (?, ?, ?, ?, ?)",
-                    [psychology_info_id, treatment.treatment_type, treatment.treatment_status, treatment.additional_information, treatment.identifier]
+                    "INSERT INTO TreatmentHistory (psychology_info_id, treatment_type, treatment_status, additional_information) VALUES (?, ?, ?, ?)",
+                    [psychology_info_id, treatment.treatment_type, treatment.treatment_status, treatment.additional_information]
                 );
             }
         }
 
         // Insert data into EmotionalPsychologicalSymptoms
-        const { emotional_psychological_symptoms } = req.body;
-        if (emotional_psychological_symptoms && emotional_psychological_symptoms.length > 0) {
-            for (const symptom of emotional_psychological_symptoms) {
+        const { emotionalPsychologicalSymptoms } = req.body;
+        if (emotionalPsychologicalSymptoms && emotionalPsychologicalSymptoms.length > 0) {
+            for (const symptom of emotionalPsychologicalSymptoms) {
                 await connection.query(
                     "INSERT INTO EmotionalPsychologicalSymptoms (psychology_info_id, symptom, description) VALUES (?, ?, ?)",
                     [psychology_info_id, symptom.symptom, symptom.description]
@@ -82,9 +86,9 @@ export const createPsychologyInfo = async (req, res) => {
         }
 
         // Insert data into TreatmentPlan
-        const { treatment_plans } = req.body;
-        if (treatment_plans && treatment_plans.length > 0) {
-            for (const plan of treatment_plans) {
+        const { finalPlans } = req.body;
+        if (finalPlans && finalPlans.length > 0) {
+            for (const plan of finalPlans) {
                 await connection.query(
                     "INSERT INTO TreatmentPlan (psychology_info_id, selected_intervention) VALUES (?, ?)",
                     [psychology_info_id, plan.selected_intervention]
@@ -153,13 +157,14 @@ export const getPsychologyInfo = async (req, res) => {
 
         // Construct the response
         const response = {
-            psychologyInfo: psychologyInfo[0],
+            psychologyInfo: psychologyInfo,
             diagnosisOncologicalConditions,
             diseaseStatus,
             treatmentHistory,
             emotionalPsychologicalSymptoms,
             treatmentPlan
         };
+
 
         res.json(response);
     } catch (error) {

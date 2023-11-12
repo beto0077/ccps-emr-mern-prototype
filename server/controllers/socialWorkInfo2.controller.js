@@ -53,13 +53,12 @@ export const createSocialWorkInfo2 = async (req, res) => {
 };
 
 export const getSocialWorkInfo2 = async (req, res) => {
-    const { social_work_info2_id } = req.params;
     const connection = await database.getConnection();
 
     try {
         const [socialWorkInfo2] = await connection.query(
-            "SELECT * FROM SocialWorkInfo2 WHERE social_work_info2_id = ?",
-            [social_work_info2_id]
+            "SELECT * FROM SocialWorkInfo2 WHERE patient_id = ?",
+            [req.params.id]
         );
 
         if (socialWorkInfo2.length === 0) {
@@ -68,16 +67,16 @@ export const getSocialWorkInfo2 = async (req, res) => {
 
         const [monthlyIncome] = await connection.query(
             "SELECT * FROM MonthlyIncome WHERE social_work_info2_id = ?",
-            [social_work_info2_id]
+            [socialWorkInfo2[0].social_work_info2_id]
         );
 
         const [monthlyExpenses] = await connection.query(
             "SELECT * FROM MonthlyExpenses WHERE social_work_info2_id = ?",
-            [social_work_info2_id]
+            [socialWorkInfo2[0].social_work_info2_id]
         );
 
         const response = {
-            socialWorkInfo2: socialWorkInfo2[0],
+            socialWorkInfo2: socialWorkInfo2,
             monthlyIncome,
             monthlyExpenses
         };

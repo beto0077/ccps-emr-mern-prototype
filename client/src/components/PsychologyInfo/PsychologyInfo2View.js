@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
 import Footer from '../Footer';
+import 'mdbreact';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-
 import { usePsychologyInfo2Context } from '../../context/PsychologyInfo2Context';
 
 function PsychologyInfo2() {
@@ -30,6 +30,17 @@ function PsychologyInfo2() {
 
     const params = useParams();
     const navigate = useNavigate();
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+    
+        const date = new Date(dateString);
+        const year = String(date.getFullYear()).padStart(4, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    
     useEffect(() => {
         const loadInfo = async () => {
           if (params.id) {
@@ -55,98 +66,98 @@ function PsychologyInfo2() {
 
     return (
         <>
-        <Navbar />
+        
         {error ? (
+            <>
+            <Navbar />
             <div className="text-center">
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createPsychologyInfo2`)}
+            onClick={() => navigate(`/createPsychologyInfo2`, {state: {id: params.id}})}
             className="mx-2 my-2 my-lg-3"
           >
             Generar Información
           </Button>
             </div>
+            </>
         ) : (
             <div className="bg-dark">
             <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Psychology Info 2 Home
+                Formulario de evaluación
             </h2>
-            <h3 className="text-white my-3 text-center">
-                Welcome!
-            </h3>
             <Container>
                 <Row>
                     <Col>
-                        <div className="container ml-3">
+                        <div className="container ml-3 mb-4">
                             <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                                 <Card.Body>
-                                    <h2 className="text-primary">Psychology Information</h2>
+                                    <h2 className="text-primary">Información del paciente</h2>
                                     <Table striped bordered responsive>
                                         <tbody>
                                             <tr>
-                                                <td>Name</td>
+                                                <td>Nombre completo</td>
                                                 <td>{info.full_name}</td>
                                             </tr>
                                             <tr>
-                                                <td>Evaluation Date</td>
-                                                <td>{info.evaluation_date}</td>
+                                                <td>Fecha de evaluación</td>
+                                                <td>{formatDate(info.evaluation_date)}</td>
                                             </tr>
                                             <tr>
-                                                <td>Date of Birth</td>
-                                                <td>{info.date_of_birth}</td>
+                                                <td>Fecha de nacimiento</td>
+                                                <td>{formatDate(info.date_of_birth)}</td>
                                             </tr>
                                             <tr>
-                                                <td>Age</td>
+                                                <td>Edad</td>
                                                 <td>{info.age}</td>
                                             </tr>
                                             <tr>
-                                                <td>Marital Status</td>
+                                                <td>Estado Civil</td>
                                                 <td>{info.marital_status}</td>
                                             </tr>
                                             <tr>
-                                                <td>Occupation</td>
+                                                <td>Ocupación</td>
                                                 <td>{info.occupation}</td>
                                             </tr>
                                             <tr>
-                                                <td>Religion</td>
+                                                <td>Religión</td>
                                                 <td>{info.religion}</td>
                                             </tr>
                                             <tr>
-                                                <td>Family Group</td>
+                                                <td>Grupo Familiar</td>
                                                 <td>{info.family_group}</td>
                                             </tr>
                                             <tr>
-                                                <td>Type of Therapy</td>
-                                                <td>{info.type_of_therapy ? 'Yes' : 'No'}</td>
+                                                <td>Tipo de Terapia</td>
+                                                <td>{info.type_of_therapy ? 'Familiar' : 'Individual'}</td>
                                             </tr>
                                             <tr>
-                                                <td>Medical Diagnosis</td>
+                                                <td>Diagnóstico médico</td>
                                                 <td>{info.medical_diagnosis}</td>
                                             </tr>
                                             <tr>
-                                                <td>Mental State</td>
+                                                <td>Estado mental</td>
                                                 <td>{info.mental_state}</td>
                                             </tr>
                                             <tr>
-                                                <td>Personal History</td>
+                                                <td>Historia Personal</td>
                                                 <td>{info.personal_history}</td>
                                             </tr>
                                             <tr>
-                                                <td>Emotional Factors</td>
+                                                <td>Factores emocionales</td>
                                                 <td>{info.emotional_factors}</td>
                                             </tr>
                                             <tr>
-                                                <td>Occupational/Educational Aspects</td>
+                                                <td>Aspectos laborales/educativos</td>
                                                 <td>{info.occupational_educational_aspects}</td>
                                             </tr>
                                             <tr>
-                                                <td>Family Aspects/Family Diagram</td>
+                                                <td>Aspectos familiares/Familiograma</td>
                                                 <td>{info.family_aspects_family_diagram}</td>
                                             </tr>
                                             <tr>
-                                                <td>Approach Plan</td>
+                                                <td>Plan de abordaje</td>
                                                 <td>{info.approach_plan}</td>
                                             </tr>
                                         </tbody>
@@ -157,7 +168,6 @@ function PsychologyInfo2() {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
         </div>
         )}
         </>

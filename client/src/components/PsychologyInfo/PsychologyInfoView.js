@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../NavigationBar";
 import Footer from "../Footer";
+import 'mdbreact';
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePsychologyInfoContext } from "../../context/PsychologyInfoContext";
@@ -42,11 +43,22 @@ function PsychologyInfoView() {
   const params = useParams();
   const navigate = useNavigate();
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate() + 1).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
   useEffect(() => {
     const fetchPsychologyInfo = async () => {
       try {
         setLoading(true);
+        console.log(params.id);
         const response = await getPsychologyInfo(params.id);
+        console.log(response.psychologyInfo);
         const {
           psychologyInfo,
           diagnosisOncologicalConditions,
@@ -54,12 +66,13 @@ function PsychologyInfoView() {
           treatmentHistory,
           emotionalPsychologicalSymptoms,
           treatmentPlan
-        } = response.data;
+        } = response;
   
+        console.log(psychologyInfo[0]);
         if (!psychologyInfo || Object.keys(psychologyInfo).length === 0) {
           setError(true); // Set the error state to true if no data is found
         } else {
-          setInfo(psychologyInfo);
+          setInfo(psychologyInfo[0]);
           setDiagnosisOncologicalConditions(diagnosisOncologicalConditions);
           setDiseaseStatuses(diseaseStatus);
           setTreatmentHistories(treatmentHistory);
@@ -81,113 +94,114 @@ function PsychologyInfoView() {
 
   return (
     <>
-        <Navbar />
         {error ? (
+          <>
+          <Navbar />
             <div className="text-center">
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createPsychologyInfo`)}
+            onClick={() => navigate(`/createPsychologyInfo`, { state: { id: params.id } })}
             className="mx-2 my-2 my-lg-3"
           >
             Generar Información
           </Button>
             </div>
+            </>
         ) : (
           <div className="bg-dark">
       <Navbar />
       <h2 className="text-white my-3 text-center" style={{ marginTop: "75px" }}>
-        Psychology Info Home
+        Información general de psicología
       </h2>
-      <h3 className="text-white my-3 text-center">Welcome!</h3>
       <Container>
         <Row className="my-4">
           <Col>
             <Card>
               <Card.Header className="font-weight-bold">
-                Psychology Info
+                <h3>Información del paciente</h3>
               </Card.Header>
               <Card.Body>
                 <Table striped bordered hover>
                   <tbody>
                     <tr>
-                      <td>Professional</td>
+                      <td>Profesional</td>
                       <td>{info.professional}</td>
                     </tr>
                     <tr>
-                      <td>Evaluation For</td>
+                      <td>Se atendió a</td>
                       <td>{info.evaluation_for}</td>
                     </tr>
                     <tr>
-                      <td>Family Structure</td>
+                      <td>Estructura Familiar (Cuidador Primario CP)</td>
                       <td>{info.family_structure}</td>
                     </tr>
                     <tr>
-                      <td>Family Functionality</td>
-                      <td>{info.family_functionality ? "Yes" : "No"}</td>
+                      <td>Familia</td>
+                      <td>{info.family_functionality ? "Funcional" : "Disfuncional"}</td>
                     </tr>
                     <tr>
-                      <td>Spiritual Support</td>
-                      <td>{info.spiritual_support ? "Yes" : "No"}</td>
+                      <td>Soporte espiritual</td>
+                      <td>{info.spiritual_support ? "Sí" : "No"}</td>
                     </tr>
                     <tr>
-                      <td>Clinical History</td>
+                      <td>Historia Clínica</td>
                       <td>{info.clinical_history}</td>
                     </tr>
                     <tr>
-                      <td>Diagnosis Knowledge</td>
+                      <td>Conocimiento de su diagnóstico</td>
                       <td>{info.diagnosis_knowledge}</td>
                     </tr>
                     <tr>
-                      <td>Treatment Knowledge</td>
+                      <td>Conocimiento de su tratamiento</td>
                       <td>{info.treatment_knowledge}</td>
                     </tr>
                     <tr>
-                      <td>Prognosis Knowledge</td>
+                      <td>Conocimiento de su pronóstico</td>
                       <td>{info.prognosis_knowledge}</td>
                     </tr>
                     <tr>
-                      <td>Date of Diagnosis</td>
-                      <td>{info.date_of_diagnosis}</td>
+                      <td>Fecha de diagnóstico</td>
+                      <td>{formatDate(info.date_of_diagnosis)}</td>
                     </tr>
                     <tr>
-                      <td>Pain Scale</td>
+                      <td>Escala de dolor</td>
                       <td>{info.pain_scale}</td>
                     </tr>
                     <tr>
-                      <td>Pain Localization</td>
+                      <td>Localización del dolor</td>
                       <td>{info.pain_localization}</td>
                     </tr>
                     <tr>
-                      <td>Pain Type</td>
+                      <td>Tipo de dolor</td>
                       <td>{info.pain_type}</td>
                     </tr>
                     <tr>
-                      <td>Mental State</td>
+                      <td>Estado mental</td>
                       <td>{info.mental_state}</td>
                     </tr>
                     <tr>
-                      <td>Mental State Description</td>
+                      <td>Descripción del estado mental</td>
                       <td>{info.mental_state_description}</td>
                     </tr>
                     <tr>
-                      <td>Psychological/Psychiatric History</td>
+                      <td>Antecedentes psicológicos y psiquiátricos</td>
                       <td>{info.psychological_psychiatric_history}</td>
                     </tr>
                     <tr>
-                      <td>Subjective Evaluation</td>
+                      <td>Evaluación subjetiva</td>
                       <td>{info.subjective_evaluation}</td>
                     </tr>
                     <tr>
-                      <td>Objective Evaluation</td>
+                      <td>Evaluación objetiva</td>
                       <td>{info.objective_evaluation}</td>
                     </tr>
                     <tr>
-                      <td>Diagnostic Impression</td>
+                      <td>Impresión diagnóstica</td>
                       <td>{info.diagnostic_impression}</td>
                     </tr>
                     <tr>
-                      <td>Recommendations</td>
+                      <td>Recomendaciones</td>
                       <td>{info.recommendations}</td>
                     </tr>
                   </tbody>
@@ -200,13 +214,13 @@ function PsychologyInfoView() {
           <Col>
             <Card>
               <Card.Header className="font-weight-bold">
-                Diagnosis Oncological Conditions
+                <h3>Diagnóstico Oncológico</h3>
               </Card.Header>
               <Card.Body>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Selected Diagnosis</th>
+                      <th>Diagnósticos del paciente</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -225,13 +239,13 @@ function PsychologyInfoView() {
           <Col>
             <Card>
               <Card.Header className="font-weight-bold">
-                Disease Status
+                <h3>Actualización de enfermedad médica</h3>
               </Card.Header>
               <Card.Body>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Selected Status</th>
+                      <th>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -250,16 +264,15 @@ function PsychologyInfoView() {
           <Col>
             <Card>
               <Card.Header className="font-weight-bold">
-                Treatment History
+                <h3>Tratamientos</h3>
               </Card.Header>
               <Card.Body>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Treatment Type</th>
-                      <th>Treatment Status</th>
-                      <th>Additional Information</th>
-                      <th>Identifier</th>
+                      <th>Tipo de tratamiento</th>
+                      <th>Estado</th>
+                      <th>Información adicional</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -268,7 +281,6 @@ function PsychologyInfoView() {
                         <td>{history.treatment_type}</td>
                         <td>{history.treatment_status}</td>
                         <td>{history.additional_information}</td>
-                        <td>{history.identifier}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -281,14 +293,14 @@ function PsychologyInfoView() {
           <Col>
             <Card>
               <Card.Header className="font-weight-bold">
-                Emotional Psychological Symptoms
+                <h3>Síntomas afectivos</h3>
               </Card.Header>
               <Card.Body>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Symptom</th>
-                      <th>Description</th>
+                      <th>Síntoma</th>
+                      <th>Descripción</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -308,13 +320,13 @@ function PsychologyInfoView() {
           <Col>
             <Card>
               <Card.Header className="font-weight-bold">
-                Treatment Plan
+                <h3>Plan</h3>
               </Card.Header>
               <Card.Body>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Selected Intervention</th>
+                      <th>Acciones elegidas</th>
                     </tr>
                   </thead>
                   <tbody>

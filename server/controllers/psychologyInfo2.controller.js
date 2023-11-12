@@ -11,7 +11,7 @@ export const getPsychologyInfo2s = async (req, res) => {
 
 export const getPsychologyInfo2 = async (req, res) => {
     try {
-        const [result] = await database.query("SELECT * FROM PsychologyInfo2 WHERE psychology_info2_id = ?", [req.params.id]);
+        const [result] = await database.query("SELECT * FROM PsychologyInfo2 WHERE patient_id = ?", [req.params.id]);
 
         if (result.length === 0) {
             return res.status(404).json({ message: "Record not found" });
