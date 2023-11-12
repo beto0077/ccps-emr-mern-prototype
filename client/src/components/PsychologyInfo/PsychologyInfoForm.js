@@ -64,8 +64,8 @@ function PsychologyInfoForm() {
     const finalConditions = getFinalDiagnosisConditions();
     console.log(finalConditions);
     console.log(diseaseStatuses);*/
-    console.log(info.diagnosis_knowledge);
-  }, [info.diagnosis_knowledge]);
+    console.log(emotionalPsychologicalSymptoms);
+  }, [emotionalPsychologicalSymptoms]);
 
   const getFinalDiagnosisConditions = () => {
     return diagnosisOncologicalConditions.map((condition, index) => {
@@ -473,53 +473,59 @@ function PsychologyInfoForm() {
   </Button>
 </Form.Group>
 <Form.Group controlId="emotionalPsychologicalSymptoms">
-          <Form.Label>Emotional Psychological Symptoms</Form.Label>
-          {emotionalPsychologicalSymptoms.map((symptom, index) => (
-            <div key={index}>
-              <Form.Control
-                type="text"
-                placeholder="Enter Symptom"
-                value={symptom.symptom}
-                onChange={(e) => {
-                  const newSymptoms = [...emotionalPsychologicalSymptoms];
-                  newSymptoms[index].symptom = e.target.value;
-                  setEmotionalPsychologicalSymptoms(newSymptoms);
-                }}
-              />
-              <Form.Control
-                type="text"
-                placeholder="Enter Description"
-                value={symptom.description}
-                onChange={(e) => {
-                  const newSymptoms = [...emotionalPsychologicalSymptoms];
-                  newSymptoms[index].description = e.target.value;
-                  setEmotionalPsychologicalSymptoms(newSymptoms);
-                }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  const newSymptoms = [...emotionalPsychologicalSymptoms];
-                  newSymptoms.splice(index, 1);
-                  setEmotionalPsychologicalSymptoms(newSymptoms);
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="primary"
-            onClick={() => {
-              setEmotionalPsychologicalSymptoms([
-                ...emotionalPsychologicalSymptoms,
-                { symptom: "", description: "" },
-              ]);
-            }}
-          >
-            Add Symptom
-          </Button>
-        </Form.Group>
+  <Form.Label>Emotional Psychological Symptoms</Form.Label>
+  {emotionalPsychologicalSymptoms.map((symptom, index) => (
+    <div key={index}>
+      <Form.Select
+        value={symptom.symptom}
+        onChange={(e) => {
+          const newSymptoms = [...emotionalPsychologicalSymptoms];
+          newSymptoms[index].symptom = e.target.value;
+          setEmotionalPsychologicalSymptoms(newSymptoms);
+        }}
+      >
+        <option value="">Select Symptom</option>
+        {/* Replace these options with your actual symptoms */}
+        <option value="Anxiety">Anxiety</option>
+        <option value="Depression">Depression</option>
+        <option value="Stress">Stress</option>
+        {/* ... other symptoms */}
+      </Form.Select>
+      <Form.Control
+        type="text"
+        placeholder="Enter Description"
+        value={symptom.description}
+        onChange={(e) => {
+          const newSymptoms = [...emotionalPsychologicalSymptoms];
+          newSymptoms[index].description = e.target.value;
+          setEmotionalPsychologicalSymptoms(newSymptoms);
+        }}
+      />
+      <Button
+        variant="danger"
+        onClick={() => {
+          const newSymptoms = [...emotionalPsychologicalSymptoms];
+          newSymptoms.splice(index, 1);
+          setEmotionalPsychologicalSymptoms(newSymptoms);
+        }}
+      >
+        Remove
+      </Button>
+    </div>
+  ))}
+  <Button
+    variant="primary"
+    onClick={() => {
+      setEmotionalPsychologicalSymptoms([
+        ...emotionalPsychologicalSymptoms,
+        { symptom: "", description: "" },
+      ]);
+    }}
+  >
+    Add Symptom
+  </Button>
+</Form.Group>
+
         <Form.Group controlId="pain_scale">
           <Form.Label>Pain Scale</Form.Label>
           <Form.Control
