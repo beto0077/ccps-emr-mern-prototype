@@ -69,7 +69,7 @@ function PatientView() {
             <Dropdown.Item onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}>Trabajo Social</Dropdown.Item>
             <Dropdown.Item onClick={() => navigate(`/psychologyDashboard/${params.id}`)}>Psicología</Dropdown.Item>
             <Dropdown.Item onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}>Referencias internas</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/patientProfile/${params.id}`)}>Perfil de paciente</Dropdown.Item>
             <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
             <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>Service 3</Dropdown.Item>
           </Dropdown.Menu>

@@ -46,6 +46,15 @@ function SocialWorkInfo1View() {
   const params = useParams();
   const navigate = useNavigate();
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    const year = String(date.getFullYear()).padStart(4, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
   useEffect(() => {
     const loadSocialWorkInfo1 = async () => {
       if (params.id) {
@@ -58,7 +67,7 @@ function SocialWorkInfo1View() {
             setError(true);
           } else {
             // If there is data, set the state with the fetched data
-            setSocialWorkInfo1(socialWorkInfo1);
+            setSocialWorkInfo1(socialWorkInfo1[0]);
             setFamilyGroup(familyGroup);
             setError(false); // Reset the error state
           }
@@ -74,8 +83,10 @@ function SocialWorkInfo1View() {
 
   return (
     <>
-        <Navbar />
+        
         {error ? (
+          <>
+          <Navbar />
             <div className="text-center">
                 <Button
             variant="primary"
@@ -86,139 +97,139 @@ function SocialWorkInfo1View() {
             Generar Información
           </Button>
             </div>
+            </>
         ) : (
+          <div className="bg-dark">
+      <Navbar />
           <Container>
       <Row>
         <Col>
-          <Card>
+          <Card className="mt-4 mb-4">
             <Card.Header>
-              <h3>Social Work Information</h3>
+              <h3>Información general de trabajo social</h3>
             </Card.Header>
             <Card.Body>
               <Table>
                 <tbody>
                   <tr>
-                    <th>Patient ID</th>
-                    <td>{socialWorkInfo1.patient_id}</td>
-                  </tr>
-                  <tr>
-                    <th>Professional</th>
+                    <th>Profesional</th>
                     <td>{socialWorkInfo1.professional}</td>
                   </tr>
                   <tr>
-                    <th>Interview Date</th>
-                    <td>{socialWorkInfo1.interview_date}</td>
+                    <th>Fecha de la entrevista</th>
+                    <td>{formatDate(socialWorkInfo1.interview_date)}</td>
                   </tr>
                   <tr>
-                    <th>Clinical History</th>
+                    <th>Historia Clínica</th>
                     <td>{socialWorkInfo1.clinical_history}</td>
                   </tr>
                   <tr>
-                    <th>People Interviewed</th>
+                    <th>Personas entrevistadas</th>
                     <td>{socialWorkInfo1.people_interviewed}</td>
                   </tr>
                   <tr>
-                    <th>Patient Name</th>
+                    <th>Nombre completo de paciente</th>
                     <td>{socialWorkInfo1.patient_name}</td>
                   </tr>
                   <tr>
-                    <th>Age</th>
-                    <td>{socialWorkInfo1.age}</td>
-                  </tr>
-                  <tr>
-                    <th>Date of Birth</th>
-                    <td>{socialWorkInfo1.date_of_birth}</td>
-                  </tr>
-                  <tr>
-                    <th>Gender</th>
-                    <td>{socialWorkInfo1.gender}</td>
-                  </tr>
-                  <tr>
-                    <th>Medical Condition</th>
-                    <td>{socialWorkInfo1.medical_condition}</td>
-                  </tr>
-                  <tr>
-                    <th>Insurance</th>
-                    <td>{socialWorkInfo1.insurance}</td>
-                  </tr>
-                  <tr>
-                    <th>Insurance Type</th>
-                    <td>{socialWorkInfo1.insurance_type}</td>
-                  </tr>
-                  <tr>
-                    <th>ID</th>
+                    <th>Cédula</th>
                     <td>{socialWorkInfo1.id}</td>
                   </tr>
                   <tr>
-                    <th>Pension</th>
-                    <td>{socialWorkInfo1.pension}</td>
+                    <th>Edad</th>
+                    <td>{socialWorkInfo1.age}</td>
                   </tr>
                   <tr>
-                    <th>Pension Type</th>
+                    <th>Fecha de nacimiento</th>
+                    <td>{formatDate(socialWorkInfo1.date_of_birth)}</td>
+                  </tr>
+                  <tr>
+                    <th>Género</th>
+                    <td>{socialWorkInfo1.gender}</td>
+                  </tr>
+                  <tr>
+                    <th>Condición</th>
+                    <td>{socialWorkInfo1.medical_condition}</td>
+                  </tr>
+                  <tr>
+                    <th>Seguro médico</th>
+                    <td>{socialWorkInfo1.insurance ? "Sí" : "No"}</td>
+                  </tr>
+                  <tr>
+                    <th>Tipo de seguro</th>
+                    <td>{socialWorkInfo1.insurance_type}</td>
+                  </tr>
+                  
+                  <tr>
+                    <th>Pensión</th>
+                    <td>{socialWorkInfo1.pension ? "Sí" : "No"}</td>
+                  </tr>
+                  <tr>
+                    <th>Tipo de pensión</th>
                     <td>{socialWorkInfo1.pension_type}</td>
                   </tr>
                   <tr>
-                    <th>Support Network</th>
-                    <td>{socialWorkInfo1.support_network}</td>
+                    <th>Red apoyo</th>
+                    <td>{socialWorkInfo1.support_network ? "Sí" : "No"}</td>
                   </tr>
                   <tr>
-                    <th>Support Type</th>
+                    <th>Tipo de red apoyo</th>
                     <td>{socialWorkInfo1.support_type}</td>
                   </tr>
                   <tr>
-                    <th>Housing</th>
+                    <th>Vivienda</th>
                     <td>{socialWorkInfo1.housing}</td>
                   </tr>
                   <tr>
-                    <th>Diagnosis</th>
+                    <th>Diagnóstico</th>
                     <td>{socialWorkInfo1.diagnosis}</td>
                   </tr>
                   <tr>
-                    <th>Phone Number</th>
+                    <th>Número de teléfono</th>
                     <td>{socialWorkInfo1.phone_number}</td>
                   </tr>
                   <tr>
-                    <th>Religion</th>
+                    <th>Religión</th>
                     <td>{socialWorkInfo1.religion}</td>
                   </tr>
                   <tr>
-                    <th>Nationality</th>
+                    <th>Nacionalidad</th>
                     <td>{socialWorkInfo1.nationality}</td>
                   </tr>
                   <tr>
-                    <th>Occupation</th>
+                    <th>Profesión u oficio</th>
                     <td>{socialWorkInfo1.occupation}</td>
                   </tr>
                   <tr>
-                    <th>Educational Level</th>
+                    <th>Nivel académico</th>
                     <td>{socialWorkInfo1.educational_level}</td>
                   </tr>
                   <tr>
-                    <th>Immigration Status</th>
+                    <th>Estado migratorio</th>
                     <td>{socialWorkInfo1.immigration_status}</td>
                   </tr>
                   <tr>
-                    <th>Knows Diagnosis</th>
-                    <td>{socialWorkInfo1.knows_diagnosis}</td>
+                    <th>Conoce su diagnóstico</th>
+                    <td>{socialWorkInfo1.knows_diagnosis ? "Sí" : "No"}</td>
                   </tr>
                   <tr>
-                    <th>Referred By</th>
+                    <th>Referido por</th>
                     <td>{socialWorkInfo1.referred_by}</td>
                   </tr>
                   <tr>
-                    <th>Head of Family</th>
-                    <td>{socialWorkInfo1.head_of_family}</td>
+                    <th>Jefe de familia</th>
+                    <td>{socialWorkInfo1.head_of_family ? "Sí" : "No"}</td>
                   </tr>
                   <tr>
-                    <th>Marital Status</th>
+                    <th>Estado civil</th>
                     <td>{socialWorkInfo1.marital_status}</td>
                   </tr>
                   <tr>
-                    <th>Primary Caregiver</th>
+                    <th>Cuidador(a) principal</th>
                     <td>{socialWorkInfo1.primary_caregiver}</td>
                   </tr>
                   <tr>
-                    <th>Family Type</th>
+                    <th>Tipo de familia</th>
                     <td>{socialWorkInfo1.family_type}</td>
                   </tr>
                 </tbody>
@@ -229,21 +240,20 @@ function SocialWorkInfo1View() {
       </Row>
       <Row>
         <Col>
-          <Card>
+          <Card className="mb-4">
             <Card.Header>
-              <h3>Family Group</h3>
+              <h3>Grupo Familiar</h3>
             </Card.Header>
             <Card.Body>
               <Table>
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Relationship</th>
-                    <th>Age</th>
-                    <th>Nationality</th>
-                    <th>Occupation</th>
-                    <th>Education Level</th>
-                    <th>Health Status</th>
+                    <th>Nombre</th>
+                    <th>Parentesco</th>
+                    <th>Edad</th>
+                    <th>Nacionalidad</th>
+                    <th>Oficio</th>
+                    <th>Cédula</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -254,8 +264,7 @@ function SocialWorkInfo1View() {
                       <td>{member.age}</td>
                       <td>{member.nationality}</td>
                       <td>{member.occupation}</td>
-                      <td>{member.education_level}</td>
-                      <td>{member.health_status}</td>
+                      <td>{member.id}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -265,6 +274,7 @@ function SocialWorkInfo1View() {
         </Col>
       </Row>
     </Container>
+    </div>
         )}
         </>
   );

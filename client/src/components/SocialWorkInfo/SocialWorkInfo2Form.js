@@ -160,7 +160,7 @@ function SocialWorkInfo2Form() {
     e.preventDefault();
     try {
       // Determine if it's a new entry or an update based on the presence of an ID
-      if (socialWorkInfo.id) {
+      if (params.id) {
         // Update existing data
         const response = await updateSocialWorkInfo2(
           socialWorkInfo.id,
@@ -173,13 +173,15 @@ function SocialWorkInfo2Form() {
         }
       } else {
         // Save new data
-        const response = await createSocialWorkInfo2(socialWorkInfo);
+        await createSocialWorkInfo2(socialWorkInfo);
+        /*const response = await createSocialWorkInfo2(socialWorkInfo);
         if (response.status === 201) {
           console.log("Data saved successfully");
           //NAVIGATE TO VIEW PAGE
           // Optionally: Redirect, show a success message, etc.
-        }
+        }*/
       }
+      navigate(`/socialWorkDashboard/${socialWorkInfo.patient_id}`);
     } catch (error) {
       console.error("Error saving or updating data:", error);
       // Optionally: Show an error message, etc.
@@ -187,6 +189,8 @@ function SocialWorkInfo2Form() {
   };
 
   return (
+    <>
+    <Navbar />
     <div
       style={{ display: "block", margin: "auto", width: "auto", padding: 30 }}
     >
@@ -197,16 +201,16 @@ function SocialWorkInfo2Form() {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th colSpan={3}>Monthly Income</th>
-              <th colSpan={3}>Monthly Expenses</th>
+              <th colSpan={3}>Ingresos mensuales</th>
+              <th colSpan={3}>Egresos mensuales</th>
             </tr>
             <tr>
-              <th>Concept</th>
-              <th>Amount</th>
-              <th>Remove</th>
-              <th>Concept</th>
-              <th>Amount</th>
-              <th>Remove</th>
+              <th>Concepto</th>
+              <th>Monto</th>
+              <th>Remover</th>
+              <th>Concepto</th>
+              <th>Monto</th>
+              <th>Remover</th>
             </tr>
           </thead>
           <tbody>
@@ -233,19 +237,32 @@ function SocialWorkInfo2Form() {
                     variant="danger"
                     onClick={() => removeMonthlyIncome(index)}
                   >
-                    Remove
+                    Remover
                   </Button>
                 </td>
 
                 {index < socialWorkInfo.monthly_expenses.length ? (
                   <>
                     <td>
-                      <Form.Control
-                        type="text"
-                        name="concept"
-                        value={socialWorkInfo.monthly_expenses[index]?.concept}
-                        onChange={(e) => handleMonthlyExpenseChange(index, e)}
-                      />
+                    <Form.Select
+            name="concept"
+            value={socialWorkInfo.monthly_expenses[index]?.concept}
+            onChange={(e) => handleMonthlyExpenseChange(index, e)}
+          >
+            <option value="">Selecione concepto</option>
+            <option value="Préstamos/tarjetas de crédito">Préstamos/tarjetas de crédito</option>
+            <option value="Alquiler">Alquiler</option>
+            <option value="Electricidad">Electricidad</option>
+            <option value="Teléfono fijo/celular">Teléfono fijo/celular</option>
+            <option value="Alimentación">Alimentación</option>
+            <option value="Agua">Agua</option>
+            <option value="Basura">Basura</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Estudio">Estudio</option>
+            <option value="Internet/Cable">Internet/Cable</option>
+            <option value="Medicamentos">Medicamentos</option>
+            <option value="Otros">Otros</option>
+          </Form.Select>
                     </td>
                     <td>
                       <Form.Control
@@ -260,7 +277,7 @@ function SocialWorkInfo2Form() {
                         variant="danger"
                         onClick={() => removeMonthlyExpense(index)}
                       >
-                        Remove
+                        Remover
                       </Button>
                     </td>
                   </>
@@ -319,29 +336,30 @@ function SocialWorkInfo2Form() {
             <tr>
               <td colSpan={6}>
                 <Button variant="secondary" onClick={addMonthlyIncome}>
-                  Add Income
+                  Agregar Ingreso
                 </Button>
                 <Button
                   variant="secondary"
                   onClick={addMonthlyExpense}
-                  style={{ marginLeft: "10px" }}
+                  style={{ marginLeft: "100px" }}
+                  hidden={!socialWorkInfo.monthly_incomes.length}
                 >
-                  Add Expense
+                  Agregar Egreso
                 </Button>
               </td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td colSpan={2}>Total Income</td>
+              <td colSpan={2}>Total ingresos</td>
               <td>{socialWorkInfo.total_income}</td>
-              <td colSpan={2}>Total Expenses</td>
+              <td colSpan={2}>Total egresos</td>
               <td>{socialWorkInfo.total_expenses}</td>
             </tr>
             <tr>
-              <td colSpan={2}>Per Capita Income</td>
+              <td colSpan={2}>Ingreso percapita</td>
               <td>{socialWorkInfo.per_capita_income}</td>
-              <td colSpan={2}>Per Capita Expenses</td>
+              <td colSpan={2}>Egreso percapita</td>
               <td>{socialWorkInfo.per_capita_expenses}</td>
             </tr>
           </tfoot>
@@ -352,19 +370,19 @@ function SocialWorkInfo2Form() {
             type="number"
             min="1"
             name="family_members"
-            placeholder="Enter number of family members"
+            placeholder="Ingrese el número de intregrantes en la familia"
             onChange={(e) => setNumberOfFamilyMembers(parseInt(e.target.value))}
             value={numberOfFamilyMembers}
             required
           />
         </Form.Group>
         <Form.Group controlId="formPovertyLine">
-          <Form.Label>Poverty Line in Costa Rica</Form.Label>
+          <Form.Label>Linea de pobreza en Costa Rica</Form.Label>
           <Form.Control
             type="number"
             step="0.01"
             name="poverty_line"
-            placeholder="Enter poverty line"
+            placeholder="Ingrese linea de pobreza en Costa Rica"
             onChange={handleChange}
             value={socialWorkInfo.poverty_line}
           />
@@ -390,6 +408,7 @@ function SocialWorkInfo2Form() {
         </div>
       </Form>
     </div>
+    </>
   );
 }
 

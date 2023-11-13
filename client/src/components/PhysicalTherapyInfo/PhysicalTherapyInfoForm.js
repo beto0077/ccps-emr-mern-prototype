@@ -159,7 +159,8 @@ function PhysicalTherapyForm() {
             as="select"
             value={physicalTherapyInfo.clinical_history}
             onChange={handleChange}
-          >
+            >
+            <option value="">Seleccione una opción</option>
             <option value="Visita domiciliar">Visita domiciliar</option>
             <option value="Consulta externa">Consulta externa</option>
           </Form.Control>

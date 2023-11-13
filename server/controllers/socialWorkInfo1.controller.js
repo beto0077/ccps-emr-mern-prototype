@@ -46,9 +46,9 @@ export const createSocialWorkInfo1 = async (req, res) => {
 
         const social_work_info1_id = result.insertId;
 
-        const { family_group } = req.body;
-        if (family_group && family_group.length > 0) {
-            for (const member of family_group) {
+        const { familyGroup } = req.body;
+        if (familyGroup && familyGroup.length > 0) {
+            for (const member of familyGroup) {
                 await connection.query(
                     "INSERT INTO FamilyGroup (social_work_info1_id, name, relationship, age, nationality, occupation, id) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     [social_work_info1_id, member.name, member.relationship, member.age, member.nationality, member.occupation, member.id]
@@ -86,7 +86,7 @@ export const getSocialWorkInfo1 = async (req, res) => {
         );
 
         const response = {
-            socialWorkInfo1: socialWorkInfo1[0],
+            socialWorkInfo1: socialWorkInfo1,
             familyGroup
         };
 

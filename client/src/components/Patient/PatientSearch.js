@@ -56,20 +56,20 @@ function PatientSearch() {
           <Col md={6}>
             <Card>
               <Card.Body>
-                <h2 className="text-center mb-4">Search Patient</h2>
+                <h2 className="text-center mb-4">Buscar paciente</h2>
                 <Form onSubmit={handleSearch}>
                   <Form.Group controlId="patientId">
-                    <Form.Label>Patient ID Number</Form.Label>
+                    <Form.Label>Número de cédula</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter ID number"
+                      placeholder="Ingrese el número de cédula del paciente"
                       value={idNumber}
                       onChange={(e) => setIdNumber(e.target.value)}
                       required
                     />
                   </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Search
+                  <Button variant="primary" type="submit" className="mt-3">
+                    Buscar
                   </Button>
                 </Form>
                 {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
