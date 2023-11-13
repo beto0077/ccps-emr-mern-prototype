@@ -80,7 +80,7 @@ function SocialWorkInfo1View() {
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createSocialWorkInfo1`)}
+            onClick={() => navigate(`/createSocialWorkInfo1`, { state: { id: params.id } })}
             className="mx-2 my-2 my-lg-3"
           >
             Generar Información

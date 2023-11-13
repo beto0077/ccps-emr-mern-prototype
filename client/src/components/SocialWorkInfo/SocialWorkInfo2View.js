@@ -53,7 +53,7 @@ function SocialWorkInfo2View() {
                 <Button
             variant="primary"
             size="lg"
-            onClick={() => navigate(`/createSocialWorkInfo2`)}
+            onClick={() => navigate(`/createSocialWorkInfo2`, { state: { id: params.id } })}
             className="mx-2 my-2 my-lg-3"
           >
             Generar Información

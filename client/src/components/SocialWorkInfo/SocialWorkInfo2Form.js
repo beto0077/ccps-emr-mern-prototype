@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import Navbar from "../NavigationBar";
 import { useSocialWorkInfo2Context } from "../../context/SocialWorkInfo2Context";
 
 function SocialWorkInfo2Form() {
+  const location = useLocation();
   const { createSocialWorkInfo2, getSocialWorkInfo2, updateSocialWorkInfo2 } =
     useSocialWorkInfo2Context();
   const [socialWorkInfo, setSocialWorkInfo] = useState({
-    patient_id: "",
+    patient_id: location.state?.id || "",
     total_income: "",
     total_expenses: "",
     per_capita_income: "",
@@ -19,6 +21,7 @@ function SocialWorkInfo2Form() {
     monthly_incomes: [],
     monthly_expenses: [],
   });
+  const [numberOfFamilyMembers, setNumberOfFamilyMembers] = useState(1);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -31,7 +34,7 @@ function SocialWorkInfo2Form() {
     console.log(socialWorkInfo.poverty_line);
     console.log(socialWorkInfo.monthly_incomes);
     console.log(socialWorkInfo.monthly_expenses);
-  }, [socialWorkInfo.monthly_incomes, socialWorkInfo.monthly_expenses]);
+  }, [socialWorkInfo.monthly_incomes, socialWorkInfo.monthly_expenses, numberOfFamilyMembers]);
   // Function to add a new monthly income entry
   const addMonthlyIncome = () => {
     setSocialWorkInfo((prevInfo) => ({
@@ -106,8 +109,8 @@ function SocialWorkInfo2Form() {
       (sum, expense) => sum + parseFloat(expense.amount || 0),
       0
     );
-    const perCapitaIncome = totalIncome; // Adjust as needed
-    const perCapitaExpenses = totalExpenses; // Adjust as needed
+    const perCapitaIncome = totalIncome / numberOfFamilyMembers; // Adjust as needed
+    const perCapitaExpenses = totalExpenses / numberOfFamilyMembers; // Adjust as needed
 
     setSocialWorkInfo((prevInfo) => ({
       ...prevInfo,
@@ -189,9 +192,8 @@ function SocialWorkInfo2Form() {
     >
       <Form onSubmit={handleSubmit}>
         <h1 className="text-center mb-4">
-          {params.id ? "Edit Social Work Info 2" : "New Social Work Info 2"}
+          {params.id ? "Edit Social Work Info 2" : "Nuevo resumen de situación socio-económica"}
         </h1>
-
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -344,7 +346,18 @@ function SocialWorkInfo2Form() {
             </tr>
           </tfoot>
         </Table>
-
+        <Form.Group controlId="formFamilyMembers" className="mb-3">
+          <Form.Label>*Ingrese el número de intregrantes en la familia para calcular correctamente los ingresos y egresos per-capita</Form.Label>
+          <Form.Control
+            type="number"
+            min="1"
+            name="family_members"
+            placeholder="Enter number of family members"
+            onChange={(e) => setNumberOfFamilyMembers(parseInt(e.target.value))}
+            value={numberOfFamilyMembers}
+            required
+          />
+        </Form.Group>
         <Form.Group controlId="formPovertyLine">
           <Form.Label>Poverty Line in Costa Rica</Form.Label>
           <Form.Control
@@ -357,9 +370,24 @@ function SocialWorkInfo2Form() {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Save
-        </Button>
+        <div className="d-flex justify-content-center">
+          <Button
+            style={{ marginTop: "30px", marginRight: "10px" }}
+            variant="primary"
+            type="submit"
+            className="mr-2"
+          >
+            Guardar
+          </Button>
+          <Button
+            style={{ marginTop: "30px" }}
+            variant="outline-secondary"
+            type="button"
+            onClick={() => navigate(-1)}
+          >
+            Cancelar
+          </Button>
+        </div>
       </Form>
     </div>
   );
