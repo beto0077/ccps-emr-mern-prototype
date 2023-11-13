@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 import { useSocialWorkInfo2Context } from "../../context/SocialWorkInfo2Context";
 
 function SocialWorkInfo2Form() {
@@ -21,6 +22,16 @@ function SocialWorkInfo2Form() {
   const params = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    calculateTotals();
+    console.log(socialWorkInfo.total_income);
+    console.log(socialWorkInfo.total_expenses);
+    console.log(socialWorkInfo.per_capita_income);
+    console.log(socialWorkInfo.per_capita_expenses);
+    console.log(socialWorkInfo.poverty_line);
+    console.log(socialWorkInfo.monthly_incomes);
+    console.log(socialWorkInfo.monthly_expenses);
+  }, [socialWorkInfo.monthly_incomes, socialWorkInfo.monthly_expenses]);
   // Function to add a new monthly income entry
   const addMonthlyIncome = () => {
     setSocialWorkInfo((prevInfo) => ({
@@ -65,6 +76,26 @@ function SocialWorkInfo2Form() {
     }));
   };
 
+  const removeMonthlyIncome = (index) => {
+    const updatedIncomes = socialWorkInfo.monthly_incomes.filter(
+      (_, i) => i !== index
+    );
+    setSocialWorkInfo((prevInfo) => ({
+      ...prevInfo,
+      monthly_incomes: updatedIncomes,
+    }));
+  };
+
+  const removeMonthlyExpense = (index) => {
+    const updatedExpenses = socialWorkInfo.monthly_expenses.filter(
+      (_, i) => i !== index
+    );
+    setSocialWorkInfo((prevInfo) => ({
+      ...prevInfo,
+      monthly_expenses: updatedExpenses,
+    }));
+  };
+
   // Function to calculate and update total income, total expenses, per capita income, and per capita expenses
   const calculateTotals = () => {
     const totalIncome = socialWorkInfo.monthly_incomes.reduce(
@@ -91,25 +122,26 @@ function SocialWorkInfo2Form() {
   useEffect(() => {
     // Fetch data logic
     const fetchData = async () => {
-      try {
-        const response = await getSocialWorkInfo2(params.id);
-        if (response.data) {
-          setSocialWorkInfo({
-            ...response.data,
-            monthly_incomes: response.data.monthlyIncome,
-            monthly_expenses: response.data.monthlyExpenses,
-          });
-          // Calculate totals after fetching data
-          calculateTotals();
+      if (params.id) {
+        try {
+          const response = await getSocialWorkInfo2(params.id);
+          if (response.data) {
+            setSocialWorkInfo({
+              ...response.data,
+              monthly_incomes: response.data.monthlyIncome,
+              monthly_expenses: response.data.monthlyExpenses,
+            });
+            // Calculate totals after fetching data
+            calculateTotals();
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   // Handle changes in form fields
   const handleChange = (e) => {
@@ -127,7 +159,10 @@ function SocialWorkInfo2Form() {
       // Determine if it's a new entry or an update based on the presence of an ID
       if (socialWorkInfo.id) {
         // Update existing data
-        const response = await updateSocialWorkInfo2(socialWorkInfo.id, socialWorkInfo);
+        const response = await updateSocialWorkInfo2(
+          socialWorkInfo.id,
+          socialWorkInfo
+        );
         if (response.status === 200) {
           console.log("Data updated successfully");
           //NAVIGATE TO VIEW PAGE
@@ -146,130 +181,172 @@ function SocialWorkInfo2Form() {
       console.error("Error saving or updating data:", error);
       // Optionally: Show an error message, etc.
     }
-  };  
+  };
 
   return (
-    <div style={{ display: "block", margin: "auto", width: 400, padding: 30 }}>
+    <div
+      style={{ display: "block", margin: "auto", width: "auto", padding: 30 }}
+    >
       <Form onSubmit={handleSubmit}>
         <h1 className="text-center mb-4">
           {params.id ? "Edit Social Work Info 2" : "New Social Work Info 2"}
         </h1>
-        <Form.Group controlId="formPatientID">
-          <Form.Label>Patient ID</Form.Label>
-          <Form.Control
-            type="number"
-            name="patient_id"
-            placeholder="Enter patient ID"
-            onChange={handleChange}
-            value={socialWorkInfo.patient_id}
-          />
-        </Form.Group>
-        {/* Monthly Income Fields */}
-        {socialWorkInfo.monthly_incomes.map((income, index) => (
-          <div key={index}>
-            <Form.Group controlId={`formMonthlyIncomeConcept${index}`}>
-              <Form.Label>Monthly Income - Concept</Form.Label>
-              <Form.Control
-                type="text"
-                name="concept"
-                placeholder="Enter concept"
-                value={income.concept}
-                onChange={(e) => handleMonthlyIncomeChange(index, e)}
-              />
-            </Form.Group>
-            <Form.Group controlId={`formMonthlyIncomeAmount${index}`}>
-              <Form.Label>Monthly Income - Amount</Form.Label>
-              <Form.Control
-                type="number"
-                step="0.01"
-                name="amount"
-                placeholder="Enter amount"
-                value={income.amount}
-                onChange={(e) => handleMonthlyIncomeChange(index, e)}
-              />
-            </Form.Group>
-          </div>
-        ))}
-        <Button variant="secondary" onClick={addMonthlyIncome}>
-          Add Monthly Income
-        </Button>
 
-        {/* Monthly Expenses Fields */}
-        {socialWorkInfo.monthly_expenses.map((expense, index) => (
-          <div key={index}>
-            <Form.Group controlId={`formMonthlyExpensesConcept${index}`}>
-              <Form.Label>Monthly Expenses - Concept</Form.Label>
-              <Form.Control
-                type="text"
-                name="concept"
-                placeholder="Enter concept"
-                value={expense.concept}
-                onChange={(e) => handleMonthlyExpenseChange(index, e)}
-              />
-            </Form.Group>
-            <Form.Group controlId={`formMonthlyExpensesAmount${index}`}>
-              <Form.Label>Monthly Expenses - Amount</Form.Label>
-              <Form.Control
-                type="number"
-                step="0.01"
-                name="amount"
-                placeholder="Enter amount"
-                value={expense.amount}
-                onChange={(e) => handleMonthlyExpenseChange(index, e)}
-              />
-            </Form.Group>
-          </div>
-        ))}
-        <Button variant="secondary" onClick={addMonthlyExpense}>
-          Add Monthly Expense
-        </Button>
-        {/* Totals, Per Capita, and Poverty Line Fields */}
-        <Form.Group controlId="formTotalIncome">
-          <Form.Label>Total Income</Form.Label>
-          <Form.Control
-            type="number"
-            step="0.01"
-            name="total_income"
-            placeholder="Enter total income"
-            onChange={handleChange}
-            value={socialWorkInfo.total_income}
-          />
-        </Form.Group>
-        <Form.Group controlId="formTotalExpenses">
-          <Form.Label>Total Expenses</Form.Label>
-          <Form.Control
-            type="number"
-            step="0.01"
-            name="total_expenses"
-            placeholder="Enter total expenses"
-            onChange={handleChange}
-            value={socialWorkInfo.total_expenses}
-          />
-        </Form.Group>
-        <Form.Group controlId="formPerCapitaIncome">
-          <Form.Label>Per Capita Income</Form.Label>
-          <Form.Control
-            type="number"
-            step="0.01"
-            name="per_capita_income"
-            placeholder="Enter per capita income"
-            onChange={handleChange}
-            value={socialWorkInfo.per_capita_income}
-          />
-        </Form.Group>
-        <Form.Group controlId="formPerCapitaExpenses">
-          <Form.Label>Per Capita Expenses</Form.Label>
-          <Form.Control
-            type="number"
-            step="0.01"
-            name="per_capita_expenses"
-            placeholder="Enter per capita expenses"
-            onChange={handleChange}
-            value={socialWorkInfo.per_capita_expenses}
-          />
-        </Form.Group>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th colSpan={3}>Monthly Income</th>
+              <th colSpan={3}>Monthly Expenses</th>
+            </tr>
+            <tr>
+              <th>Concept</th>
+              <th>Amount</th>
+              <th>Remove</th>
+              <th>Concept</th>
+              <th>Amount</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {socialWorkInfo.monthly_incomes.map((income, index) => (
+              <tr key={`income-${index}`}>
+                <td>
+                  <Form.Control
+                    type="text"
+                    name="concept"
+                    value={income.concept}
+                    onChange={(e) => handleMonthlyIncomeChange(index, e)}
+                  />
+                </td>
+                <td>
+                  <Form.Control
+                    type="number"
+                    name="amount"
+                    value={income.amount}
+                    onChange={(e) => handleMonthlyIncomeChange(index, e)}
+                  />
+                </td>
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => removeMonthlyIncome(index)}
+                  >
+                    Remove
+                  </Button>
+                </td>
+
+                {index < socialWorkInfo.monthly_expenses.length ? (
+                  <>
+                    <td>
+                      <Form.Control
+                        type="text"
+                        name="concept"
+                        value={socialWorkInfo.monthly_expenses[index]?.concept}
+                        onChange={(e) => handleMonthlyExpenseChange(index, e)}
+                      />
+                    </td>
+                    <td>
+                      <Form.Control
+                        type="number"
+                        name="amount"
+                        value={socialWorkInfo.monthly_expenses[index]?.amount}
+                        onChange={(e) => handleMonthlyExpenseChange(index, e)}
+                      />
+                    </td>
+                    <td>
+                      <Button
+                        variant="danger"
+                        onClick={() => removeMonthlyExpense(index)}
+                      >
+                        Remove
+                      </Button>
+                    </td>
+                  </>
+                ) : (
+                  <td colSpan={3}></td>
+                )}
+              </tr>
+            ))}
+            {socialWorkInfo.monthly_expenses.length >
+              socialWorkInfo.monthly_incomes.length &&
+              socialWorkInfo.monthly_expenses
+                .slice(socialWorkInfo.monthly_incomes.length)
+                .map((expense, index) => (
+                  <tr key={`expense-extra-${index}`}>
+                    <td colSpan={3}></td>
+                    <td>
+                      <Form.Control
+                        type="text"
+                        name="concept"
+                        value={expense.concept}
+                        onChange={(e) =>
+                          handleMonthlyExpenseChange(
+                            index + socialWorkInfo.monthly_incomes.length,
+                            e
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <Form.Control
+                        type="number"
+                        name="amount"
+                        value={expense.amount}
+                        onChange={(e) =>
+                          handleMonthlyExpenseChange(
+                            index + socialWorkInfo.monthly_incomes.length,
+                            e
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <Button
+                        variant="danger"
+                        onClick={() =>
+                          removeMonthlyExpense(
+                            index + socialWorkInfo.monthly_incomes.length
+                          )
+                        }
+                      >
+                        Remove
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            <tr>
+              <td colSpan={6}>
+                <Button variant="secondary" onClick={addMonthlyIncome}>
+                  Add Income
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={addMonthlyExpense}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Add Expense
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={2}>Total Income</td>
+              <td>{socialWorkInfo.total_income}</td>
+              <td colSpan={2}>Total Expenses</td>
+              <td>{socialWorkInfo.total_expenses}</td>
+            </tr>
+            <tr>
+              <td colSpan={2}>Per Capita Income</td>
+              <td>{socialWorkInfo.per_capita_income}</td>
+              <td colSpan={2}>Per Capita Expenses</td>
+              <td>{socialWorkInfo.per_capita_expenses}</td>
+            </tr>
+          </tfoot>
+        </Table>
+
         <Form.Group controlId="formPovertyLine">
-          <Form.Label>Poverty Line</Form.Label>
+          <Form.Label>Poverty Line in Costa Rica</Form.Label>
           <Form.Control
             type="number"
             step="0.01"
@@ -279,6 +356,7 @@ function SocialWorkInfo2Form() {
             value={socialWorkInfo.poverty_line}
           />
         </Form.Group>
+
         <Button variant="primary" type="submit">
           Save
         </Button>
