@@ -74,8 +74,7 @@ function EquipmentLoanForm() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     const loadEquipmentLoan = async () => {
       if (params.id) {
         // Existing loan, fetch and populate data

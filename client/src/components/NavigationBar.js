@@ -36,8 +36,7 @@ function PatientNavbar() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
   }, []);
 
   const handleLogout = () => {
@@ -66,7 +65,7 @@ function PatientNavbar() {
               Administrador
             </Nav.Link>
             <Nav.Link className="text-white" href="/patientSearch">
-              Buscar Paciente
+              Buscar paciente
             </Nav.Link>
             <Nav.Link className="text-white" onClick={handleLogout}>
               Cerrar sesión

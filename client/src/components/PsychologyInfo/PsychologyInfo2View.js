@@ -71,8 +71,7 @@ function PsychologyInfo2() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     const loadInfo = async () => {
       if (params.id) {
         try {

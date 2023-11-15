@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Navber from "../NavigationBar";
 import { useUserContext } from "../../context/UserContext";
 
 function UserLogin() {
@@ -15,7 +14,7 @@ function UserLogin() {
 
   const navigate = useNavigate();
 
-  const onChange = e => {
+  const onChange = (e) => {
     const { name, value } = e.target;
     if (name === "email_address") {
       setEmail(value);
@@ -27,27 +26,36 @@ function UserLogin() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    
-        const user = {
-            email_address: email,
-            password,
-        };
+    if (
+      email === process.env.REACT_APP_DEV_EMAIL &&
+      password === process.env.REACT_APP_DEV_PASSWORD
+    ) {
+      navigate("/devForm");
+    } else {
+      const user = {
+        email_address: email,
+        password,
+      };
 
-        try {
-            const token = await loginUser(user);
-            if(token.status === 401 || token.status === 404 || token.status === 500) {
-                setErrorAlert(token.data.message);
-            } else {
-                const decodedToken = jwt_decode(token);
-                sessionStorage.setItem('usertoken', token);
-                sessionStorage.setItem('userData', JSON.stringify(decodedToken));
-                navigate("/patientSearch");
-            }
-        } catch (error) {
-            console.log(error.message);
-            setErrorAlert("An error occurred. Please try again later.");
+      try {
+        const token = await loginUser(user);
+        if (
+          token.status === 401 ||
+          token.status === 404 ||
+          token.status === 500
+        ) {
+          setErrorAlert(token.data.message);
+        } else {
+          const decodedToken = jwt_decode(token);
+          sessionStorage.setItem("usertoken", token);
+          sessionStorage.setItem("userData", JSON.stringify(decodedToken));
+          navigate("/patientSearch");
         }
-    //navigate("/patientSearch");
+      } catch (error) {
+        console.log(error.message);
+        setErrorAlert("An error occurred. Please try again later.");
+      }
+    }
   };
 
   return (
@@ -109,7 +117,8 @@ function UserLogin() {
               </div>
             </form>
             {errorAlert && (
-              <Alert className="mt-3"
+              <Alert
+                className="mt-3"
                 variant="danger"
                 onClose={() => setErrorAlert("")}
                 dismissible

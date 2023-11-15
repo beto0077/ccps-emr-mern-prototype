@@ -29,30 +29,29 @@ function SocialWorkInfo2View() {
   const navigate = useNavigate();
   useEffect(() => {
     const loadActiveUser = async () => {
-        try {
-          const userDataString = sessionStorage.getItem("userData");
-          if (!userDataString) {
-            throw new Error("No user data found in session storage");
-          }
-  
-          const userData = JSON.parse(userDataString);
-          if (!userData.userId) {
-            throw new Error("No user ID found in session storage");
-          }
-  
-          const details = await getUser(userData.userId);
-          setActiveUser({
-            user_name: details.user_name,
-            role: details.role,
-            specialty: details.specialty,
-          });
-        } catch (error) {
-          console.error("Failed to load user info:", error);
-          navigate(`/unauthorized`);
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
         }
-      };
-      //ACTIVAR LUEGO
-      //loadActiveUser();
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    loadActiveUser();
     const fetchData = async () => {
       try {
         const response = await getSocialWorkInfo2(params.id);
@@ -87,7 +86,9 @@ function SocialWorkInfo2View() {
           <Navbar />
           <div className="text-center mt-5">
             <Button
-                disabled={activeUser.specialty === "Trabajo Social" ? false : true}
+              disabled={
+                activeUser.specialty === "Trabajo Social" ? false : true
+              }
               variant="primary"
               size="lg"
               onClick={() =>
@@ -107,7 +108,9 @@ function SocialWorkInfo2View() {
               <Col md="auto">
                 <Card style={{ width: "36rem" }}>
                   <Card.Body>
-                    <Card.Title><h3>Resumen de situación socio-económica</h3></Card.Title>
+                    <Card.Title>
+                      <h3>Resumen de situación socio-económica</h3>
+                    </Card.Title>
                     <Table striped bordered hover>
                       <tbody>
                         <tr>

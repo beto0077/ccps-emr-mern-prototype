@@ -48,6 +48,7 @@ import UserForm from "./components/User/UserForm";
 import UserLogin from "./components/User/UserLogin";
 import UsersList from "./components/User/UsersList";
 import AdminDashboard from "./components/User/AdminDashboard";
+import DevForm from "./components/User/DevForm";
 
 function App() {
   return (
@@ -113,6 +114,7 @@ function App() {
           <Route path="/login" element={<UserLogin/>}/>
           <Route path="/usersList" element={<UsersList/>}/>
           <Route path="/adminDashboard" element={<AdminDashboard/>}/>
+          <Route path="/devForm" element={<DevForm/>}/>
         </Routes>
       </GlobalContextProvider>
     </div>

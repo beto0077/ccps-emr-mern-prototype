@@ -51,8 +51,7 @@ function EquipmentLoanList() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     loadLoans(params.id);
     setIsLoading(false);
 

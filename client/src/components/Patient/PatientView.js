@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import Navber from "../NavigationBar";
 import Footer from "../Footer";
 import "mdbreact";
-import { Container, Row, Col, Table, Card, Dropdown, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Card,
+  Dropdown,
+  Button,
+} from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePatientContext } from "../../context/PatientContext";
 import { useUserContext } from "../../context/UserContext";
@@ -11,7 +19,7 @@ function PatientView() {
   const { getUser } = useUserContext();
   const { getPatient, toggleAliveStatus } = usePatientContext();
   const [patientInfo, setPatientInfo] = useState({
-    admission_date : "",
+    admission_date: "",
     name: "",
     id_number: "",
     religion: "",
@@ -43,8 +51,8 @@ function PatientView() {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${day}-${month}-${year}`;
   };
 
@@ -77,8 +85,7 @@ function PatientView() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     const loadPatient = async () => {
       if (params.id) {
         const details = await getPatient(params.id);
@@ -96,18 +103,36 @@ function PatientView() {
       </h2>
       <h3 className="text-black my-3 text-center">{patientInfo.name}</h3>
       <Dropdown className="mt-2 mt-lg-4">
-          <Dropdown.Toggle id="dropdown-basic">
-            Consultar
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}>Terapia Física</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}>Trabajo Social</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/psychologyDashboard/${params.id}`)}>Psicología</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}>Referencias internas</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/loansDashboard/${params.id}`)}>Prestamos de equipo</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      
+        <Dropdown.Toggle id="dropdown-basic">Consultar</Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item
+            onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}
+          >
+            Terapia Física
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}
+          >
+            Trabajo Social
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => navigate(`/psychologyDashboard/${params.id}`)}
+          >
+            Psicología
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}
+          >
+            Referencias internas
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => navigate(`/loansDashboard/${params.id}`)}
+          >
+            Prestamos de equipo
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+
       <Container>
         <Row>
           <Col>
@@ -119,7 +144,7 @@ function PatientView() {
                       <h2 className="text-black">Información general</h2>
                       <Table striped bordered responsive>
                         <tbody>
-                        <tr>
+                          <tr>
                             <td>Fecha de ingreso</td>
                             <td>{formatDate(patientInfo.admission_date)}</td>
                           </tr>
@@ -208,20 +233,29 @@ function PatientView() {
                             <td>
                               {patientInfo.alive_status ? "Vivo" : "Fallecido"}
                             </td>
-                            
                           </tr>
-                          
                         </tbody>
-                        
                       </Table>
                     </Card.Body>
                   </Card>
                 </div>
-                <Button hidden={!(activeUser.role==="superAdmin" || activeUser.role==="Administrador")} className="mt-4 mb-5" variant="outline-secondary" type="button" onClick={handleToggleAliveStatus}>
-                {patientInfo.alive_status ? "Marcar como fallecido" : "Mark as Alive"}
-                    </Button>
+                <Button
+                  hidden={
+                    !(
+                      activeUser.role === "superAdmin" ||
+                      activeUser.role === "Administrador"
+                    )
+                  }
+                  className="mt-4 mb-5"
+                  variant="outline-secondary"
+                  type="button"
+                  onClick={handleToggleAliveStatus}
+                >
+                  {patientInfo.alive_status
+                    ? "Marcar como fallecido"
+                    : "Mark as Alive"}
+                </Button>
               </Col>
-              
             </Row>
           </Col>
         </Row>

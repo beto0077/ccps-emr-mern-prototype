@@ -40,8 +40,7 @@ function AdminDashboard() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     const updateAvailableHeight = () => {
       const navbarHeight = document.querySelector(".navbar").offsetHeight;
       const newAvailableHeight = window.innerHeight - navbarHeight;
@@ -67,9 +66,11 @@ function AdminDashboard() {
           padding: "1rem",
         }}
       >
-        <h1 className="mb-4 mb-lg-5">{activeUser.role === "superAdmin"
-              ? "Super Administrador"
-              : "Administrador"}</h1>
+        <h1 className="mb-4 mb-lg-5">
+          {activeUser.role === "superAdmin"
+            ? "Super Administrador"
+            : "Administrador"}
+        </h1>
         <div
           style={{
             display: "flex",
@@ -87,20 +88,24 @@ function AdminDashboard() {
             Gestionar usuarios
           </Button>
           <Dropdown className="mx-2 my-2 my-lg-3">
-          <Dropdown.Toggle size="lg" id="dropdown-basic">Gestionar pacientes</Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item
-              size="lg" onClick={() => navigate(`/createPatient`)}
-            >
-              Crear paciente
-            </Dropdown.Item>
-            <Dropdown.Item
-              size="lg" onClick={() => navigate(`/patientSearch`)}
-            >
-              Buscar paciente
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+            <Dropdown.Toggle size="lg" id="dropdown-basic">
+              Gestionar pacientes
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item
+                size="lg"
+                onClick={() => navigate(`/createPatient`)}
+              >
+                Crear paciente
+              </Dropdown.Item>
+              <Dropdown.Item
+                size="lg"
+                onClick={() => navigate(`/patientSearch`)}
+              >
+                Buscar paciente
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </Container>
     </>

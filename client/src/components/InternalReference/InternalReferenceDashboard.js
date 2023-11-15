@@ -55,8 +55,7 @@ function InternalReferenceDashboard() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     loadInternalReferences(params.id);
     setIsLoading(false);
 

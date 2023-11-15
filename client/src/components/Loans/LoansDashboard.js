@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Container, Dropdown } from "react-bootstrap";
-import Navbar from "../NavigationBar"; // Adjust the import path as necessary
+import Navbar from "../NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function LoansDashboard() {
@@ -64,11 +64,33 @@ function LoansDashboard() {
         <Dropdown className="mt-2 mt-lg-4">
           <Dropdown.Toggle id="dropdown-basic">Consultar</Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => navigate(`/patientProfile/${params.id}`)}>Perfil de paciente</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}>Terapia Física</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}>Trabajo Social</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/psychologyDashboard/${params.id}`)}>Psicología</Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}>Referencias internas</Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigate(`/patientProfile/${params.id}`)}
+            >
+              Perfil de paciente
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}
+            >
+              Terapia Física
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}
+            >
+              Trabajo Social
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigate(`/psychologyDashboard/${params.id}`)}
+            >
+              Psicología
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() =>
+                navigate(`/internalReferenceDashboard/${params.id}`)
+              }
+            >
+              Referencias internas
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </Container>

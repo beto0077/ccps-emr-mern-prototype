@@ -52,8 +52,7 @@ function OxygenTankLoanList() {
         navigate(`/unauthorized`);
       }
     };
-    //ACTIVAR LUEGO
-    //loadActiveUser();
+    loadActiveUser();
     loadOxygenTankLoans(params.id);
     setIsLoading(false);
 

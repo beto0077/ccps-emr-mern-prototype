@@ -31,9 +31,9 @@ function UnauthorizedUser() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#343434' }}>
       <Alert show={show} variant="danger" style={{ maxWidth: '400px', width: '90%', maxHeight: alertHeight, overflowY: 'auto' }}>
-        <Alert.Heading>Ooops! an error occurred!</Alert.Heading>
+        <Alert.Heading>Ooops! Un error ha ocurrido!</Alert.Heading>
         <p>
-          It seems that you are not authorized to view this page. Please press "OK" and log in to view this page correctly.
+          Parece que no estás debidamente identificado para ver esta página. Por favor presiona "OK" e inicia sesión para poder ver esta página correctamente.
         </p>
         <hr />
         <div className="d-flex justify-content-center">

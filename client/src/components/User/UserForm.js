@@ -31,12 +31,12 @@ function UserForm() {
           if (!userDataString) {
             throw new Error("No user data found in session storage");
           }
-  
+
           const userData = JSON.parse(userDataString);
           if (!userData.userId) {
             throw new Error("No user ID found in session storage");
           }
-  
+
           const details = await getUser(userData.userId);
           setActiveUser({
             user_name: details.user_name,
@@ -48,8 +48,7 @@ function UserForm() {
           navigate(`/unauthorized`);
         }
       };
-      //ACTIVAR LUEGO
-      //loadActiveUser();
+      loadActiveUser();
       if (params.id) {
         const loadedUser = await getUser(params.id);
         setUser({
@@ -90,79 +89,94 @@ function UserForm() {
 
   return (
     <>
-    <Navbar />
-    <div style={{ display: "block", margin: "auto", width: 400, padding: 30 }}>
-      <Form onSubmit={handleSubmit}>
-        <h1 className="text-center mb-4">
-          {params.id ? "Edit User" : "Nuevo usuario"}
-        </h1>
+      <Navbar />
+      <div
+        style={{ display: "block", margin: "auto", width: 400, padding: 30 }}
+      >
+        <Form onSubmit={handleSubmit}>
+          <h1 className="text-center mb-4">
+            {params.id ? "Editar usuario" : "Nuevo usuario"}
+          </h1>
 
-        <Form.Group controlId="formUserName" className="mb-3">
-          <Form.Label>Nombre completo</Form.Label>
-          <Form.Control
-            type="text"
-            name="user_name"
-            placeholder="Ingrese nombre completo"
-            onChange={handleChange}
-            value={user.user_name}
-          />
-        </Form.Group>
-        <Form.Group controlId="formEmail" className="mb-3">
-          <Form.Label>Correo electrónico</Form.Label>
-          <Form.Control
-            type="email"
-            name="email_address"
-            placeholder="Ingrese correo electrónico"
-            onChange={handleChange}
-            value={user.email_address}
-          />
-        </Form.Group>
+          <Form.Group controlId="formUserName" className="mb-3">
+            <Form.Label>Nombre completo</Form.Label>
+            <Form.Control
+              type="text"
+              name="user_name"
+              placeholder="Ingrese nombre completo"
+              onChange={handleChange}
+              value={user.user_name}
+            />
+          </Form.Group>
+          <Form.Group controlId="formEmail" className="mb-3">
+            <Form.Label>Correo electrónico</Form.Label>
+            <Form.Control
+              type="email"
+              name="email_address"
+              placeholder="Ingrese correo electrónico"
+              onChange={handleChange}
+              value={user.email_address}
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formPassword" className="mb-3">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            placeholder="Ingrese contraseña"
-            onChange={handleChange}
-            value={user.password}
-          />
-        </Form.Group>
+          <Form.Group controlId="formPassword" className="mb-3">
+            <Form.Label>Contraseña</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Ingrese contraseña"
+              onChange={handleChange}
+              value={user.password}
+            />
+          </Form.Group>
 
-        
+          <Form.Group controlId="formRole" className="mb-3">
+            <Form.Label>Rol en el sistema</Form.Label>
+            <Form.Control
+              as="select"
+              name="role"
+              value={user.role}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione un rol para el perfil</option>
+              <option
+                hidden={
+                  activeUser.role === "superAdmin" ||
+                  activeUser.role === "Administrador"
+                }
+                value="superAdmin"
+              >
+                Super Admin
+              </option>
+              <option
+                hidden={activeUser.role === "Administrador"}
+                value="Administrador"
+              >
+                Administrador
+              </option>
+              <option value="Colaborador">Colaborador</option>
+            </Form.Control>
+          </Form.Group>
 
-        <Form.Group controlId="formRole" className="mb-3">
-          <Form.Label>Rol en el sistema</Form.Label>
-          <Form.Control
-            as="select"
-            name="role"
-            value={user.role}
-            onChange={handleChange}
-          >
-            <option value="">Seleccione un rol para el perfil</option>
-            <option hidden={activeUser.role === "superAdmin" || activeUser.role === "Administrador"} value="superAdmin">Super Admin</option>
-            <option hidden={activeUser.role === "Administrador"} value="Administrador">Administrador</option>
-            <option value="Colaborador">Colaborador</option>
-          </Form.Control>
-        </Form.Group>
+          <Form.Group controlId="formSpecialty">
+            <Form.Label>Especialidad</Form.Label>
+            <Form.Control
+              as="select"
+              name="specialty"
+              value={user.specialty}
+              onChange={handleChange}
+              disabled={!(user.role === "Colaborador")}
+            >
+              <option value="">
+                Seleccione especialidad para el colaborador
+              </option>
+              <option value="Terapia fisica">Terapia fisica</option>
+              <option value="Psicología">Psicología</option>
+              <option value="Trabajo Social">Trabajo Social</option>
+            </Form.Control>
+          </Form.Group>
 
-        <Form.Group controlId="formSpecialty">
-          <Form.Label>Especialidad</Form.Label>
-          <Form.Control
-            as="select"
-            name="specialty"
-            value={user.specialty}
-            onChange={handleChange}
-            disabled={!(user.role === "Colaborador")}
-          >
-            <option value="">Seleccione especialidad para el colaborador</option>
-            <option value="Terapia fisica">Terapia fisica</option>
-            <option value="Psicología">Psicología</option>
-            <option value="Trabajo Social">Trabajo Social</option>
-          </Form.Control>
-        </Form.Group>
-
-        <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center">
             <Button
               style={{ marginTop: "30px", marginRight: "10px" }}
               variant="primary"
@@ -180,8 +194,8 @@ function UserForm() {
               Cancelar
             </Button>
           </div>
-      </Form>
-    </div>
+        </Form>
+      </div>
     </>
   );
 }
