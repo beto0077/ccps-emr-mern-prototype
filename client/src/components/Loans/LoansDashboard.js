@@ -64,22 +64,11 @@ function LoansDashboard() {
         <Dropdown className="mt-2 mt-lg-4">
           <Dropdown.Toggle id="dropdown-basic">Consultar</Dropdown.Toggle>
           <Dropdown.Menu>
-          <Dropdown.Item onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}>Referencias internas</Dropdown.Item>
-            <Dropdown.Item
-              onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}
-            >
-              Terapia Física
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}
-            >
-              Trabajo Social
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={() => navigate(`/psychologyDashboard/${params.id}`)}
-            >
-              Psicología
-            </Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/patientProfile/${params.id}`)}>Perfil de paciente</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}>Terapia Física</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}>Trabajo Social</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/psychologyDashboard/${params.id}`)}>Psicología</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(`/internalReferenceDashboard/${params.id}`)}>Referencias internas</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </Container>

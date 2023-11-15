@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
-import Footer from '../Footer';
 import 'mdbreact';
 import { Container, Row, Col, Table, Card, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePhysicalTherapyInfoContext } from '../../context/PhysicalTherapyInfoContext'; // Assuming a new context for PhysicalTherapy
+import { useUserContext } from '../../context/UserContext';
 
 function PhysicalTherapyInfoView() {
+    const { getUser } = useUserContext();
     const { getPhysicalTherapyInfo } = usePhysicalTherapyInfoContext();
+    const [activeUser, setActiveUser] = useState({
+        user_name: "",
+        role: "",
+        specialty: "",
+      });
     const [therapyInfo, setTherapyInfo] = useState({
         professional: '',
         clinical_diagnosis: '',
@@ -36,6 +42,31 @@ function PhysicalTherapyInfoView() {
     const [error, setError] = useState(false);
     const params = useParams();
     useEffect(() => {
+        const loadActiveUser = async () => {
+            try {
+              const userDataString = sessionStorage.getItem("userData");
+              if (!userDataString) {
+                throw new Error("No user data found in session storage");
+              }
+      
+              const userData = JSON.parse(userDataString);
+              if (!userData.userId) {
+                throw new Error("No user ID found in session storage");
+              }
+      
+              const details = await getUser(userData.userId);
+              setActiveUser({
+                user_name: details.user_name,
+                role: details.role,
+                specialty: details.specialty,
+              });
+            } catch (error) {
+              console.error("Failed to load user info:", error);
+              navigate(`/unauthorized`);
+            }
+          };
+          //ACTIVAR LUEGO
+          //loadActiveUser();
         const loadPhysicalTherapyInfo = async () => {
             if (params.id) {
                 try {
@@ -61,8 +92,9 @@ function PhysicalTherapyInfoView() {
         {error ? (
             <>
             <Navbar />
-            <div className="text-center">
+            <div className="text-center mt-5">
                 <Button
+                disabled={activeUser.specialty === "Terapia fisica" ? false : true}
             variant="primary"
             size="lg"
             onClick={() => navigate(`/createPhysicalTherapyInfo`, { state: { id: params.id } })}
@@ -81,7 +113,7 @@ function PhysicalTherapyInfoView() {
             <Container>
                 <Row>
                     <Col>
-                    <div className="container ml-3">
+                    <div className="container ml-3 mb-4">
                         <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                             <Card.Body>
                                 <h2 className="text-primary">Datos del paciente</h2>
@@ -179,7 +211,6 @@ function PhysicalTherapyInfoView() {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
         </div>
         )}
         </>

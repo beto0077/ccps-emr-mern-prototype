@@ -15,19 +15,6 @@ import { InternalReferenceProvider } from "./InternalReferenceContext";
 import { AttachmentProvider } from "./AttachmentContext";
 import { UserProvider } from "./UserContext";
 
-/*export const GlobalContextProvider = ({ children }) => {
-  return (
-    <UserProvider>
-      <AttachmentProvider>
-        <OxygenTankLoanProvider>
-          <EquipmentLoanProvider>
-            <PatientProvider>{children}</PatientProvider>
-          </EquipmentLoanProvider>
-        </OxygenTankLoanProvider>
-      </AttachmentProvider>
-    </UserProvider>
-  );
-};*/
 export const GlobalContextProvider = ({ children }) => {
   return (
     <UserProvider>

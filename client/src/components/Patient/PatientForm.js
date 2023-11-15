@@ -96,8 +96,7 @@ function PatientForm() {
 
         const updatedInfo = prepareDataForSubmission();
         setPatient(updatedInfo);
-        console.log(updatedInfo);
-        /*if (params.id) {
+        if (params.id) {
             await updatePatient(params.id, updatedInfo);
         } else {
             await createPatient(updatedInfo);
@@ -126,13 +125,8 @@ function PatientForm() {
             medications: "",
             social_support_network: "",
             alive_status: true
-        });*/
+        });
     };
-
-    useEffect(() => {
-        console.log(patient.admission_date)
-        console.log(patient.patient_status)
-    },[patient.admission_date, patient.patient_status]);
 
     return (
         <>

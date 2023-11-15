@@ -279,7 +279,7 @@ function InternalReferenceForm() {
                     <Form.Control
                         as="textarea" rows={3}
                         name="clinical_diagnosis"
-                        placeholder="Enter clinical diagnosis"
+                        placeholder="Ingrese diagnóstico clínico"
                         onChange={handleChange}
                         value={reference.clinical_diagnosis}
                     />
@@ -289,7 +289,7 @@ function InternalReferenceForm() {
                     <Form.Control
                         as="textarea" rows={3}
                         name="management_plan"
-                        placeholder="Enter management plan"
+                        placeholder="Ingrese plan de manejo"
                         onChange={handleChange}
                         value={reference.management_plan}
                     />
@@ -299,7 +299,7 @@ function InternalReferenceForm() {
                     <Form.Control
                         as="textarea" rows={3}
                         name="reason_for_referral"
-                        placeholder="Enter reason for referral"
+                        placeholder="Ingrese motivo de referencia"
                         onChange={handleChange}
                         value={reference.reason_for_referral}
                     />

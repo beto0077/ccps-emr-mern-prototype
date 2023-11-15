@@ -4,8 +4,15 @@ import "mdbreact";
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePsychologyInfo2Context } from "../../context/PsychologyInfo2Context";
+import { useUserContext } from "../../context/UserContext";
 
 function PsychologyInfo2() {
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const { getPsychologyInfo2 } = usePsychologyInfo2Context();
   const [info, setInfo] = useState({
     full_name: "",
@@ -41,6 +48,31 @@ function PsychologyInfo2() {
   };
 
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const loadInfo = async () => {
       if (params.id) {
         try {
@@ -68,8 +100,9 @@ function PsychologyInfo2() {
       {error ? (
         <>
           <Navbar />
-          <div className="text-center">
+          <div className="text-center mt-5">
             <Button
+              disabled={activeUser.specialty === "Psicología" ? false : true}
               variant="primary"
               size="lg"
               onClick={() =>

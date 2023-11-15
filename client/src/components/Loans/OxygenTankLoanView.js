@@ -56,14 +56,15 @@ function OxygenTankLoanView() {
         <div className="bg-dark">
             <Navbar />
             <h2 className="text-white my-3 text-center" style={{ marginTop: '75px' }}>
-                Detalles de Préstamo de Tanque de Oxígeno
+                Detalles de Prestamo de Tanque de Oxígeno
             </h2>
             <Container>
                 <Row>
                     <Col>
+                    <div className="container ml-3 mb-4">
                         <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                             <Card.Body>
-                                <h2 className="text-primary">Préstamo</h2>
+                                <h2 className="text-primary">Prestamo</h2>
                                 <Table striped bordered responsive>
                                     <tbody>
                                         <tr>
@@ -128,7 +129,7 @@ function OxygenTankLoanView() {
                                         </tr>
                                         <tr>
                                             <td>Fecha de creación</td>
-                                            <td>{loanInfo.preparation_date}</td>
+                                            <td>{formatDate(loanInfo.preparation_date)}</td>
                                         </tr>
                                         <tr>
                                             <td>Prestamo completado</td>
@@ -138,10 +139,10 @@ function OxygenTankLoanView() {
                                 </Table>
                             </Card.Body>
                         </Card>
+                        </div>
                     </Col>
                 </Row>
             </Container>
-            <Footer />
         </div>
     );
 }

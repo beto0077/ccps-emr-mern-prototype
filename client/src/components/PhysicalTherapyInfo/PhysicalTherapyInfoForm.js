@@ -5,9 +5,16 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Navbar from "../NavigationBar";
 import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
+import { useUserContext } from "../../context/UserContext";
 
 function PhysicalTherapyForm() {
   const location = useLocation();
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const {
     createPhysicalTherapyInfo,
     getPhysicalTherapyInfo,
@@ -43,12 +50,41 @@ function PhysicalTherapyForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const loadPhysicalTherapyInfo = async () => {
       if (params.id) {
         const loadedPhysicalTherapyInfo = await getPhysicalTherapyInfo(params.id);
         setPhysicalTherapyInfo(loadedPhysicalTherapyInfo);
       } else {
-        //Get professional name later
+        const userProfessional = activeUser.user_name;
+        setPhysicalTherapyInfo(prevState => ({
+          ...prevState,
+          professional: userProfessional
+        }));
       }
     };
     loadPhysicalTherapyInfo();
@@ -58,14 +94,6 @@ function PhysicalTherapyForm() {
     setCustomSupport(e.target.value);
   };
 
-  /*const prepareDataForSubmission = () => {
-    if (physicalTherapyInfo.external_support === 'Otro') {
-      setPhysicalTherapyInfo(prevState => ({
-        ...prevState,
-        external_support: customSupport
-      }));
-    }
-  };*/
   const prepareDataForSubmission = () => {
     if (physicalTherapyInfo.external_support === 'Otro') {
       return {

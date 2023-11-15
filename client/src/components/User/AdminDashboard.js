@@ -3,13 +3,45 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Container, Dropdown } from "react-bootstrap";
 import Navbar from "../NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useUserContext } from "../../context/UserContext";
 
 function AdminDashboard() {
+  const { getUser } = useUserContext();
   const params = useParams();
   const navigate = useNavigate();
   const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
 
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const updateAvailableHeight = () => {
       const navbarHeight = document.querySelector(".navbar").offsetHeight;
       const newAvailableHeight = window.innerHeight - navbarHeight;
@@ -35,7 +67,9 @@ function AdminDashboard() {
           padding: "1rem",
         }}
       >
-        <h1 className="mb-4 mb-lg-5">Administrador</h1>
+        <h1 className="mb-4 mb-lg-5">{activeUser.role === "superAdmin"
+              ? "Super Administrador"
+              : "Administrador"}</h1>
         <div
           style={{
             display: "flex",
@@ -68,38 +102,6 @@ function AdminDashboard() {
           </Dropdown.Menu>
         </Dropdown>
         </div>
-        <Dropdown className="mt-2 mt-lg-4">
-          <Dropdown.Toggle id="dropdown-basic">Consultar</Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item
-              onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}
-            >
-              Terapia Física
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={() => navigate(`/socialWorkDashboard/${params.id}`)}
-            >
-              Trabajo Social
-            </Dropdown.Item>
-            <Dropdown.Item
-              onClick={() => navigate(`/psychologyDashboard/${params.id}`)}
-            >
-              Psicología
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`/waitforit/${params.id}`)}>
-              Service 3
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
       </Container>
     </>
   );

@@ -4,9 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useSocialWorkInfo1Context } from "../../context/SocialWorkInfo1Context";
 import Navbar from "../NavigationBar";
+import { useUserContext } from "../../context/UserContext";
 
 function SocialWorkInfo1View() {
   const { getSocialWorkInfo1 } = useSocialWorkInfo1Context();
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const [socialWorkInfo1, setSocialWorkInfo1] = useState({
     patient_id: "",
     professional: "",
@@ -56,6 +63,31 @@ function SocialWorkInfo1View() {
     return `${year}-${month}-${day}`;
 };
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const loadSocialWorkInfo1 = async () => {
       if (params.id) {
         try {
@@ -87,8 +119,9 @@ function SocialWorkInfo1View() {
         {error ? (
           <>
           <Navbar />
-            <div className="text-center">
+            <div className="text-center mt-5">
                 <Button
+                disabled={activeUser.specialty === "Trabajo Social" ? false : true}
             variant="primary"
             size="lg"
             onClick={() => navigate(`/createSocialWorkInfo1`, { state: { id: params.id } })}

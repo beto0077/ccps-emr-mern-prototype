@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../NavigationBar";
-import Footer from "../Footer";
 import 'mdbreact';
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePsychologyInfoContext } from "../../context/PsychologyInfoContext";
+import { useUserContext } from "../../context/UserContext";
 
 function PsychologyInfoView() {
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const [info, setInfo] = useState({
     professional: "",
     evaluation_for: "",
@@ -53,12 +59,35 @@ function PsychologyInfoView() {
     return `${year}-${month}-${day}`;
 };
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const fetchPsychologyInfo = async () => {
       try {
         setLoading(true);
-        console.log(params.id);
         const response = await getPsychologyInfo(params.id);
-        console.log(response.psychologyInfo);
         const {
           psychologyInfo,
           diagnosisOncologicalConditions,
@@ -68,7 +97,6 @@ function PsychologyInfoView() {
           treatmentPlan
         } = response;
   
-        console.log(psychologyInfo[0]);
         if (!psychologyInfo || Object.keys(psychologyInfo).length === 0) {
           setError(true); // Set the error state to true if no data is found
         } else {
@@ -97,8 +125,9 @@ function PsychologyInfoView() {
         {error ? (
           <>
           <Navbar />
-            <div className="text-center">
+            <div className="text-center mt-5">
                 <Button
+                disabled={activeUser.specialty === "Psicología" ? false : true}
             variant="primary"
             size="lg"
             onClick={() => navigate(`/createPsychologyInfo`, { state: { id: params.id } })}
@@ -318,7 +347,7 @@ function PsychologyInfoView() {
         </Row>
         <Row className="my-4">
           <Col>
-            <Card>
+            <Card className="mb-3">
               <Card.Header className="font-weight-bold">
                 <h3>Plan</h3>
               </Card.Header>
@@ -342,8 +371,6 @@ function PsychologyInfoView() {
           </Col>
         </Row>
       </Container>
-
-      <Footer />
     </div>
         )}
       </>

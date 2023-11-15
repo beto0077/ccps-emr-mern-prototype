@@ -6,9 +6,16 @@ import Button from "react-bootstrap/Button";
 import Navbar from "../NavigationBar";
 import { useSocialWorkInfo1Context } from "../../context/SocialWorkInfo1Context";
 import { usePatientContext } from "../../context/PatientContext";
+import { useUserContext } from "../../context/UserContext";
 
 function SocialWorkInfo1Form() {
   const location = useLocation();
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const { createSocialWorkInfo1, getSocialWorkInfo1, updateSocialWorkInfo1 } =
     useSocialWorkInfo1Context();
   const { getPatient } = usePatientContext();
@@ -63,15 +70,42 @@ function SocialWorkInfo1Form() {
 };
 
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const loadSocialWorkInfo = async () => {
       if (params.id) {
         const loadedInfo = await getSocialWorkInfo1(params.id);
         setSocialWorkInfo(loadedInfo);
       } else {
+        const userProfessional = activeUser.user_name;
         const patient = await getPatient(socialWorkInfo.patient_id);
         const todayFormatted = formatDate(new Date());
         setSocialWorkInfo(prevInfo => ({
           ...prevInfo,
+          professional: userProfessional,
           interview_date: todayFormatted,
           patient_name: patient.name,
           age: patient.age,
@@ -103,11 +137,6 @@ function SocialWorkInfo1Form() {
     setFamilyGroup(list);
 };
 
-useEffect(() => {console.log(familyGroup)},[familyGroup]);
-
-/*const handleAddFamilyMember = () => {
-    setFamilyGroup([...familyGroup, { name: '', relationship: '', age: '', nationality: '', occupation: '', id: '' }]);
-};*/
 const handleNewMemberChange = (e) => {
   const { name, value } = e.target;
   setNewMember({ ...newMember, [name]: value });
@@ -116,14 +145,6 @@ const handleAddFamilyMember = () => {
   setFamilyGroup([...familyGroup, newMember]);
   setNewMember({ name: '', relationship: '', age: '', nationality: '', occupation: '', id: '' }); // Reset the new member form
 };
-
-/*const handleAddFamilyMember = () => {
-  // Add a new empty object only if the last member has at least one field filled
-  const lastMember = familyGroup[familyGroup.length - 1];
-  if (lastMember.name || lastMember.relationship || lastMember.age || lastMember.nationality || lastMember.occupation || lastMember.id) {
-      setFamilyGroup([...familyGroup, { name: '', relationship: '', age: '', nationality: '', occupation: '', id: '' }]);
-  }
-};*/
 
 const handleRemoveFamilyMember = (index) => {
     const list = [...familyGroup];

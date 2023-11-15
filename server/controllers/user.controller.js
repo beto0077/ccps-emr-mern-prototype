@@ -22,10 +22,10 @@ export const loginUser = async (req, res) => {
                 const token = jwt.sign({ userId }, SECRET_KEY, { expiresIn: '24h' });
                 res.status(200).json({ token });
             } else {
-                res.status(401).json({ message: 'Incorrect password' });
+                res.status(401).json({ message: 'Contraseña incorrecta' });
             }
         } else {
-            res.status(404).json({ message: 'Email not found' });
+            res.status(404).json({ message: 'Correo electrónico no encontrado' });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -6,8 +6,15 @@ import Button from 'react-bootstrap/Button';
 import Navbar from '../NavigationBar';
 import { useOxygenTankLoanContext } from "../../context/OxygenTankLoanContext";
 import { usePatientContext } from "../../context/PatientContext";
+import { useUserContext } from "../../context/UserContext";
 
 function OxygenTankLoanForm() {
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const location = useLocation();
   const { createOxygenTankLoan, getOxygenTankLoan, updateOxygenTankLoan } = useOxygenTankLoanContext();
   const { getPatient } = usePatientContext();
@@ -45,6 +52,31 @@ function OxygenTankLoanForm() {
 };
 
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const loadOxygenTankLoan = async () => {
       if (params.id) {
         const loadedLoan = await getOxygenTankLoan(params.id);
@@ -66,6 +98,7 @@ function OxygenTankLoanForm() {
           beneficiary: patient.name,
           delivery_date: todayFormatted,
           preparation_date: todayFormatted,
+          prepared_by: activeUser.user_name,
         }));
       }
     };

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../NavigationBar';
-import Footer from '../Footer';
 import 'mdbreact';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
@@ -60,7 +59,7 @@ function EquipmentLoanView() {
             <Container>
                 <Row>
                     <Col>
-                    <div className="container ml-3">
+                    <div className="container ml-3 mb-4">
                         <Card className="mt-5" style={{ backgroundColor: '#e0e0e0' }}>
                             <Card.Body>
                                 <h2 className="text-primary">Prestamo</h2>
@@ -142,7 +141,6 @@ function EquipmentLoanView() {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
         </div>
     );
 }

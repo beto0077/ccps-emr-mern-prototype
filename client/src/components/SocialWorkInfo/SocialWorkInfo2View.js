@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../NavigationBar";
-import Footer from "../Footer";
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocialWorkInfo2Context } from "../../context/SocialWorkInfo2Context";
+import { useUserContext } from "../../context/UserContext";
 
 function SocialWorkInfo2View() {
   const { getSocialWorkInfo2 } = useSocialWorkInfo2Context();
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const [socialWorkInfo2, setSocialWorkInfo2] = useState({
     patient_id: "",
     total_income: "",
@@ -22,6 +28,31 @@ function SocialWorkInfo2View() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
+    const loadActiveUser = async () => {
+        try {
+          const userDataString = sessionStorage.getItem("userData");
+          if (!userDataString) {
+            throw new Error("No user data found in session storage");
+          }
+  
+          const userData = JSON.parse(userDataString);
+          if (!userData.userId) {
+            throw new Error("No user ID found in session storage");
+          }
+  
+          const details = await getUser(userData.userId);
+          setActiveUser({
+            user_name: details.user_name,
+            role: details.role,
+            specialty: details.specialty,
+          });
+        } catch (error) {
+          console.error("Failed to load user info:", error);
+          navigate(`/unauthorized`);
+        }
+      };
+      //ACTIVAR LUEGO
+      //loadActiveUser();
     const fetchData = async () => {
       try {
         const response = await getSocialWorkInfo2(params.id);
@@ -54,8 +85,9 @@ function SocialWorkInfo2View() {
       {error ? (
         <>
           <Navbar />
-          <div className="text-center">
+          <div className="text-center mt-5">
             <Button
+                disabled={activeUser.specialty === "Trabajo Social" ? false : true}
               variant="primary"
               size="lg"
               onClick={() =>

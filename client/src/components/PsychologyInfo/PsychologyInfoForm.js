@@ -5,9 +5,16 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Navbar from "../NavigationBar";
 import { usePsychologyInfoContext } from "../../context/PsychologyInfoContext";
+import { useUserContext } from "../../context/UserContext";
 
 function PsychologyInfoForm() {
   const location = useLocation();
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const { createPsychologyInfo, getPsychologyInfo, updatePsychologyInfo } =
     usePsychologyInfoContext();
   const [info, setInfo] = useState({
@@ -47,29 +54,50 @@ function PsychologyInfoForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
     const loadInfo = async () => {
       if (params.id) {
         const details = await getPsychologyInfo(params.id);
         setInfo(details);
+      } else {
+        setInfo(prevInfo => ({
+          ...prevInfo,
+          professional: activeUser.user_name,
+        }));
       }
     };
     loadInfo();
-  }, [params.id]);
-
-  //USEEFFECCT DE PRUEBA
-  useEffect(() => {
-    /*console.log(customInputs)
-    console.log("test")
-    console.log(diagnosisOncologicalConditions)
-    const finalConditions = getFinalDiagnosisConditions();
-    console.log(finalConditions);
-    console.log(diseaseStatuses);*/
-    console.log(treatmentPlans);
-  }, [treatmentPlans]);
+  }, []);
 
   const formatDate = (dateString) => {
+    if (!dateString) return '';
+
     const date = new Date(dateString);
-    const year = date.getFullYear();
+    const year = String(date.getFullYear()).padStart(4, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate() + 1).padStart(2, '0');
     return `${year}-${month}-${day}`;

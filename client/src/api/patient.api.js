@@ -19,3 +19,8 @@ export const searchPatientByIdRequest = async (idNumber) =>
 
 export const updatePatientRequest = async (id, newFields) =>
   await axios.put(`${BASE_URL}/patient/patients/${id}`, newFields);
+
+export const togglePatientAliveStatusRequest = async (id, alive_status) =>
+  await axios.put(`${BASE_URL}/patient/patients/${id}`, {
+    alive_status,
+  });

@@ -1,31 +1,44 @@
-//Has to be fixed later, I just copy the navbar of Doctors for test the patient home page
-
-import React, { useState, useEffect } from 'react';
-import classnames from 'classnames';
-import { useNavigate } from 'react-router-dom';
-//import '../Navber/Navber.css';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import { useUserContext } from "../context/UserContext";
 
 function PatientNavbar() {
-  const [userDirection, setUserDirection] = useState('')
+  const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
   const navigate = useNavigate();
-  /*useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("userData"));
-    console.log(user)
-    console.log(user.superAdminId)
-    console.log(user.doctorId)
-    if(user.superAdminId !== undefined) {
-      const dirtn = '/ManagePatients'
-      setUserDirection(dirtn)
-    } else if (user.doctorId !== undefined) {
-      const dirtn = '/actualDoc'
-      setUserDirection(dirtn)
-    } else if(user.adminId !== undefined) {
-      const dirtn = '/ManagePatients'
-      setUserDirection(dirtn)
-    }
-  }, [])*/
+  useEffect(() => {
+    const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("usertoken");
@@ -36,13 +49,28 @@ function PatientNavbar() {
   return (
     <div>
       <Navbar className="navbar" bg="success" text="white" var="lg">
-        <Navbar.Brand style={{ color: "white" }}>Centro de Cuidados Paliativos de Sarchí</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+        <Navbar.Brand style={{ color: "white" }}>
+          Centro de Cuidados Paliativos de Sarchí
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto ms-auto">
-            <Nav.Link className="text-white" onClick={() => navigate(-1)} >Atrás</Nav.Link>
-            <Nav.Link className="text-white" href="/patientSearch">Buscar Paciente</Nav.Link>
-            <Nav.Link className="text-white" onClick={handleLogout}>Cerrar sesión</Nav.Link>
+            <Nav.Link className="text-white" onClick={() => navigate(-1)}>
+              Atrás
+            </Nav.Link>
+            <Nav.Link
+              hidden={!(activeUser.role === "superAdmin" || activeUser.role === "Administrador")}
+              className="text-white"
+              onClick={() => navigate(`/adminDashboard`)}
+            >
+              Administrador
+            </Nav.Link>
+            <Nav.Link className="text-white" href="/patientSearch">
+              Buscar Paciente
+            </Nav.Link>
+            <Nav.Link className="text-white" onClick={handleLogout}>
+              Cerrar sesión
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

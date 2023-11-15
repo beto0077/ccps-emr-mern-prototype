@@ -4,7 +4,8 @@ import {
     getPatientsRequest,
     searchPatientByIdRequest,
     createPatientRequest, 
-    updatePatientRequest, 
+    updatePatientRequest,
+    togglePatientAliveStatusRequest, 
     deletePatientRequest } from '../api/patient.api.js';
 
 const PatientContext = createContext();
@@ -62,6 +63,25 @@ export const PatientProvider = ({ children }) => {
         }
     }
 
+    const toggleAliveStatus = async (id, patientInfo, setPatientInfo) => {
+        try {
+          // Fetch the current patient's data
+          const patientFound = await getPatientRequest(id);
+          // Toggle the alive status of the patient
+          await togglePatientAliveStatusRequest(patientFound.data.patient_id, !patientFound.data.alive_status);
+      
+          // Update the local state with the new alive status
+          setPatientInfo({
+            ...patientInfo,
+            alive_status: !patientFound.data.alive_status
+          });
+      
+        } catch (error) {
+          // Log any errors that occur during the process
+          console.error(error);
+        }
+      };
+
     const searchPatientById = async (idNumber) => {
         try {
             // Replace 'searchPatientByIdRequest' with the actual function name you define in patient.api.js
@@ -84,7 +104,7 @@ export const PatientProvider = ({ children }) => {
     return (
         <PatientContext.Provider 
             value={{
-                patients, loadPatients, deletePatient, createPatient, getPatient, updatePatient, searchPatientById
+                patients, loadPatients, deletePatient, createPatient, getPatient, updatePatient, toggleAliveStatus, searchPatientById
             }}
         >
             {children}

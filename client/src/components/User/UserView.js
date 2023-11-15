@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Table } from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Nav } from 'react-bootstrap';
+import Navbar from "../NavigationBar";
 import { useUserContext } from "../../context/UserContext";
 
 function UserProfile() {
@@ -11,6 +12,7 @@ function UserProfile() {
     role: "",
     specialty: "",
   });
+  const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
   const params = useParams();
 
@@ -26,55 +28,57 @@ function UserProfile() {
     };
 
     loadData();
+
+    const updateAvailableHeight = () => {
+      const navbarHeight = document.querySelector('.navbar').offsetHeight;
+      const newAvailableHeight = window.innerHeight - navbarHeight;
+      setAvailableHeight(newAvailableHeight);
+    };
+
+  window.addEventListener('resize', updateAvailableHeight);
+  updateAvailableHeight();
+
+  return () => window.removeEventListener('resize', updateAvailableHeight);
   }, [params.id]);
 
   return (
-    <div className="bg-dark">
-      <br />
-      <h2 className="text-white" align="center">
-        User Profile
-      </h2>
-      <h3 className="text-white" align="center">
-        Welcome!
-      </h3>
-      <br />
-      <div className="row">
-        <div className="col">
-          <div className="container ml-3">
-            <div
-              className="jumbotron mt-5"
-              style={{ backgroundColor: "#e0e0e0" }}
-            >
-              <div className="col-sm-6">
-                <h2 className="text-primary">User Information</h2>
-              </div>
-              <br />
-
-              <table className="table col-md-6">
-                <tbody>
-                  <tr>
-                    <td> Name</td>
-                    <td>{userInfo.user_name}</td>
-                  </tr>
-                  <tr>
-                    <td>Email</td>
-                    <td>{userInfo.email_address}</td>
-                  </tr>
-                  <tr>
-                    <td>Role</td>
-                    <td>{userInfo.role}</td>
-                  </tr>
-                  <tr>
-                    <td>Specialty</td>
-                    <td>{userInfo.specialty}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+    <>
+    <Navbar />
+    <div className="bg-dark py-3" style={{ minHeight: `${availableHeight}px` }}>
+      <h2 className="text-white text-center mt-5 mb-4">Perfil del usuario</h2>
+      <Container>
+        <Row className="justify-content-center">
+          <Col lg={8}>
+            <Card className="mt-4" style={{ backgroundColor: "#e0e0e0" }}>
+              <Card.Body>
+                <Card.Title className="text-primary">Información</Card.Title>
+                <Table bordered hover>
+                  <tbody>
+                    <tr>
+                      <td> Nombre completo</td>
+                      <td>{userInfo.user_name}</td>
+                    </tr>
+                    <tr>
+                      <td>Correo electrónico</td>
+                      <td>{userInfo.email_address}</td>
+                    </tr>
+                    <tr>
+                      <td>Rol</td>
+                      <td>{userInfo.role}</td>
+                    </tr>
+                    <tr>
+                      <td>Especialidad</td>
+                      <td>{userInfo.specialty}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
+    </>
   );
 }
 

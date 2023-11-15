@@ -5,12 +5,42 @@ import Navber from "../NavigationBar";
 import { useUserContext } from "../../context/UserContext";
 
 function UsersList() {
-    const { users, loadUsers, deleteUser } = useUserContext();
+    const { users, loadUsers, deleteUser, getUser } = useUserContext();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
+    const [activeUser, setActiveUser] = useState({
+        user_name: "",
+        role: "",
+        specialty: "",
+      });
 
     useEffect(() => {
+        const loadActiveUser = async () => {
+      try {
+        const userDataString = sessionStorage.getItem("userData");
+        if (!userDataString) {
+          throw new Error("No user data found in session storage");
+        }
+
+        const userData = JSON.parse(userDataString);
+        if (!userData.userId) {
+          throw new Error("No user ID found in session storage");
+        }
+
+        const details = await getUser(userData.userId);
+        setActiveUser({
+          user_name: details.user_name,
+          role: details.role,
+          specialty: details.specialty,
+        });
+      } catch (error) {
+        console.error("Failed to load user info:", error);
+        navigate(`/unauthorized`);
+      }
+    };
+    //ACTIVAR LUEGO
+    //loadActiveUser();
         loadUsers();
         setIsLoading(false);
 
@@ -123,6 +153,9 @@ function UsersList() {
                                 </tbody>
                             </Table>
                         </div>
+                        <Button variant="outline-primary" type="button" onClick={() => navigate(`/adminDashboard`)}>
+                        Volver al panel
+                    </Button>
                     </Col>
                 </Row>
             </Container>

@@ -4,8 +4,15 @@ import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Navber from "../NavigationBar";
 import { usePsychologyInfo3Context } from "../../context/PsychologyInfo3Context";
 import { usePsychologyInfoContext } from "../../context/PsychologyInfoContext";
+import { useUserContext } from "../../context/UserContext";
 
 function PsychologyInfo3List() {
+    const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
     const { getPsychologyInfo } = usePsychologyInfoContext();
     const { psychologyInfo3s,
         loadPsychologyInfo3s,
@@ -17,6 +24,31 @@ function PsychologyInfo3List() {
     const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 
     useEffect(() => {
+        const loadActiveUser = async () => {
+            try {
+              const userDataString = sessionStorage.getItem("userData");
+              if (!userDataString) {
+                throw new Error("No user data found in session storage");
+              }
+      
+              const userData = JSON.parse(userDataString);
+              if (!userData.userId) {
+                throw new Error("No user ID found in session storage");
+              }
+      
+              const details = await getUser(userData.userId);
+              setActiveUser({
+                user_name: details.user_name,
+                role: details.role,
+                specialty: details.specialty,
+              });
+            } catch (error) {
+              console.error("Failed to load user info:", error);
+              navigate(`/unauthorized`);
+            }
+          };
+          //ACTIVAR LUEGO
+          //loadActiveUser();
 
         const loadPsychologyInfo1 = async () => {
             if (params.id) {
@@ -77,6 +109,7 @@ function PsychologyInfo3List() {
             <br />
             <div className="text-center">
                 <Button
+                disabled={activeUser.specialty === "Psicología" ? false : true}
             variant="primary"
             size="lg"
             onClick={() => navigate(`/createPsychologyInfo3`, { state: { id: params.id } })}
@@ -128,6 +161,9 @@ function PsychologyInfo3List() {
                                 </tbody>
                             </Table>
                         </div>
+                        <Button variant="outline-primary" type="button" onClick={() => navigate(`/psychologyDashboard/${params.id}`)}>
+                        Volver al panel
+                    </Button>
                     </Col>
                 </Row>
             </Container>

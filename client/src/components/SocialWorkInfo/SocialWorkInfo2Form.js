@@ -27,14 +27,11 @@ function SocialWorkInfo2Form() {
 
   useEffect(() => {
     calculateTotals();
-    console.log(socialWorkInfo.total_income);
-    console.log(socialWorkInfo.total_expenses);
-    console.log(socialWorkInfo.per_capita_income);
-    console.log(socialWorkInfo.per_capita_expenses);
-    console.log(socialWorkInfo.poverty_line);
-    console.log(socialWorkInfo.monthly_incomes);
-    console.log(socialWorkInfo.monthly_expenses);
-  }, [socialWorkInfo.monthly_incomes, socialWorkInfo.monthly_expenses, numberOfFamilyMembers]);
+  }, [
+    socialWorkInfo.monthly_incomes,
+    socialWorkInfo.monthly_expenses,
+    numberOfFamilyMembers,
+  ]);
   // Function to add a new monthly income entry
   const addMonthlyIncome = () => {
     setSocialWorkInfo((prevInfo) => ({
@@ -190,224 +187,254 @@ function SocialWorkInfo2Form() {
 
   return (
     <>
-    <Navbar />
-    <div
-      style={{ display: "block", margin: "auto", width: "auto", padding: 30 }}
-    >
-      <Form onSubmit={handleSubmit}>
-        <h1 className="text-center mb-4">
-          {params.id ? "Edit Social Work Info 2" : "Nuevo resumen de situación socio-económica"}
-        </h1>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th colSpan={3}>Ingresos mensuales</th>
-              <th colSpan={3}>Egresos mensuales</th>
-            </tr>
-            <tr>
-              <th>Concepto</th>
-              <th>Monto</th>
-              <th>Remover</th>
-              <th>Concepto</th>
-              <th>Monto</th>
-              <th>Remover</th>
-            </tr>
-          </thead>
-          <tbody>
-            {socialWorkInfo.monthly_incomes.map((income, index) => (
-              <tr key={`income-${index}`}>
-                <td>
-                  <Form.Control
-                    type="text"
-                    name="concept"
-                    value={income.concept}
-                    onChange={(e) => handleMonthlyIncomeChange(index, e)}
-                  />
-                </td>
-                <td>
-                  <Form.Control
-                    type="number"
-                    name="amount"
-                    value={income.amount}
-                    onChange={(e) => handleMonthlyIncomeChange(index, e)}
-                  />
-                </td>
-                <td>
+      <Navbar />
+      <div
+        style={{ display: "block", margin: "auto", width: "auto", padding: 30 }}
+      >
+        <Form onSubmit={handleSubmit}>
+          <h1 className="text-center mb-4">
+            {params.id
+              ? "Edit Social Work Info 2"
+              : "Nuevo resumen de situación socio-económica"}
+          </h1>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th colSpan={3}>Ingresos mensuales</th>
+                <th colSpan={3}>Egresos mensuales</th>
+              </tr>
+              <tr>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Remover</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Remover</th>
+              </tr>
+            </thead>
+            <tbody>
+              {socialWorkInfo.monthly_incomes.map((income, index) => (
+                <tr key={`income-${index}`}>
+                  <td>
+                    <Form.Control
+                      type="text"
+                      name="concept"
+                      value={income.concept}
+                      onChange={(e) => handleMonthlyIncomeChange(index, e)}
+                    />
+                  </td>
+                  <td>
+                    <Form.Control
+                      type="number"
+                      name="amount"
+                      value={income.amount}
+                      onChange={(e) => handleMonthlyIncomeChange(index, e)}
+                    />
+                  </td>
+                  <td>
+                    <Button
+                      variant="danger"
+                      onClick={() => removeMonthlyIncome(index)}
+                    >
+                      Remover
+                    </Button>
+                  </td>
+
+                  {index < socialWorkInfo.monthly_expenses.length ? (
+                    <>
+                      <td>
+                        <Form.Select
+                          name="concept"
+                          value={
+                            socialWorkInfo.monthly_expenses[index]?.concept
+                          }
+                          onChange={(e) => handleMonthlyExpenseChange(index, e)}
+                        >
+                          <option value="">Selecione concepto</option>
+                          <option value="Préstamos/tarjetas de crédito">
+                            Préstamos/tarjetas de crédito
+                          </option>
+                          <option value="Alquiler">Alquiler</option>
+                          <option value="Electricidad">Electricidad</option>
+                          <option value="Teléfono fijo/celular">
+                            Teléfono fijo/celular
+                          </option>
+                          <option value="Alimentación">Alimentación</option>
+                          <option value="Agua">Agua</option>
+                          <option value="Basura">Basura</option>
+                          <option value="Transporte">Transporte</option>
+                          <option value="Estudio">Estudio</option>
+                          <option value="Internet/Cable">Internet/Cable</option>
+                          <option value="Medicamentos">Medicamentos</option>
+                          <option value="Otros">Otros</option>
+                        </Form.Select>
+                      </td>
+                      <td>
+                        <Form.Control
+                          type="number"
+                          name="amount"
+                          value={socialWorkInfo.monthly_expenses[index]?.amount}
+                          onChange={(e) => handleMonthlyExpenseChange(index, e)}
+                        />
+                      </td>
+                      <td>
+                        <Button
+                          variant="danger"
+                          onClick={() => removeMonthlyExpense(index)}
+                        >
+                          Remover
+                        </Button>
+                      </td>
+                    </>
+                  ) : (
+                    <td colSpan={3}></td>
+                  )}
+                </tr>
+              ))}
+              {socialWorkInfo.monthly_expenses.length >
+                socialWorkInfo.monthly_incomes.length &&
+                socialWorkInfo.monthly_expenses
+                  .slice(socialWorkInfo.monthly_incomes.length)
+                  .map((expense, index) => (
+                    <tr key={`expense-extra-${index}`}>
+                      <td colSpan={3}></td>
+                      <td>
+                        <Form.Select
+                          name="concept"
+                          value={expense.concept}
+                          onChange={(e) =>
+                            handleMonthlyExpenseChange(
+                              index + socialWorkInfo.monthly_incomes.length,
+                              e
+                            )
+                          }
+                        >
+                          <option value="">Selecione concepto</option>
+                          <option value="Préstamos/tarjetas de crédito">
+                            Préstamos/tarjetas de crédito
+                          </option>
+                          <option value="Alquiler">Alquiler</option>
+                          <option value="Electricidad">Electricidad</option>
+                          <option value="Teléfono fijo/celular">
+                            Teléfono fijo/celular
+                          </option>
+                          <option value="Alimentación">Alimentación</option>
+                          <option value="Agua">Agua</option>
+                          <option value="Basura">Basura</option>
+                          <option value="Transporte">Transporte</option>
+                          <option value="Estudio">Estudio</option>
+                          <option value="Internet/Cable">Internet/Cable</option>
+                          <option value="Medicamentos">Medicamentos</option>
+                          <option value="Otros">Otros</option>
+                        </Form.Select>
+                      </td>
+                      <td>
+                        <Form.Control
+                          type="number"
+                          name="amount"
+                          value={expense.amount}
+                          onChange={(e) =>
+                            handleMonthlyExpenseChange(
+                              index + socialWorkInfo.monthly_incomes.length,
+                              e
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <Button
+                          variant="danger"
+                          onClick={() =>
+                            removeMonthlyExpense(
+                              index + socialWorkInfo.monthly_incomes.length
+                            )
+                          }
+                        >
+                          Remover
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+              <tr>
+                <td colSpan={6}>
+                  <Button variant="secondary" onClick={addMonthlyIncome}>
+                    Agregar Ingreso
+                  </Button>
                   <Button
-                    variant="danger"
-                    onClick={() => removeMonthlyIncome(index)}
+                    variant="secondary"
+                    onClick={addMonthlyExpense}
+                    style={{ marginLeft: "100px" }}
+                    hidden={!socialWorkInfo.monthly_incomes.length}
                   >
-                    Remover
+                    Agregar Egreso
                   </Button>
                 </td>
-
-                {index < socialWorkInfo.monthly_expenses.length ? (
-                  <>
-                    <td>
-                    <Form.Select
-            name="concept"
-            value={socialWorkInfo.monthly_expenses[index]?.concept}
-            onChange={(e) => handleMonthlyExpenseChange(index, e)}
-          >
-            <option value="">Selecione concepto</option>
-            <option value="Préstamos/tarjetas de crédito">Préstamos/tarjetas de crédito</option>
-            <option value="Alquiler">Alquiler</option>
-            <option value="Electricidad">Electricidad</option>
-            <option value="Teléfono fijo/celular">Teléfono fijo/celular</option>
-            <option value="Alimentación">Alimentación</option>
-            <option value="Agua">Agua</option>
-            <option value="Basura">Basura</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Estudio">Estudio</option>
-            <option value="Internet/Cable">Internet/Cable</option>
-            <option value="Medicamentos">Medicamentos</option>
-            <option value="Otros">Otros</option>
-          </Form.Select>
-                    </td>
-                    <td>
-                      <Form.Control
-                        type="number"
-                        name="amount"
-                        value={socialWorkInfo.monthly_expenses[index]?.amount}
-                        onChange={(e) => handleMonthlyExpenseChange(index, e)}
-                      />
-                    </td>
-                    <td>
-                      <Button
-                        variant="danger"
-                        onClick={() => removeMonthlyExpense(index)}
-                      >
-                        Remover
-                      </Button>
-                    </td>
-                  </>
-                ) : (
-                  <td colSpan={3}></td>
-                )}
               </tr>
-            ))}
-            {socialWorkInfo.monthly_expenses.length >
-              socialWorkInfo.monthly_incomes.length &&
-              socialWorkInfo.monthly_expenses
-                .slice(socialWorkInfo.monthly_incomes.length)
-                .map((expense, index) => (
-                  <tr key={`expense-extra-${index}`}>
-                    <td colSpan={3}></td>
-                    <td>
-                      <Form.Control
-                        type="text"
-                        name="concept"
-                        value={expense.concept}
-                        onChange={(e) =>
-                          handleMonthlyExpenseChange(
-                            index + socialWorkInfo.monthly_incomes.length,
-                            e
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <Form.Control
-                        type="number"
-                        name="amount"
-                        value={expense.amount}
-                        onChange={(e) =>
-                          handleMonthlyExpenseChange(
-                            index + socialWorkInfo.monthly_incomes.length,
-                            e
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <Button
-                        variant="danger"
-                        onClick={() =>
-                          removeMonthlyExpense(
-                            index + socialWorkInfo.monthly_incomes.length
-                          )
-                        }
-                      >
-                        Remove
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-            <tr>
-              <td colSpan={6}>
-                <Button variant="secondary" onClick={addMonthlyIncome}>
-                  Agregar Ingreso
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={addMonthlyExpense}
-                  style={{ marginLeft: "100px" }}
-                  hidden={!socialWorkInfo.monthly_incomes.length}
-                >
-                  Agregar Egreso
-                </Button>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={2}>Total ingresos</td>
-              <td>{socialWorkInfo.total_income}</td>
-              <td colSpan={2}>Total egresos</td>
-              <td>{socialWorkInfo.total_expenses}</td>
-            </tr>
-            <tr>
-              <td colSpan={2}>Ingreso percapita</td>
-              <td>{socialWorkInfo.per_capita_income}</td>
-              <td colSpan={2}>Egreso percapita</td>
-              <td>{socialWorkInfo.per_capita_expenses}</td>
-            </tr>
-          </tfoot>
-        </Table>
-        <Form.Group controlId="formFamilyMembers" className="mb-3">
-          <Form.Label>*Ingrese el número de intregrantes en la familia para calcular correctamente los ingresos y egresos per-capita</Form.Label>
-          <Form.Control
-            type="number"
-            min="1"
-            name="family_members"
-            placeholder="Ingrese el número de intregrantes en la familia"
-            onChange={(e) => setNumberOfFamilyMembers(parseInt(e.target.value))}
-            value={numberOfFamilyMembers}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formPovertyLine">
-          <Form.Label>Linea de pobreza en Costa Rica</Form.Label>
-          <Form.Control
-            type="number"
-            step="0.01"
-            name="poverty_line"
-            placeholder="Ingrese linea de pobreza en Costa Rica"
-            onChange={handleChange}
-            value={socialWorkInfo.poverty_line}
-          />
-        </Form.Group>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={2}>Total ingresos</td>
+                <td>{socialWorkInfo.total_income}</td>
+                <td colSpan={2}>Total egresos</td>
+                <td>{socialWorkInfo.total_expenses}</td>
+              </tr>
+              <tr>
+                <td colSpan={2}>Ingreso percapita</td>
+                <td>{socialWorkInfo.per_capita_income}</td>
+                <td colSpan={2}>Egreso percapita</td>
+                <td>{socialWorkInfo.per_capita_expenses}</td>
+              </tr>
+            </tfoot>
+          </Table>
+          <Form.Group controlId="formFamilyMembers" className="mb-3">
+            <Form.Label>
+              *Ingrese el número de intregrantes en la familia para calcular
+              correctamente los ingresos y egresos per-capita
+            </Form.Label>
+            <Form.Control
+              type="number"
+              min="1"
+              name="family_members"
+              placeholder="Ingrese el número de intregrantes en la familia"
+              onChange={(e) =>
+                setNumberOfFamilyMembers(parseInt(e.target.value))
+              }
+              value={numberOfFamilyMembers}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="formPovertyLine">
+            <Form.Label>Linea de pobreza en Costa Rica</Form.Label>
+            <Form.Control
+              type="number"
+              step="0.01"
+              name="poverty_line"
+              placeholder="Ingrese linea de pobreza en Costa Rica"
+              onChange={handleChange}
+              value={socialWorkInfo.poverty_line}
+            />
+          </Form.Group>
 
-        <div className="d-flex justify-content-center">
-          <Button
-            style={{ marginTop: "30px", marginRight: "10px" }}
-            variant="primary"
-            type="submit"
-            className="mr-2"
-          >
-            Guardar
-          </Button>
-          <Button
-            style={{ marginTop: "30px" }}
-            variant="outline-secondary"
-            type="button"
-            onClick={() => navigate(-1)}
-          >
-            Cancelar
-          </Button>
-        </div>
-      </Form>
-    </div>
+          <div className="d-flex justify-content-center">
+            <Button
+              style={{ marginTop: "30px", marginRight: "10px" }}
+              variant="primary"
+              type="submit"
+              className="mr-2"
+            >
+              Guardar
+            </Button>
+            <Button
+              style={{ marginTop: "30px" }}
+              variant="outline-secondary"
+              type="button"
+              onClick={() => navigate(-1)}
+            >
+              Cancelar
+            </Button>
+          </div>
+        </Form>
+      </div>
     </>
   );
 }

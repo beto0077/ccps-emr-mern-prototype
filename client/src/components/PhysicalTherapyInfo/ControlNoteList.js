@@ -4,8 +4,15 @@ import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import Navber from "../NavigationBar";
 import { useControlNoteContext } from "../../context/ControlNoteContext";
 import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
+import { useUserContext } from "../../context/UserContext";
 
 function ControlNoteList() {
+    const { getUser } = useUserContext();
+  const [activeUser, setActiveUser] = useState({
+    user_name: "",
+    role: "",
+    specialty: "",
+  });
     const { getPhysicalTherapyInfo } = usePhysicalTherapyInfoContext();
     const { controlNotes, loadControlNotes, deleteControlNote } = useControlNoteContext();
     const navigate = useNavigate();
@@ -25,6 +32,31 @@ function ControlNoteList() {
         return `${year}-${month}-${day}`;
     };
     useEffect(() => {
+        const loadActiveUser = async () => {
+            try {
+              const userDataString = sessionStorage.getItem("userData");
+              if (!userDataString) {
+                throw new Error("No user data found in session storage");
+              }
+      
+              const userData = JSON.parse(userDataString);
+              if (!userData.userId) {
+                throw new Error("No user ID found in session storage");
+              }
+      
+              const details = await getUser(userData.userId);
+              setActiveUser({
+                user_name: details.user_name,
+                role: details.role,
+                specialty: details.specialty,
+              });
+            } catch (error) {
+              console.error("Failed to load user info:", error);
+              navigate(`/unauthorized`);
+            }
+          };
+          //ACTIVAR LUEGO
+          //loadActiveUser();
         const loadPhysicalTherapyInfo = async () => {
             if (params.id) {
                 try {
@@ -84,6 +116,7 @@ function ControlNoteList() {
             <br />
             <div className="text-center">
                 <Button
+                disabled={activeUser.specialty === "Terapia fisica" ? false : true}
             variant="primary"
             size="lg"
             onClick={() => navigate(`/createControlNote`, { state: { id: therapyInfoId, patientId: params.id } })}
@@ -135,6 +168,9 @@ function ControlNoteList() {
                                 </tbody>
                             </Table>
                         </div>
+                        <Button variant="outline-primary" type="button" onClick={() => navigate(`/physicalTherapyDashboard/${params.id}`)}>
+                        Volver al panel
+                    </Button>
                     </Col>
                 </Row>
             </Container>

@@ -60,12 +60,16 @@ export const createPatient = async (req, res) => {
 
 // Update a patient's information
 export const updatePatient = async (req, res) => {
+    
+    console.log("hi");
+    console.log(req.body);
     try {
         const result = await database.query(
             "UPDATE PatientInformation SET ? WHERE patient_id = ?",
             [req.body, req.params.id]
         );
         res.json(result);
+        console.log(result);
     } catch (error) {
         console.error("Database error:", error);
         return res.status(500).json({ message: error.message });
