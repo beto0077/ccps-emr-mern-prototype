@@ -21,7 +21,7 @@ function Footer() {
         </Row>
       </Container>
       <div className="footer-copyright text-center py-3 bg-primary">
-        © 2023 Copyright: <span>nhhospitalltd.com</span>
+        © 2023 Copyright.
       </div>
     </footer>
   );
