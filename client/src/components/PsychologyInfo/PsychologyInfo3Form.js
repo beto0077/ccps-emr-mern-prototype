@@ -61,7 +61,7 @@ function PsychologyInfo3Form() {
     } else {
       await createPsychologyInfo3(psychologyInfo3);
     }
-    navigate(`/psychologyInfo3List/${psychologyInfo3.patient_id}`); // Assuming you'll have a route for listing PsychologyInfo3
+    navigate(`/psychologyInfo3List/${psychologyInfo3.patient_id}`);
     setPsychologyInfo3({
       patient_id: "",
       name: "",

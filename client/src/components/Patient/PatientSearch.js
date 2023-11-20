@@ -30,10 +30,10 @@ function PatientSearch() {
       if (patient) {
         navigate(`/patientProfile/${patient.patient_id}`);
       } else {
-        setError("No patient found with that ID number.");
+        setError("No se encontró ningún paciente con ese número de identificación.");
       }
     } catch (error) {
-      setError("An error occurred while searching for the patient.");
+      setError("Se produjo un error al buscar al paciente.");
     }
   };
 

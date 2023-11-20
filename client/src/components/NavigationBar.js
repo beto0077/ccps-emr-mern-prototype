@@ -4,7 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { useUserContext } from "../context/UserContext";
 
-function PatientNavbar() {
+function NavigationBar() {
   const { getUser } = useUserContext();
   const [activeUser, setActiveUser] = useState({
     user_name: "",
@@ -49,7 +49,7 @@ function PatientNavbar() {
     <div>
       <Navbar className="navbar" bg="success" text="white" var="lg">
         <Navbar.Brand style={{ color: "white" }}>
-          Centro de Cuidados Paliativos de Sarchí
+          Asociación Cuidados Paliativos de Sarchí
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -77,4 +77,4 @@ function PatientNavbar() {
   );
 }
 
-export default PatientNavbar;
+export default NavigationBar;

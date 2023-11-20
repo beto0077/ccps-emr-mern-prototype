@@ -6,7 +6,7 @@ import {
     createSocialWorkInfo3, 
     updateSocialWorkInfo3, 
     deleteSocialWorkInfo3 
-} from "../../controllers/socialWorkInfo3.controller.js"; // New import for SocialWorkInfo3 controller
+} from "../../controllers/socialWorkInfo3.controller.js"; 
 
 const router = Router();
 

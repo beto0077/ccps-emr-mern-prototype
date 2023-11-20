@@ -3,7 +3,7 @@ import Navbar from "../NavigationBar";
 import "mdbreact";
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext"; // Assuming a new context for PhysicalTherapy
+import { usePhysicalTherapyInfoContext } from "../../context/PhysicalTherapyInfoContext";
 import { useUserContext } from "../../context/UserContext";
 
 function PhysicalTherapyInfoView() {

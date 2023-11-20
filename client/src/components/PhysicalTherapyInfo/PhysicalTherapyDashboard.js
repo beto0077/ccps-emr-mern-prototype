@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Container, Dropdown } from "react-bootstrap";
-import Navbar from "../NavigationBar"; // Adjust the import path as necessary
+import Navbar from "../NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function PhysicalTherapyDashboard() {

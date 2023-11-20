@@ -104,10 +104,10 @@ function App() {
           <Route path="/createInternalReference" element={<InternalReferenceForm/>}/>
           <Route path="/editInternalReference/:id" element={<InternalReferenceForm/>}/>
           <Route path="/internalReferenceDashboard/:id" element={<InternalReferenceDashboard/>}/>
-          <Route path="/attachment/:id" element={<AttachmentView/>}/>
+          {/*<Route path="/attachment/:id" element={<AttachmentView/>}/>
           <Route path="/createAttachment" element={<AttachmentForm/>}/>
           <Route path="/editAttachment/:id" element={<AttachmentForm/>}/>
-          <Route path="/attachmentDashboard/:id" element={<AttachmentDashboard/>}/>
+          <Route path="/attachmentDashboard/:id" element={<AttachmentDashboard/>}/>*/}
           <Route path="/userProfile/:id" element={<UserView/>}/>
           <Route path="/createUser" element={<UserForm/>}/>
           <Route path="/editUser/:id" element={<UserForm/>}/>

@@ -106,8 +106,8 @@ function SocialWorkInfo2Form() {
       (sum, expense) => sum + parseFloat(expense.amount || 0),
       0
     );
-    const perCapitaIncome = totalIncome / numberOfFamilyMembers; // Adjust as needed
-    const perCapitaExpenses = totalExpenses / numberOfFamilyMembers; // Adjust as needed
+    const perCapitaIncome = totalIncome / numberOfFamilyMembers;
+    const perCapitaExpenses = totalExpenses / numberOfFamilyMembers; 
 
     setSocialWorkInfo((prevInfo) => ({
       ...prevInfo,
@@ -165,23 +165,15 @@ function SocialWorkInfo2Form() {
         );
         if (response.status === 200) {
           console.log("Data updated successfully");
-          //NAVIGATE TO VIEW PAGE
-          // Optionally: Redirect, show a success message, etc.
         }
       } else {
         // Save new data
         await createSocialWorkInfo2(socialWorkInfo);
-        /*const response = await createSocialWorkInfo2(socialWorkInfo);
-        if (response.status === 201) {
-          console.log("Data saved successfully");
-          //NAVIGATE TO VIEW PAGE
-          // Optionally: Redirect, show a success message, etc.
-        }*/
       }
       navigate(`/socialWorkDashboard/${socialWorkInfo.patient_id}`);
     } catch (error) {
       console.error("Error saving or updating data:", error);
-      // Optionally: Show an error message, etc.
+      
     }
   };
 

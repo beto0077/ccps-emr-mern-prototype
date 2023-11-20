@@ -53,7 +53,7 @@ function UserLogin() {
         }
       } catch (error) {
         console.log(error.message);
-        setErrorAlert("An error occurred. Please try again later.");
+        setErrorAlert("Ocurrió un error. Por favor, inténtelo de nuevo más tarde.");
       }
     }
   };

@@ -1,4 +1,3 @@
-// SocialWorkInfo1View.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Table, Card, Button } from "react-bootstrap";

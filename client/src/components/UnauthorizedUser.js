@@ -14,7 +14,7 @@ function UnauthorizedUser() {
   useEffect(() => {
     const handleResize = () => {
       // Update the height of the alert container based on window height
-      const newHeight = Math.min(window.innerHeight * 0.8, 600); // You can adjust the maximum height as needed
+      const newHeight = Math.min(window.innerHeight * 0.8, 600);
       setAlertHeight(newHeight);
     };
 

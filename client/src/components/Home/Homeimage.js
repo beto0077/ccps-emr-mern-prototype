@@ -1,8 +1,6 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { MDBContainer } from 'mdbreact';
-//import Img from '../photos/hospital.jpg';
-//import Img from './hospitalbg.jpg'
 import Img from './WallpaperV2.png'
 
 function Homeimage() {

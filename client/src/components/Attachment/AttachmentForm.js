@@ -13,7 +13,7 @@ function AttachmentForm() {
         section_reference: "",
         attachment_type: "",
         file_name: "",
-        file_content: null, // This will hold the uploaded file (Blob)
+        file_content: null, 
         date_added: "",
         description: "",
         uploader_user_id: ""
@@ -64,7 +64,7 @@ function AttachmentForm() {
         } else {
             await createAttachment(attachment);
         }
-        navigate(`/attachmentDashboard/${location.state.id}`); // Assuming there's a route for attachments
+        navigate(`/attachmentDashboard/${location.state.id}`); 
     };
 
     return (

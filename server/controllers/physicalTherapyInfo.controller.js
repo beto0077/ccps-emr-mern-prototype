@@ -1,6 +1,6 @@
 // Import the database connection
 import { database } from '../utils/database.js';
-//**/
+
 export const getPhysicalTherapyInfos = async (req, res) => {
     try {
         const [result] = await database.query("SELECT * FROM PhysicalTherapyInfo ORDER BY physical_therapy_id ASC");

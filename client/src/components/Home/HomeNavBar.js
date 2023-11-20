@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-//import './Navber.css';
 
 function HomeNavBar() {
   const [prevScrollpos, setPrevScrollpos] = useState(window.pageYOffset);

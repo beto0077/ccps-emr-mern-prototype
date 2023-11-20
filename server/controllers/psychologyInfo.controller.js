@@ -3,10 +3,7 @@ import { database } from '../utils/database.js';
 
 export const createPsychologyInfo = async (req, res) => {
     const connection = await database.getConnection();
-    /*console.log(req.body.emotionalPsychologicalSymptoms[0].symptom);
-    console.log(req.body.emotionalPsychologicalSymptoms[0].description);
-    console.log(req.body.finalConditions[0]);
-    console.log(req.body);*/
+    
     try {
         await connection.beginTransaction();
 

@@ -4,7 +4,6 @@ import Homeimage from './Homeimage';
 import Navber from './HomeNavBar';
 import './Home.css';
 import Footer from '../Footer';
-import Mission from './Mission';
 
 function Home() {
   const [availableHeight, setAvailableHeight] = useState(window.innerHeight);

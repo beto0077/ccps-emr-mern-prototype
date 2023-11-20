@@ -1,7 +1,7 @@
 // Import the database connection
 import { database } from '../utils/database.js';
 
-// Other necessary imports...
+
 
 export const getControlNotes = async (req, res) => {
     try {

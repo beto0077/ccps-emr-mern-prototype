@@ -19,14 +19,14 @@ export const getAttachment = async (req, res) => {
         }
 
         //res.json(result[0]);
-        //NEW CODE HERE
+        
         const attachment = result[0];
         const fileContentBase64 = attachment.file_content.toString('base64');
 
         attachment.file_content = fileContentBase64;
 
         res.json(attachment);
-        //END OF NEW CODE
+        
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -64,7 +64,7 @@ export const createAttachment = async (req, res) => {
         });
         */
 
-        //NEW CODE HERE
+        
         const buffer = Buffer.from(file_content, 'base64');
         const [result] = await database.query(
             "INSERT INTO Attachment (patient_id, section_reference, attachment_type, file_name, file_content, date_added, description, uploader_user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -82,7 +82,7 @@ export const createAttachment = async (req, res) => {
             description,
             uploader_user_id
         });
-        //END OF NEW CODE
+        
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

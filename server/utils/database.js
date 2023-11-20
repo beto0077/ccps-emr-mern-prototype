@@ -8,7 +8,7 @@ dotenv.config();
     port: 3306,
     user: 'root',
     password: process.env.GOOGLE_CLOUD_PSWD,
-    database: 'taskbtndb'
+    database: 'ccps_db'
 })*/
 export const database = createPool({
     host: 'localhost',
