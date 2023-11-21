@@ -106,7 +106,7 @@ function SocialWorkInfo3List() {
           <div className="text-center">
             <Button
               disabled={
-                activeUser.specialty === "Trabajo social" ? false : true
+                activeUser.specialty === "Trabajo Social" ? false : true
               }
               variant="primary"
               size="lg"
