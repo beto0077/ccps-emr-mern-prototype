@@ -10,13 +10,13 @@ function Footer() {
         <Row>
           <Col md="6" className="mt-md-0 mt-3">
             <h5 className="text-uppercase font-weight-bold">Contacto:</h5>
-            <p>Correo electrónico: sarchipaliativos@gmail.com</p>
-            <p>Teléfono: 2454-4758</p>
+            <p>Correo electrónico: gfyspaliativos@gmail.com</p>
+            <p>Teléfono: 2565-5869</p>
           </Col>
           <hr className="clearfix w-100 d-md-none pb-3" />
           <Col md="6" className="mb-md-0 mb-3">
             <h5 className="text-uppercase font-weight-bold">Dirección:</h5>
-            <p>Sarchí, Alajuela, Costa Rica</p>
+            <p>Alajuela, Costa Rica</p>
           </Col>
         </Row>
       </Container>

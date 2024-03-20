@@ -11,7 +11,7 @@ function Homeimage() {
         <Card.ImgOverlay style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
           <Card.Title>
             <MDBContainer>
-              <h1 className="font-weight-bold text-light" style={{fontSize:'4rem', textShadow:'5px 5px 10px black'}}>Asociación Cuidados Paliativos de Sarchí</h1>
+              <h1 className="font-weight-bold text-light" style={{fontSize:'4rem', textShadow:'5px 5px 10px black'}}>Asociación Cuidados Paliativos GFYS</h1>
               <br />
               <p className="font-weight-bold text-light" style={{fontSize:'3rem', textShadow:'5px 5px 10px black', marginTop:'1rem'}}>Expediente Digital</p>
             </MDBContainer>

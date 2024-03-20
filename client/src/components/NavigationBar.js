@@ -49,7 +49,7 @@ function NavigationBar() {
     <div>
       <Navbar className="navbar" bg="success" text="white" var="lg">
         <Navbar.Brand style={{ color: "white" }}>
-          Asociación Cuidados Paliativos de Sarchí
+          Asociación Cuidados Paliativos GFYS
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

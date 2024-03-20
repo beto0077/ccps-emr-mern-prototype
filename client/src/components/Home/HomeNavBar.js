@@ -27,7 +27,7 @@ function HomeNavBar() {
       <Navbar className={classnames("navbar", {
         "navbar--hidden": !visible
       })} bg="primary" text="white" expand="lg">
-        <Navbar.Brand style={{color: "white"}}>Asociación Cuidados Paliativos de Sarchí</Navbar.Brand>
+        <Navbar.Brand style={{color: "white"}}>Asociación Cuidados Paliativos GFYS</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto ms-auto">
